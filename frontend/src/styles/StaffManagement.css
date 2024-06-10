@@ -1,0 +1,45 @@
+.staff-management-container {
+  
+  margin: 0 auto;
+  padding: 20px;
+  
+}
+
+h2 {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add-teacher-link {
+  display: block;
+  margin-bottom: 20px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.teacher-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.teacher-table th,
+.teacher-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.teacher-table th {
+  background-color: #f9f9f9;
+  font-weight: bold;
+  text-align: left;
+}
+
+.teacher-table td {
+  text-align: left;
+}
+
+.teacher-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}

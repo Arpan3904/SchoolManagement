@@ -1,0 +1,115 @@
+/* PrincipalDashboard.css */
+
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+  margin-left: 280px;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Dashboard Container */
+.school-dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.dashboard-section {
+  width: 100%; /* Make the section full width */
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-section h2 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+/* Section Card */
+.section-card {
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  width: calc(30% - 20px); /* Adjust the width as needed */
+  margin-bottom: 20px;
+}
+
+.section-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.section-card p {
+  color: #666;
+  font-size: 18px;
+}
+
+/* Increase the font size of the icons */
+.section-card .custom-icon {
+  font-size: 78px; /* Adjust the size as needed */
+}
+
+.students-section,
+.teachers-section,
+.others-section,
+.administration-setup {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  /* Change to vertical layout on smaller screens */
+  .administration-setup,
+  .students-section,
+  .teachers-section,
+  .others-section {
+    flex-direction: column;
+  }
+
+  .section-card {
+    width: 100%;
+  }
+}
+
+/* PrincipalDashboard.css */
+
+.box-layout {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.overview-box {
+  width: 150px;
+  height: 100px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+  padding: 10px;
+}
+
+.overview-box p:first-child {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+

@@ -1,0 +1,49 @@
+.addClass-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.addClass-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.addClass-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.addClass-container label {
+  margin-bottom: 5px;
+  color: #666;
+}
+
+.addClass-container input[type="text"],
+.addClass-container input[type="number"],
+.addClass-container button {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.addClass-container input[type="text"],
+.addClass-container input[type="number"] {
+  width: 100%;
+}
+
+.addClass-container button {
+  background-color: #4caf50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.addClass-container button:hover {
+  background-color: #45a049;
+}

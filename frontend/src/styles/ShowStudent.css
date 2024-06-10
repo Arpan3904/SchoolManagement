@@ -1,0 +1,61 @@
+.student-list-container {
+    padding: 2rem;
+    background-color: #f3f3f3;
+    font-family: Arial, sans-serif;
+    margin-left: 250px;
+  }
+  
+  .student-list-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .add-student-button-container {
+    margin-bottom: 2rem;
+  }
+  
+  .add-student-button {
+    padding: 0.5rem 1rem;
+    background-color: #333333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .student-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .student-table th,
+  .student-table td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+  }
+  
+  .student-table th {
+    background-color: #333333;
+    color: #fff;
+    font-weight: normal;
+  }
+  
+  .student-item {
+    cursor: pointer;
+  }
+  
+  .student-item:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .student-details td {
+    padding: 1rem;
+    background-color: #f5f5f5;
+  }
+  
+  .student-details p {
+    margin-bottom: 0.5rem;
+  }

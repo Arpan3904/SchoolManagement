@@ -1,0 +1,56 @@
+.navigation-bar {
+    width: 250px; /* Initial width of the sidebar */
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #333; /* Sidebar background color */
+    color: #fff; /* Text color */
+    transition: width 0.3s ease; /* Smooth transition for width change */
+    z-index: 1000; /* Ensure the sidebar is above other content */
+  }
+  
+  .navigation-bar.collapsed {
+    width: 60px; /* Collapsed width of the sidebar */
+  }
+  
+  .toggle-button {
+    cursor: pointer;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .toggle-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover background color for toggle button */
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    padding: 10px 0;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s ease; /* Smooth transition for background color change */
+  }
+  
+  button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover background color for buttons */
+  }
+  
+  .logout-button {
+    margin-bottom: 200px;
+    margin-block-start: 200%;
+     /* Push the logout button to the bottom */
+  }

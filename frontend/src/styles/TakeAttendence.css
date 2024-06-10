@@ -1,0 +1,64 @@
+.show-attendance-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .calendar-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .calendar-header button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .calendar-header h3 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .calendar {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .calendar th {
+    padding: 10px;
+    text-align: center;
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .calendar td {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .current-date {
+    background-color: #f0f0f0;
+  }
+  
+  .attendance {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  
+  .attendance.P {
+    background-color: #28a745; /* Green for Present */
+  }
+  
+  .attendance.A {
+    background-color: #dc3545; /* Red for Absent */
+  }
+  

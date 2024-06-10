@@ -1,0 +1,57 @@
+{
+  "name": "school",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.5.1",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@mui/x-date-pickers": "^7.0.0",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
+    "bwip-js": "^4.3.2",
+    "core-js": "^3.36.1",
+    "html2pdf.js": "^0.10.1",
+    "multer": "^1.4.5-lts.1",
+    "node-localstorage": "^3.0.5",
+    "rc-time-picker": "^3.7.3",
+    "react": "^18.2.0",
+    "react-datepicker": "^6.6.0",
+    "react-datetime": "^3.2.0",
+    "react-dom": "^18.2.0",
+    "react-image-lightbox": "^5.1.4",
+    "react-router-dom": "^6.22.3",
+    "react-scripts": "5.0.1",
+    "react-spring": "^9.7.3",
+    "react-timepicker": "^2.0.2",
+    "rsuite": "^5.58.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

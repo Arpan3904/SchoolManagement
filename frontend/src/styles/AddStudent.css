@@ -1,0 +1,77 @@
+/* AddStudent.css */
+
+.add-student-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    
+  }
+  
+  .add-student-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .add-student-form label {
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .add-student-form input[type="text"],
+  .add-student-form input[type="email"],
+  .add-student-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .add-student-form select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+   
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+  }
+  
+  .add-student-form .horizontal-fields {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .add-student-form .horizontal-field {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .add-student-form button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+  }
+  
+  .add-student-form button:hover {
+    background-color: #45a049;
+  }
+  
+  .add-student-form button[type="submit"] {
+    background-color: #008CBA;
+  }
+  
+  .add-student-form button[type="submit"]:hover {
+    background-color: #0077a3;
+  }
+  
