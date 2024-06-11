@@ -124,6 +124,14 @@ const AppContent = ({ userRole }) => {
             <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route path="/assignments" element={<AssignmentList />} />
             <Route path="/attendance" element={<StudentAttendance />} />
+            <Route path="/subject-management" element={<ShowSubject/>} />
+            <Route path="/timetable-management" element={<ShowTimetable />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/show-syllabus" element={<ShowSyllabus />} />
+          <Route path="/idcard" element={<IDCard />} />
+          <Route path="/showattendence" element={<ShowAttendance />} />
+          <Route path="/student-fee" element={<ShowFees />} />
+          <Route path="/notice" element={<AddNotice />} />
           </>
         )}
 

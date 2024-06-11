@@ -76,6 +76,11 @@ app.post('/api/login', async (req, res) => {
           return;
       }
 
+      const student = await Student.findOne({ email });
+      if (student && student.password.toString() === password) {
+          res.status(200).json({ message: 'Login successful', user: student, userrole: 'student' });
+          return;
+      }
       // If user is neither in User nor in Teacher collection, or password doesn't match, return error
       res.status(401).json({ message: 'Invalid email or password' });
   } catch (error) {
