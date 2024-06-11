@@ -153,6 +153,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/student-fee" element={<ShowFees />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/complain" element={<AddComplaint />} />
+          <Route path="/event" element={<ShowEvents />} />
           </>
         )}
 

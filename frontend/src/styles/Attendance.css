@@ -1,13 +1,6 @@
 /* Attendance.css */
 
-.container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 20px;
-    background: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    border-radius: 8px;
-}
+
 
 h1 {
     text-align: center;
