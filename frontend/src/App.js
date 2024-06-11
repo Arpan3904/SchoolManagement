@@ -31,6 +31,7 @@ import ShowSyllabus from './components/principal/ShowSyllabus';
 import IDCard from './components/principal/IdCard';
 import StudentList from './components/principal/StudentList';
 import AddNotice from './components/principal/AddNotice';
+import ShowNotices from './components/principal/ShowNotice';
 
 
 const App = () => {
@@ -87,7 +88,8 @@ const AppContent = ({ userRole }) => {
             <Route path="/show-syllabus" element={<ShowSyllabus />} />
             <Route path="/idcard" element={<IDCard />} />
             <Route path="/student-list" element={<StudentList />} />
-            <Route path="/notice" element={<AddNotice />} />
+            <Route path="/notice" element={<ShowNotices />} />
+            <Route path="/add_notice" element={<AddNotice />} />
           </>
         )}
 

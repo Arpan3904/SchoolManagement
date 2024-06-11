@@ -1,0 +1,54 @@
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/showNotice.css';
+
+const ShowNotices = () => {
+  const [notices, setNotices] = useState([]);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/fetchNotice');
+        setNotices(response.data);
+      } catch (err) {
+        console.error('Error fetching notices:', err);
+        setError('An error occurred while fetching notices.');
+      }
+    };
+
+    fetchNotices();
+  }, []);
+
+  const handleAddNotice = () => {
+    navigate('/add_notice');
+  };
+
+  return (
+    <div className="notices-container">
+      <h1>Notices</h1>
+      {error && <p className="error">{error}</p>}
+      {notices.length === 0 ? (
+        <p className="no-notices">No notices available.</p>
+      ) : (
+        <ul className="notice-list">
+          {notices.map((notice) => (
+            <li key={notice._id} className="notice-item">
+              <h2>{notice.title}</h2>
+              <p>{notice.content}</p>
+              <p><strong>Target Classes:</strong> {notice.targetClasses.join(', ')}</p>
+              <p><strong>Target Audience:</strong> {notice.targetAudience}</p>
+              <p><strong>Additional Info:</strong> {notice.additionalInfo}</p>
+              <p><strong>Date:</strong> {new Date(notice.date).toISOString().split('T')[0]}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+      <button className="add-notice-button" onClick={handleAddNotice}>Add Notice</button>
+    </div>
+  );
+};
+
+export default ShowNotices;

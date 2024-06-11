@@ -30,6 +30,7 @@ const noticeSchema = new Schema({
     }
 });
 
+
 // Create and export the Notice model
 const Notice = mongoose.model('Notice', noticeSchema);
 module.exports = Notice;
