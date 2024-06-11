@@ -29,7 +29,11 @@ import AddFees from './components/principal/AddFees';
 import AddSyllabus from './components/principal/AddSyllabus';
 import ShowSyllabus from './components/principal/ShowSyllabus';
 import IDCard from './components/principal/IdCard';
+<<<<<<< HEAD
 import StudentList from './components/principal/StudentList';
+=======
+import AddNotice from './components/principal/AddNotice';
+>>>>>>> c3ffdd1ecbe7482e73bf1d5f6f354926c634f1e0
 
 
 const App = () => {
@@ -85,7 +89,12 @@ const AppContent = ({ userRole }) => {
             <Route path="/add-syllabus" element={<AddSyllabus />} />
             <Route path="/show-syllabus" element={<ShowSyllabus />} />
             <Route path="/idcard" element={<IDCard />} />
+<<<<<<< HEAD
             <Route path="/student-list" element={<StudentList />} />
+=======
+            <Route path="/notice" element={<AddNotice />} />
+
+>>>>>>> c3ffdd1ecbe7482e73bf1d5f6f354926c634f1e0
           </>
         )}
 
