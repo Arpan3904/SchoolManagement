@@ -130,7 +130,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/student-list" element={<StudentList />} />
           <Route path="/notice" element={<AddNotice />} />
           <Route path="/complain" element={<AddComplaint />} />
-
+          <Route path="/event" element={<ShowEvents />} />
           
           </>
         )}

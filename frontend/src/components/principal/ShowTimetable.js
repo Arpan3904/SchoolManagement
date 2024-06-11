@@ -1,31 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import '../../styles/ShowTimetable.css'; // Import your CSS styles
+import { useNavigate } from 'react-router-dom';
+import '../../styles/ShowTimetable.css';
 
 const ShowTimetable = () => {
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Initial date in YYYY-MM-DD format
+  const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [selectedClass, setSelectedClass] = useState('');
   const [timetable, setTimetable] = useState(null);
   const [classes, setClasses] = useState([]);
-  const [showClassSection, setShowClassSection] = useState(true); // State to toggle class section visibility
-  const navigate = useNavigate(); // Initialize useNavigate
+  const [showClassSection, setShowClassSection] = useState(true);
+  const navigate = useNavigate();
+  const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
 
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        // Fetch timetable data from the server based on selected date and class
-        const response = await axios.get(`http://localhost:5000/api/timetable/${selectedClass}/${date}`);
+        const response = await axios.get(`http://localhost:5000/api/timetable/pt/${selectedClass}/${date}`);
         setTimetable(response.data);
       } catch (error) {
         console.error('Error fetching timetable:', error);
+        setTimetable(null); // Set timetable to null in case of error
       }
     };
 
-    // Call fetchTimetable when either date or selectedClass changes
     fetchTimetable();
-    
-  }, [date, selectedClass]); // Dependency array containing date and selectedClass
+  }, [date, selectedClass]);
 
   useEffect(() => {
     const fetchClasses = async () => {
@@ -37,16 +36,13 @@ const ShowTimetable = () => {
       }
     };
 
-    // Fetch classes when the component mounts
     fetchClasses();
   }, []);
 
-  // Function to handle navigation to "/add-timetable"
   const handleAddTimetable = () => {
     navigate("/add-timetable");
   };
 
-  // Function to handle printing only the timetable container
   const handlePrint = () => {
     const printableElement = document.querySelector('.show-timetable-container');
     if (printableElement) {
@@ -68,7 +64,6 @@ const ShowTimetable = () => {
           onChange={e => setDate(e.target.value)}
         />
       </div>
-      {/* Class Selection Section */}
       <div className="class-section">
         <label>Class:</label>
         <select id="classSelect" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
@@ -80,9 +75,8 @@ const ShowTimetable = () => {
           ))}
         </select>
       </div>
-      {/* Timetable Section */}
       <div className="timetable-section">
-        {timetable ? (
+        {timetable !== null ? (
           <table>
             <thead>
               <tr>
@@ -109,9 +103,10 @@ const ShowTimetable = () => {
           <p>No timetable available for the selected date and class.</p>
         )}
       </div>
-      {/* Button to navigate to "/add-timetable" */}
-      <button className="button-st" onClick={handleAddTimetable}>Add Timetable</button>
-      {/* Print button */}
+      {/* Conditionally render Add Timetable button based on user role */}
+      {userRole !== 'student' && (
+        <button className="button-st" onClick={handleAddTimetable}>Add Timetable</button>
+      )}
       <button className="button-st" onClick={handlePrint}>Print</button>
     </div>
   );

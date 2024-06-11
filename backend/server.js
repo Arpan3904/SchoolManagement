@@ -295,44 +295,55 @@ app.post('/api/timetable', (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
-app.get('/api/timetable/:selectedClass/:date', async(req, res) => {
-    const { selectedClass, date } = req.params;
+app.get('/api/timetable/:teacherEmail/:selectedDate', async (req, res) => {
+  try {
+    const { teacherEmail, selectedDate } = req.params;
 
-    try {
-        console.log("selectedClass" + date);
-        const timetable = await Timetable.findOne({ selectedClass, date });
-        if (!timetable) {
+    // Find the teacher by email
+    const teacher = await Teacher.findOne({ email: teacherEmail });
 
-            return res.status(404).json({ message: 'Timetable not found' });
-        }
-        res.status(200).json(timetable);
-    } catch (error) {
-        console.error('Error fetching timetable:', error);
-        res.status(500).json({ error: 'Server error' });
+    if (!teacher) {
+      console.log("teacher n maila.");
+      return res.status(404).json({ message: "Teacher not found." });
     }
-});
-app.get('/api/timetable/teacher/:teacherEmail/:date', async(req, res) => {
-    const { teacherEmail, date } = req.params;
 
-    try {
-        const teacher = await Teacher.findOne({ email: teacherEmail });
-        if (!teacher) {
-            return res.status(404).json({ message: 'Teacher not found' });
-        }
+    // Get the full name of the teacher
+    const teacherFullName = `${teacher.firstName} ${teacher.lastName}`;
 
-        const timetable = await Timetable.findOne({ date });
-        console.log("qqq");
-        if (!timetable) {
-            return res.status(404).json({ message: 'Timetable not found' });
-        }
+    // Find the timetable based on teacher's full name and selected date
+    const timetable = await Timetable.findOne({ 'periods.teacher': teacherFullName, date: selectedDate });
 
-        res.status(200).json(timetable);
-    } catch (error) {
-        console.error('Error fetching timetable:', error);
-        res.status(500).json({ error: 'Server error' });
+    if (!timetable) {
+      return res.status(404).json({ message: "Timetable not found for the selected date and teacher." });
     }
+
+    res.json(timetable);
+  } catch (error) {
+    console.error('Error fetching timetable:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+  
 });
 
+
+app.get('/api/teacher/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const teacher = await Teacher.findOne({ email });
+
+    if (!teacher) {
+      return res.status(404).json({ message: "Teacher not found." });
+    }
+
+    res.json({
+      firstName: teacher.firstName,
+      lastName: teacher.lastName
+    });
+  } catch (error) {
+    console.error('Error fetching teacher:', error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
@@ -370,7 +381,22 @@ app.post('/api/addImage', async(req, res) => {
         res.status(500).json({ message: 'Failed to upload image' });
     }
 });
+app.get('/api/timetable/pt/:selectedClass/:date', async(req, res) => {
+  const { selectedClass, date } = req.params;
 
+  try {
+      console.log("selectedClass" + date);
+      const timetable = await Timetable.findOne({ selectedClass, date });
+      if (!timetable) {
+
+          return res.status(404).json({ message: 'Timetable not found' });
+      }
+      res.status(200).json(timetable);
+  } catch (error) {
+      console.error('Error fetching timetable:', error);
+      res.status(500).json({ error: 'Server error' });
+  }
+});
 // Endpoint for retrieving images
 app.get('/api/getImages', async(req, res) => {
     try {
@@ -600,7 +626,7 @@ app.delete('/api/complaints/:id', async(req, res) => {
 
 app.use('/api', require("./routes/saveNotice"));
 app.use('/api', require('./routes/fetchNotice'));
-// app.use('/api', require('./routes/addComplain'));
+
 app.use('/api', require('./routes/saveEvent'));
 app.use('/api', require('./routes/fetchEvents'));
 app.use('/api', require('./routes/fetchClasses'));

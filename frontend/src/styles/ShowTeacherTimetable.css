@@ -1,0 +1,68 @@
+.timetable-container {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .timetable-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .date-picker-container {
+    margin-bottom: 20px;
+  }
+  
+  .date-picker-container label {
+    font-size: 18px;
+  }
+  
+  .date-picker-container input {
+    font-size: 16px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .timetable {
+    margin-top: 20px;
+  }
+  
+  .timetable table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .timetable th, .timetable td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .timetable th {
+    background-color: #f2f2f2;
+  }
+  
+  .timetable tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .timetable tbody tr:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .funny-message {
+    margin-top: 20px;
+    background-color: #0efb41;
+    padding: 10px;
+    border-radius: 4px;
+  }
+  
+  .funny-message p {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  

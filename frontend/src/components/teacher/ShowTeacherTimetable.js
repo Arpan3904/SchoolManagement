@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/ShowTimetable.css'; // Import CSS file for styling
+import '../../styles/ShowTeacherTimetable.css'; // Import CSS file for styling
 
 const ShowTimetable = () => {
   const [timetable, setTimetable] = useState(null);
   const [selectedDate, setSelectedDate] = useState('');
+  const [teacherFullName, setTeacherFullName] = useState('');
 
   useEffect(() => {
     // Fetch timetable for the logged-in teacher and selected date
@@ -12,7 +13,13 @@ const ShowTimetable = () => {
       try {
         // Retrieve teacher's email from localStorage
         const teacherEmail = localStorage.getItem('email'); // Assuming you store teacher's email as 'email' in localStorage
-        console.log(teacherEmail);
+        
+        // Fetch teacher's first and last names
+        const teacherInfo = await axios.get(`http://localhost:5000/api/teacher/${teacherEmail}`);
+        
+        let teachername = `${teacherInfo.data.firstName} ${teacherInfo.data.lastName}`;
+        setTeacherFullName(teachername);
+
         const response = await axios.get(`http://localhost:5000/api/timetable/${teacherEmail}/${selectedDate}`);
         setTimetable(response.data);
       } catch (error) {
@@ -43,32 +50,46 @@ const ShowTimetable = () => {
       </div>
       {timetable ? (
         <div className="timetable">
-          <h3>{timetable.date}</h3>
           <table>
             <thead>
               <tr>
-                <th>Sr No</th>
+                <th>Sr</th>
+                <th>Class</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Subject</th>
-                <th>Teacher</th>
               </tr>
             </thead>
             <tbody>
-              {timetable.periods.map((period) => (
-                <tr key={period.srNo}>
-                  <td>{period.srNo}</td>
-                  <td>{period.from}</td>
-                  <td>{period.to}</td>
-                  <td>{period.subject}</td>
-                  <td>{period.teacher}</td>
-                </tr>
-              ))}
+              {timetable.periods.map((period, index) => {
+                if (period.teacher.trim() === teacherFullName.trim()) {
+                  return (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td>{timetable.selectedClass}</td>
+                      <td>{period.from}</td>
+                      <td>{period.to}</td>
+                      <td>{period.subject}</td>
+                    </tr>
+                  );
+                }
+                return null;
+              })}
             </tbody>
           </table>
+          {timetable.periods.length === 0 && (
+            <div className="funny-message">
+              <p>Yeah, you are free! 😄</p>
+            </div>
+          )}
         </div>
       ) : (
+        <>
         <p>No timetable available for the selected date.</p>
+        <div className="funny-message">
+              <p>Yeah, you are free! 😄</p>
+            </div>
+          </>
       )}
     </div>
   );
