@@ -128,9 +128,10 @@ const AppContent = ({ userRole }) => {
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/student-list" element={<StudentList />} />
-          <Route path="/notice" element={<AddNotice />} />
+        
           <Route path="/complain" element={<AddComplaint />} />
           <Route path="/event" element={<ShowEvents />} />
+          <Route path="/notice" element={<ShowNotices />} />
           
           </>
         )}
@@ -149,7 +150,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/showattendence" element={<ShowAttendance />} />
           <Route path="/student-fee" element={<ShowFees />} />
-          <Route path="/notice" element={<AddNotice />} />
+          <Route path="/notice" element={<ShowNotices />} />
           <Route path="/complain" element={<AddComplaint />} />
           </>
         )}

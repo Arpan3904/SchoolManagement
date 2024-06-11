@@ -7,6 +7,7 @@ const ShowNotices = () => {
   const [notices, setNotices] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -46,7 +47,10 @@ const ShowNotices = () => {
           ))}
         </ul>
       )}
-      <button className="add-notice-button" onClick={handleAddNotice}>Add Notice</button>
+      {/* Conditionally render Add Notice button based on user role */}
+      {userRole !== 'teacher' && userRole !== 'student' && (
+        <button className="add-notice-button" onClick={handleAddNotice}>Add Notice</button>
+      )}
     </div>
   );
 };
