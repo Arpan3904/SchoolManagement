@@ -475,6 +475,7 @@ app.post('/api/send-sms', async (req, res) => {
     res.status(500).json({ error: 'Failed to send SMS.' });
   }
 });
-  
+
+app.use('/api', require("./routes/saveNotice"));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
