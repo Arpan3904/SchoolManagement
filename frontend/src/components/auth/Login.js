@@ -14,8 +14,9 @@ const Login = ({ sendDataToParent }) => {
       .then(response => {
         console.log(response.data.user.userRole);
         var userRole = response.data.user.userRole;
-        var email = response.data.user.eml;
+       
         localStorage.setItem('email', email);
+        console.log("aaa"+email);
         localStorage.setItem('userRole', userRole);
         sendDataToParent(userRole);
         navigate('/');

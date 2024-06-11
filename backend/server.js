@@ -75,7 +75,12 @@ app.post('/api/login', async(req, res) => {
             res.status(200).json({ message: 'Login successful', user: teacher, userrole: 'teacher' ,eml: email});
             return;
         }
-
+        const student = await Student.findOne({ email });
+        if (student && student.password.toString() === password) {
+            // If the user is found in the Teacher collection and the password matches, set userrole as 'teacher'
+            res.status(200).json({ message: 'Login successful', user: student, userrole: 'student' ,eml: email});
+            return;
+        }
         // If user is neither in User nor in Teacher collection, or password doesn't match, return error
         res.status(401).json({ message: 'Invalid email or password' });
     } catch (error) {
@@ -496,9 +501,91 @@ app.post('/api/send-sms', async(req, res) => {
         res.status(500).json({ error: 'Failed to send SMS.' });
     }
 });
+const complaintSchema = new mongoose.Schema({
+  title: String,
+  content: String,
+  image: String,
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  createdBy: String,
+});
+
+const Complaint = mongoose.model('Complaint', complaintSchema);
+
+
+
+app.post('/api/complaints', async (req, res) => {
+  try {
+    const { title, content } = req.body;
+    const createdBy = req.headers.gmail; // Assuming gmail is sent in request header
+
+    if (!createdBy) {
+      return res.status(400).send('User not authenticated');
+    }
+
+    let imageData = '';
+    if (req.files && req.files.image) {
+      const imageFile = req.files.image;
+      imageData = imageFile.data.toString('base64');
+
+      // Create a new image document
+      const newImage = new Image({
+        imageData,
+      });
+
+      // Save the image document to the database
+      await newImage.save();
+    }
+
+    
+
+    const newComplaint = new Complaint({
+      title,
+      content,
+      image: imageData,
+      createdBy,
+    });
+
+    await newComplaint.save();
+
+    res.status(200).send('Complaint saved successfully');
+  } catch (error) {
+    console.error('Error submitting complaint:', error);
+    res.status(500).send('Failed to submit complaint');
+  }
+});
+app.get('/api/fetch-complaints', async (req, res) => {
+  // console.log("aaa");
+  try {
+    const complaints = await Complaint.find();
+    res.status(200).json(complaints);
+  } catch (error) {
+    console.error('Error fetching complaints:', error);
+    res.status(500).json({ message: 'Failed to fetch complaints' });
+  }
+});
+
+// Route to fetch a single complaint by ID
+app.delete('/api/complaints/:id', async (req, res) => {
+  try {
+    const deletedComplaint = await Complaint.findByIdAndDelete(req.params.id);
+    if (!deletedComplaint) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+    res.status(200).json({ message: 'Complaint deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting complaint:', error);
+    res.status(500).json({ message: 'Failed to delete complaint' });
+  }
+});
 
 app.use('/api', require("./routes/saveNotice"));
 app.use('/api', require('./routes/fetchNotice'));
+//app.use('/api', require('./routes/addComplain'));
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

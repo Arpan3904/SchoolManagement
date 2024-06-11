@@ -32,6 +32,9 @@ import IDCard from './components/principal/IdCard';
 import StudentList from './components/principal/StudentList';
 import AddNotice from './components/principal/AddNotice';
 import ShowTeacherTimetable from './components/teacher/ShowTeacherTimetable';
+import AddComplaint from './components/teacher/AddComplaint';
+import ShowNotices from './components/principal/ShowNotice';
+import ShowComplaints from './components/principal/ShowComplaint';
 
 
 const App = () => {
@@ -90,6 +93,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/student-list" element={<StudentList />} />
             <Route path="/notice" element={<ShowNotices />} />
             <Route path="/add_notice" element={<AddNotice />} />
+            <Route path="/complain" element={<ShowComplaints />} />
           </>
         )}
 
@@ -115,7 +119,9 @@ const AppContent = ({ userRole }) => {
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/student-list" element={<StudentList />} />
           <Route path="/notice" element={<AddNotice />} />
+          <Route path="/complain" element={<AddComplaint />} />
 
+          
           </>
         )}
 
@@ -134,6 +140,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/showattendence" element={<ShowAttendance />} />
           <Route path="/student-fee" element={<ShowFees />} />
           <Route path="/notice" element={<AddNotice />} />
+          <Route path="/complain" element={<AddComplaint />} />
           </>
         )}
 

@@ -19,8 +19,8 @@ const complaintSchema = new mongoose.Schema({
         default: Date.now
     },
     image: {
-        data: Buffer,
-        contentType: String
+        type: String, // Change the type to String
+        required: true
     }
 });
 
