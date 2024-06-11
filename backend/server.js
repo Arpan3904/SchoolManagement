@@ -6,6 +6,10 @@ const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 require('dotenv').config();
 
+const Class = require('./models/class');
+const Subject = require('./models/subject');
+
+
 
 
 const app = express();
@@ -72,13 +76,13 @@ app.post('/api/login', async(req, res) => {
         const teacher = await Teacher.findOne({ email });
         if (teacher && teacher.password.toString() === password) {
             // If the user is found in the Teacher collection and the password matches, set userrole as 'teacher'
-            res.status(200).json({ message: 'Login successful', user: teacher, userrole: 'teacher' ,eml: email});
+            res.status(200).json({ message: 'Login successful', user: teacher, userrole: 'teacher', eml: email });
             return;
         }
         const student = await Student.findOne({ email });
         if (student && student.password.toString() === password) {
             // If the user is found in the Teacher collection and the password matches, set userrole as 'teacher'
-            res.status(200).json({ message: 'Login successful', user: student, userrole: 'student' ,eml: email});
+            res.status(200).json({ message: 'Login successful', user: student, userrole: 'student', eml: email });
             return;
         }
         // If user is neither in User nor in Teacher collection, or password doesn't match, return error
@@ -128,17 +132,23 @@ app.get('/api/fetch-teachers', async(req, res) => {
 });
 
 
-const classSchema = new mongoose.Schema({
-    className: { type: String, unique: true },
-    classTeacher: String,
-    roomNo: { type: String, unique: true },
-    capacity: Number,
-    principal: String,
-    feeAmount: Number
-}, { collection: 'class' });
 
-// Create model using the schema
-const Class = mongoose.model('Class', classSchema);
+
+
+// const classSchema = new mongoose.Schema({
+//     className: { type: String, unique: true },
+//     classTeacher: String,
+//     roomNo: { type: String, unique: true },
+//     capacity: Number,
+//     principal: String,
+//     feeAmount: Number
+// }, { collection: 'class' });
+
+// // Create model using the schema
+// const Class = mongoose.model('Class', classSchema);
+
+
+
 
 // Endpoint to add a class
 app.post('/api/add-class', async(req, res) => {
@@ -216,13 +226,20 @@ app.get('/api/fetch-students', async(req, res) => {
 
 
 
-const subjectSchema = new mongoose.Schema({
-    class: String,
-    subjectName: String,
-    subjectCode: { type: String, unique: true }
-}, { collection: "subject" });
 
-const Subject = mongoose.model('Subject', subjectSchema);
+
+
+// const subjectSchema = new mongoose.Schema({
+//     class: String,
+//     subjectName: String,
+//     subjectCode: { type: String, unique: true }
+// }, { collection: "subject" });
+
+// const Subject = mongoose.model('Subject', subjectSchema);
+
+
+
+
 
 app.post('/api/add-subject', async(req, res) => {
     const { class: selectedClass, subjectName, subjectCode } = req.body;
@@ -293,29 +310,29 @@ app.get('/api/timetable/:selectedClass/:date', async(req, res) => {
         console.error('Error fetching timetable:', error);
         res.status(500).json({ error: 'Server error' });
     }
-  });
-  app.get('/api/timetable/teacher/:teacherEmail/:date', async (req, res) => {
+});
+app.get('/api/timetable/teacher/:teacherEmail/:date', async(req, res) => {
     const { teacherEmail, date } = req.params;
-  
+
     try {
-      const teacher = await Teacher.findOne({ email: teacherEmail });
-      if (!teacher) {
-        return res.status(404).json({ message: 'Teacher not found' });
-      }
-  
-      const timetable = await Timetable.findOne({  date });
-      console.log("qqq");
-      if (!timetable) {
-        return res.status(404).json({ message: 'Timetable not found' });
-      }
-  
-      res.status(200).json(timetable);
+        const teacher = await Teacher.findOne({ email: teacherEmail });
+        if (!teacher) {
+            return res.status(404).json({ message: 'Teacher not found' });
+        }
+
+        const timetable = await Timetable.findOne({ date });
+        console.log("qqq");
+        if (!timetable) {
+            return res.status(404).json({ message: 'Timetable not found' });
+        }
+
+        res.status(200).json(timetable);
     } catch (error) {
-      console.error('Error fetching timetable:', error);
-      res.status(500).json({ error: 'Server error' });
+        console.error('Error fetching timetable:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-  });
-  
+});
+
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
@@ -502,90 +519,102 @@ app.post('/api/send-sms', async(req, res) => {
     }
 });
 const complaintSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  image: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  createdBy: String,
+    title: String,
+    content: String,
+    image: String,
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
+    createdBy: String,
 });
 
 const Complaint = mongoose.model('Complaint', complaintSchema);
 
 
 
-app.post('/api/complaints', async (req, res) => {
-  try {
-    const { title, content } = req.body;
-    const createdBy = req.headers.gmail; // Assuming gmail is sent in request header
+app.post('/api/complaints', async(req, res) => {
+    try {
+        const { title, content } = req.body;
+        const createdBy = req.headers.gmail; // Assuming gmail is sent in request header
 
-    if (!createdBy) {
-      return res.status(400).send('User not authenticated');
+        if (!createdBy) {
+            return res.status(400).send('User not authenticated');
+        }
+
+        let imageData = '';
+        if (req.files && req.files.image) {
+            const imageFile = req.files.image;
+            imageData = imageFile.data.toString('base64');
+
+            // Create a new image document
+            const newImage = new Image({
+                imageData,
+            });
+
+            // Save the image document to the database
+            await newImage.save();
+        }
+
+
+
+        const newComplaint = new Complaint({
+            title,
+            content,
+            image: imageData,
+            createdBy,
+        });
+
+        await newComplaint.save();
+
+        res.status(200).send('Complaint saved successfully');
+    } catch (error) {
+        console.error('Error submitting complaint:', error);
+        res.status(500).send('Failed to submit complaint');
     }
-
-    let imageData = '';
-    if (req.files && req.files.image) {
-      const imageFile = req.files.image;
-      imageData = imageFile.data.toString('base64');
-
-      // Create a new image document
-      const newImage = new Image({
-        imageData,
-      });
-
-      // Save the image document to the database
-      await newImage.save();
-    }
-
-    
-
-    const newComplaint = new Complaint({
-      title,
-      content,
-      image: imageData,
-      createdBy,
-    });
-
-    await newComplaint.save();
-
-    res.status(200).send('Complaint saved successfully');
-  } catch (error) {
-    console.error('Error submitting complaint:', error);
-    res.status(500).send('Failed to submit complaint');
-  }
 });
-app.get('/api/fetch-complaints', async (req, res) => {
-  // console.log("aaa");
-  try {
-    const complaints = await Complaint.find();
-    res.status(200).json(complaints);
-  } catch (error) {
-    console.error('Error fetching complaints:', error);
-    res.status(500).json({ message: 'Failed to fetch complaints' });
-  }
+app.get('/api/fetch-complaints', async(req, res) => {
+    // console.log("aaa");
+    try {
+        const complaints = await Complaint.find();
+        res.status(200).json(complaints);
+    } catch (error) {
+        console.error('Error fetching complaints:', error);
+        res.status(500).json({ message: 'Failed to fetch complaints' });
+    }
 });
 
 // Route to fetch a single complaint by ID
-app.delete('/api/complaints/:id', async (req, res) => {
-  try {
-    const deletedComplaint = await Complaint.findByIdAndDelete(req.params.id);
-    if (!deletedComplaint) {
-      return res.status(404).json({ message: 'Complaint not found' });
+app.delete('/api/complaints/:id', async(req, res) => {
+    try {
+        const deletedComplaint = await Complaint.findByIdAndDelete(req.params.id);
+        if (!deletedComplaint) {
+            return res.status(404).json({ message: 'Complaint not found' });
+        }
+        res.status(200).json({ message: 'Complaint deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting complaint:', error);
+        res.status(500).json({ message: 'Failed to delete complaint' });
     }
-    res.status(200).json({ message: 'Complaint deleted successfully' });
-  } catch (error) {
-    console.error('Error deleting complaint:', error);
-    res.status(500).json({ message: 'Failed to delete complaint' });
-  }
 });
 
 app.use('/api', require("./routes/saveNotice"));
 app.use('/api', require('./routes/fetchNotice'));
-//app.use('/api', require('./routes/addComplain'));
+// app.use('/api', require('./routes/addComplain'));
+app.use('/api', require('./routes/saveEvent'));
+app.use('/api', require('./routes/fetchEvents'));
+app.use('/api', require('./routes/fetchClasses'));
+app.use('/api', require('./routes/fetchSubjects'));
+app.use('/api', require('./routes/saveMaterial'));
+app.use('/api', require('./routes/fetchmaterial'));
+
+
+
 
 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+module.exports.Class = Class;
+module.exports.Subject = Subject;

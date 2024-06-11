@@ -1,0 +1,50 @@
+.events-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.events-header {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.events-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.event-item {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.event-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.event-description {
+    margin-bottom: 10px;
+}
+
+.event-details {
+    margin-bottom: 10px;
+}
+
+.cancel-button {
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-button:hover {
+    background-color: #d13830;
+}

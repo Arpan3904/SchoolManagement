@@ -35,6 +35,10 @@ import ShowTeacherTimetable from './components/teacher/ShowTeacherTimetable';
 import AddComplaint from './components/teacher/AddComplaint';
 import ShowNotices from './components/principal/ShowNotice';
 import ShowComplaints from './components/principal/ShowComplaint';
+import AddEvent from './components/principal/AddEvent';
+import ShowEvents from './components/principal/ShowEvent';
+import AddMaterial from './components/principal/AddMaterial';
+import ShowMaterial from './components/principal/ShowMaterial';
 
 
 const App = () => {
@@ -94,6 +98,12 @@ const AppContent = ({ userRole }) => {
             <Route path="/notice" element={<ShowNotices />} />
             <Route path="/add_notice" element={<AddNotice />} />
             <Route path="/complain" element={<ShowComplaints />} />
+            <Route path="/event" element={<ShowEvents />} />
+            <Route path="/add_event" element={<AddEvent />} />
+            <Route path="/material" element={<ShowMaterial />} />
+            <Route path="/Add_material" element={<AddMaterial />} />
+
+
           </>
         )}
 
