@@ -76,7 +76,7 @@ const SchoolDashboard = () => {
           <div className="students-section">
             {renderSectionCard('➕', 'Add Student', '/class-management')}
             {renderSectionCard('👨‍🎓', 'Student List', '/student-list')}
-            {renderSectionCard('📋', 'Attendance', '/attendance')}
+            {renderSectionCard('📋', 'Attendance', '/showattendance')}
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}

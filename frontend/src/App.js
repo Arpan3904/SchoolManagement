@@ -39,6 +39,7 @@ import AddEvent from './components/principal/AddEvent';
 import ShowEvents from './components/principal/ShowEvent';
 import AddMaterial from './components/principal/AddMaterial';
 import ShowMaterial from './components/principal/ShowMaterial';
+import ShowStudentAttendance from './components/student/ShowStudentAttendance';
 
 
 const App = () => {
@@ -85,7 +86,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/class/:id/add-student" element={<AddStudent />} />
             <Route path="/class/:id/student-management" element={<ShowStudent />} />
             <Route path="class/:id/take-attendance" element={<TakeAttendance />} />
-            <Route path="/showattendence" element={<ShowAttendance />} />
+            <Route path="/showattendance" element={<ShowAttendance />} />
             <Route path="/add-timetable" element={<AddTimetable />} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
             <Route path="/gallery" element={<Gallery />} />
@@ -111,7 +112,7 @@ const AppContent = ({ userRole }) => {
         {dataFromChild === "teacher" && (
           <>
             <Route path="/" element={<TeacherDashboard />} />
-            <Route path="/attendance" element={<Attendance />} />
+        
             <Route path="/assignment" element={<Assignment />} />
             <Route path="/marks" element={<Marks />} />
             <Route path="/" element={<TeacherDashboard />} />
@@ -122,13 +123,13 @@ const AppContent = ({ userRole }) => {
           <Route path="/class/:id/add-student" element={<AddStudent />} />
           <Route path="/class/:id/student-management" element={<ShowStudent />} />
           <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
-          <Route path="/showattendence" element={<ShowAttendance />} />
+          <Route path="/attendance" element={<ShowAttendance />} />
           <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/student-list" element={<StudentList />} />
-        
+          
           <Route path="/complain" element={<AddComplaint />} />
           <Route path="/event" element={<ShowEvents />} />
           <Route path="/notice" element={<ShowNotices />} />
@@ -142,13 +143,13 @@ const AppContent = ({ userRole }) => {
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route path="/assignments" element={<AssignmentList />} />
-            <Route path="/attendance" element={<StudentAttendance />} />
+            
             <Route path="/subject-management" element={<ShowSubject/>} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />
-          <Route path="/showattendence" element={<ShowAttendance />} />
+          <Route path="/attendance" element={<ShowStudentAttendance />} />
           <Route path="/student-fee" element={<ShowFees />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/complain" element={<AddComplaint />} />

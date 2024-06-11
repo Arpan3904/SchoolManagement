@@ -223,6 +223,29 @@ app.get('/api/fetch-students', async(req, res) => {
     }
 });
 
+app.get('/api/fetch-student-by-email', async(req, res) => {
+  try {
+      const { email } = req.query;
+      const student = await Student.findOne({ email });
+      res.status(200).json(student);
+  } catch (error) {
+      console.error('Error fetching student by email:', error);
+      res.status(500).json({ message: 'Failed to fetch student' });
+  }
+});
+
+// // Assuming you have already defined '/api/fetch-attendance-by-studentId' endpoint
+// app.get('/api/fetch-attendance-by-studentId', async(req, res) => {
+//   try {
+//       const { studentId } = req.query;
+//       const attendance = await Attendance.find({ 'students.studentId': studentId });
+//       res.status(200).json(attendance);
+//   } catch (error) {
+//       console.error('Error fetching attendance:', error);
+//       res.status(500).json({ message: 'Failed to fetch attendance' });
+//   }
+// });
+
 
 
 
@@ -633,7 +656,7 @@ app.use('/api', require('./routes/fetchClasses'));
 app.use('/api', require('./routes/fetchSubjects'));
 app.use('/api', require('./routes/saveMaterial'));
 app.use('/api', require('./routes/fetchmaterial'));
-
+app.use('/api', require('./routes/attendance'));
 
 
 

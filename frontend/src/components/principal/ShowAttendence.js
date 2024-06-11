@@ -1,67 +1,142 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import '../../styles/ShowAttendance.css';
+import axios from 'axios';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import '../../styles/Attendance.css';
 
-const ShowAttendance = () => {
-  const [currentMonthDays, setCurrentMonthDays] = useState([]);
-  const [students, setStudents] = useState([]);
-  const [attendance, setAttendance] = useState({});
+const TakeAttendance = () => {
+    const [classes, setClasses] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [selectedClass, setSelectedClass] = useState('');
+    const [attendance, setAttendance] = useState({});
+    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
-  useEffect(() => {
-    // Fetch students and attendance data here
-    // Example: const studentsData = fetchStudentsData();
-    //          const attendanceData = fetchAttendanceData();
+    useEffect(() => {
+        const fetchClasses = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/fetch-class');
+                setClasses(response.data);
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+            }
+        };
+        fetchClasses();
+    }, []);
 
-    // Set fetched data
-    // setStudents(studentsData);
-    // setAttendance(attendanceData);
+    const handleClassChange = async (e) => {
+        const classId = e.target.value;
+        setSelectedClass(classId);
+        await fetchStudentsAndAttendance(classId, date);
+    };
 
-    // For demonstration, I'm using mock data
-    const mockStudents = ['John', 'Alice', 'Bob', 'Emma'];
-    const mockCurrentMonthDays = Array.from({ length: 31 }, (_, i) => i + 1); // Assuming 31 days in a month
-    setStudents(mockStudents);
-    setCurrentMonthDays(mockCurrentMonthDays);
-  }, []);
+    const handleDateChange = async (e) => {
+        const newDate = e.target.value;
+        setDate(newDate);
+        if (selectedClass) {
+            await fetchStudentsAndAttendance(selectedClass, newDate);
+        }
+    };
 
-  const toggleAttendance = (student, day) => {
-    // Implement logic to toggle attendance for a student on a particular day
-    // Example: const updatedAttendance = updateAttendance(student, day);
-    //          setAttendance(updatedAttendance);
+    const fetchStudentsAndAttendance = async (classId, date) => {
+        try {
+            const [studentsResponse, attendanceResponse] = await Promise.all([
+                axios.get(`http://localhost:5000/api/fetch-students?classId=${classId}`),
+                axios.get(`http://localhost:5000/api/fetch-attendance?classId=${classId}&date=${date}`)
+            ]);
 
-    // For demonstration, I'm updating attendance randomly
-    const updatedAttendance = { ...attendance };
-    updatedAttendance[student] = { ...updatedAttendance[student] };
-    updatedAttendance[student][day] = updatedAttendance[student][day] === 'present' ? 'absent' : 'present';
-    setAttendance(updatedAttendance);
-  };
+            setStudents(studentsResponse.data);
 
-  return (
-    <div className="attendance-container">
-      <h1 className="attendance-title">Attendance for {new Date().toLocaleString('default', { month: 'long' })}</h1>
-      <div className="attendance-grid">
-        {/* Horizontal Row for Dates */}
-        <div className="dates-row">
-          <div className="empty-cell"></div>
-          {currentMonthDays.map((day) => (
-            <div key={day} className="date-cell">
-              {day}
+            if (attendanceResponse.data) {
+                const fetchedAttendance = attendanceResponse.data.students.reduce((acc, student) => {
+                    acc[student.studentId] = student.present;
+                    return acc;
+                }, {});
+                setAttendance(fetchedAttendance);
+            } else {
+                const initialAttendance = studentsResponse.data.reduce((acc, student) => {
+                    acc[student._id] = false; // default all students to absent
+                    return acc;
+                }, {});
+                setAttendance(initialAttendance);
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    const handleAttendanceChange = (studentId) => {
+        setAttendance({
+            ...attendance,
+            [studentId]: !attendance[studentId]
+        });
+    };
+
+    const handleSubmit = async () => {
+        try {
+            const studentsAttendance = Object.keys(attendance).map(studentId => ({
+                studentId,
+                present: attendance[studentId]
+            }));
+            await axios.post('http://localhost:5000/api/save-attendance', {
+                classId: selectedClass,
+                date,
+                students: studentsAttendance
+            });
+            alert('Attendance saved successfully');
+        } catch (error) {
+            console.error('Error saving attendance:', error);
+            alert('Failed to save attendance');
+        }
+    };
+
+    return (
+        <div className="container">
+            <h1>Take Attendance</h1>
+            <div className="form-group">
+                <label>Select Class:</label>
+                <select onChange={handleClassChange} value={selectedClass}>
+                    <option value="" disabled>Select a class</option>
+                    {classes.map(cls => (
+                        <option key={cls._id} value={cls._id}>{cls.className}</option>
+                    ))}
+                </select>
             </div>
-          ))}
+            <div className="form-group">
+                <label>Select Date:</label>
+                <input type="date" value={date} onChange={handleDateChange} />
+            </div>
+            <div className="students-container">
+                <h2>Students</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Present</th>
+                        </tr>
+                    </thead>
+                    <TransitionGroup component="tbody">
+                        {students.map(student => (
+                            <CSSTransition key={student._id} timeout={500} classNames="fade">
+                                <tr>
+                                    <td>{student.firstName} {student.lastName}</td>
+                                    <td>
+                                        <label className="switch">
+                                            <input
+                                                type="checkbox"
+                                                checked={attendance[student._id] || false}
+                                                onChange={() => handleAttendanceChange(student._id)}
+                                            />
+                                            <span className="slider"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </CSSTransition>
+                        ))}
+                    </TransitionGroup>
+                </table>
+            </div>
+            <button onClick={handleSubmit} className="submit-btn">Save Attendance</button>
         </div>
-        {/* Vertical Column for Students */}
-        {students.map((student) => (
-          <div key={student} className="student-row">
-            <div className="student-name-cell">{student}</div>
-            {currentMonthDays.map((day) => (
-              <div key={`${student}-${day}`} className={`attendance-cell ${attendance[student]?.[day] || 'absent'}`} onClick={() => toggleAttendance(student, day)}>
-                {/* You can show some icon or color based on attendance */}
-              </div>
-            ))}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    );
 };
 
-export default ShowAttendance;
+export default TakeAttendance;
