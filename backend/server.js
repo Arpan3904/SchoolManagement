@@ -168,27 +168,34 @@ app.post('/api/login', async (req, res) => {
     gender: String,
     contactNo: String,
     email:  String,
-    birthdate: Date, // Adding birthdate field
-    childUid : { type: Number, unique: true }, // Adding childUid field
+    birthdate: Date,
+    childUid : { type: Number, unique: true },
     classId: String,
+    password: String, // Change this to String
     principal:String,
     userRole : String
-  }, { collection: 'student' });
-  
-  const Student = mongoose.model('Student', studentSchema);
+}, { collection: 'student' });
+
+const Student = mongoose.model('Student', studentSchema);
+
   
   // Assuming you have already defined '/api/add-student' endpoint
   app.post('/api/add-student', async (req, res) => {
     try {
-      const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId,principal,userRole } = req.body;
-      const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId,principal,userRole });
-      await newStudent.save();
-      res.status(201).json(newStudent);
+        console.log('Inside /api/add-student route'); // Add log to check if route is hit
+        const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole } = req.body;
+        console.log('Received student data:', req.body); // Log received data
+
+        const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole });
+        await newStudent.save();
+
+        res.status(201).json(newStudent);
     } catch (error) {
-      console.error('Error adding student:', error);
-      res.status(500).json({ message: 'Failed to add student' });
+        console.error('Error adding student:', error);
+        res.status(500).json({ message: 'Failed to add student' });
     }
-  });
+});
+
 
   app.get('/api/fetch-students', async (req, res) => {
     try {
@@ -200,6 +207,8 @@ app.post('/api/login', async (req, res) => {
       res.status(500).json({ message: 'Failed to fetch students' });
     }
   });
+
+  
 
 
   const subjectSchema = new mongoose.Schema({

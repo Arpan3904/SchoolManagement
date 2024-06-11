@@ -29,6 +29,7 @@ import AddFees from './components/principal/AddFees';
 import AddSyllabus from './components/principal/AddSyllabus';
 import ShowSyllabus from './components/principal/ShowSyllabus';
 import IDCard from './components/principal/IdCard';
+import StudentList from './components/principal/StudentList';
 
 
 const App = () => {
@@ -84,6 +85,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/add-syllabus" element={<AddSyllabus />} />
             <Route path="/show-syllabus" element={<ShowSyllabus />} />
             <Route path="/idcard" element={<IDCard />} />
+            <Route path="/student-list" element={<StudentList />} />
           </>
         )}
 
@@ -94,6 +96,23 @@ const AppContent = ({ userRole }) => {
             <Route path="/attendance" element={<Attendance />} />
             <Route path="/assignment" element={<Assignment />} />
             <Route path="/marks" element={<Marks />} />
+            <Route path="/" element={<TeacherDashboard />} />
+          <Route path="/staff-management" element={<StaffManagement />} />
+          <Route path="/add-teacher" element={<AddTeacher />} />
+          <Route path="/subject-management" element={<ShowSubject />} />
+          <Route path="/class-management" element={<ShowClass />} />
+          <Route path="/class/:id/add-student" element={<AddStudent />} />
+          <Route path="/class/:id/student-management" element={<ShowStudent />} />
+          <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
+          <Route path="/showattendence" element={<ShowAttendance />} />
+          <Route path="/timetable-management" element={<ShowTimetable />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/show-syllabus" element={<ShowSyllabus />} />
+          <Route path="/idcard" element={<IDCard />} />
+          <Route path="/student-list" element={<StudentList />} />
+          
+          
+
           </>
         )}
 
@@ -101,6 +120,7 @@ const AppContent = ({ userRole }) => {
         {dataFromChild === "student" && (
           <>
             <Route path="/" element={<StudentDashboard />} />
+            <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route path="/assignments" element={<AssignmentList />} />
             <Route path="/attendance" element={<StudentAttendance />} />
           </>
