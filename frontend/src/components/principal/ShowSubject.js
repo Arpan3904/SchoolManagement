@@ -6,9 +6,14 @@ import '../../styles/ShowSubject.css';
 const ShowSubjects = () => {
   const [subjects, setSubjects] = useState([]);
   const navigate = useNavigate();
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
     fetchSubjects();
+
+    // Retrieve userRole from localStorage
+    const storedUserRole = localStorage.getItem('userRole');
+    setUserRole(storedUserRole);
   }, []);
 
   const fetchSubjects = async () => {
@@ -27,9 +32,12 @@ const ShowSubjects = () => {
   return (
     <div className="subjects-container">
       <h2>Subjects</h2>
-      <button className="add-subject-button" onClick={navigateToAddSubject}>
-        Add Subject
-      </button>
+      {/* Render the "Add Subject" button only if userRole is not "teacher" */}
+      {userRole !== 'teacher' && (
+        <button className="add-subject-button" onClick={navigateToAddSubject}>
+          Add Subject
+        </button>
+      )}
       <table className="subjects-table">
         <thead>
           <tr>

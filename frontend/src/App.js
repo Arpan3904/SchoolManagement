@@ -31,7 +31,7 @@ import ShowSyllabus from './components/principal/ShowSyllabus';
 import IDCard from './components/principal/IdCard';
 import StudentList from './components/principal/StudentList';
 import AddNotice from './components/principal/AddNotice';
-import ShowNotices from './components/principal/ShowNotice';
+import ShowTeacherTimetable from './components/teacher/ShowTeacherTimetable';
 
 
 const App = () => {
@@ -109,7 +109,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/class/:id/student-management" element={<ShowStudent />} />
           <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
           <Route path="/showattendence" element={<ShowAttendance />} />
-          <Route path="/timetable-management" element={<ShowTimetable />} />
+          <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />

@@ -6,6 +6,7 @@ import '../../styles/ShowClass.css'; // Import CSS file for ClassList styling
 const ClassList = () => {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
     // Fetch classes from MongoDB Atlas
@@ -19,6 +20,10 @@ const ClassList = () => {
     };
 
     fetchClasses();
+
+    // Retrieve userRole from localStorage
+    const storedUserRole = localStorage.getItem('userRole');
+    setUserRole(storedUserRole);
   }, []);
 
   const handleClassClick = (classId) => {
@@ -38,11 +43,14 @@ const ClassList = () => {
           </div>
         ))}
       </div>
-      <div className="add-class-button-container">
-        <button className="add-class-button" onClick={() => navigate('/add-class')}>
-          Add Class
-        </button>
-      </div>
+      {/* Render the "Add Class" button only if userRole is not "teacher" */}
+      {userRole !== 'teacher' && (
+        <div className="add-class-button-container">
+          <button className="add-class-button" onClick={() => navigate('/add-class')}>
+            Add Class
+          </button>
+        </div>
+      )}
     </div>
   );
 };

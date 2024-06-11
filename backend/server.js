@@ -72,7 +72,7 @@ app.post('/api/login', async(req, res) => {
         const teacher = await Teacher.findOne({ email });
         if (teacher && teacher.password.toString() === password) {
             // If the user is found in the Teacher collection and the password matches, set userrole as 'teacher'
-            res.status(200).json({ message: 'Login successful', user: teacher, userrole: 'teacher' });
+            res.status(200).json({ message: 'Login successful', user: teacher, userrole: 'teacher' ,eml: email});
             return;
         }
 
@@ -288,8 +288,29 @@ app.get('/api/timetable/:selectedClass/:date', async(req, res) => {
         console.error('Error fetching timetable:', error);
         res.status(500).json({ error: 'Server error' });
     }
-});
-
+  });
+  app.get('/api/timetable/teacher/:teacherEmail/:date', async (req, res) => {
+    const { teacherEmail, date } = req.params;
+  
+    try {
+      const teacher = await Teacher.findOne({ email: teacherEmail });
+      if (!teacher) {
+        return res.status(404).json({ message: 'Teacher not found' });
+      }
+  
+      const timetable = await Timetable.findOne({  date });
+      console.log("qqq");
+      if (!timetable) {
+        return res.status(404).json({ message: 'Timetable not found' });
+      }
+  
+      res.status(200).json(timetable);
+    } catch (error) {
+      console.error('Error fetching timetable:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  });
+  
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());

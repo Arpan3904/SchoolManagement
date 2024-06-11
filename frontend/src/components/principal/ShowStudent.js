@@ -36,12 +36,9 @@ const StudentList = () => {
             <FontAwesomeIcon icon={faUserPlus} /> Add Student
           </button>
         </Link>
-        <Link to={`/class/${id}/take-attendance`}>
-          <button className="take-attendance-button">
-            <FontAwesomeIcon icon={faClipboardCheck} /> Take Attendance
-          </button>
-        </Link>
+        
       </div>
+      <br/>
       <div className="student-table-container">
         <table className="student-table">
           <thead>
