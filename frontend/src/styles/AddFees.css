@@ -1,12 +1,12 @@
 /* AddFeesComponent.css */
 
 .add-fees-container {
-    max-width: 400px;
+   
     margin: 0 auto;
     padding: 20px;
-    border-radius: 8px;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+   
+   
   }
   
   .add-fees-heading {
@@ -36,7 +36,7 @@
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
+    background-color: #000000;
     color: #fff;
     font-size: 16px;
     cursor: pointer;
@@ -44,6 +44,6 @@
   }
   
   .submit-button:hover {
-    background-color: #0056b3;
+    background-color: #000000b4;
   }
   

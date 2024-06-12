@@ -1,61 +1,193 @@
+/* ShowStudent.css */
+
+/* Container styles */
 .student-list-container {
-    padding: 2rem;
-    background-color: #f3f3f3;
-    font-family: Arial, sans-serif;
-    margin-left: 250px;
-  }
+  font-family: 'Arial', sans-serif;
+  padding: 0 auto;
+ 
   
-  .student-list-container h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
+}
+
+.student-list-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.button-container {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+/* Button styles */
+.add-student-button {
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-student-button:hover {
+  background-color: #45a049;
+}
+
+/* Table styles */
+.student-table-container {
+  overflow-x: auto;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header th {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.student-item:hover {
+  background-color: #f2f2f2;
+}
+
+.student-item td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.student-details {
+  background-color: #f9f9f9;
+}
+
+.student-details p {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.expand-icon-cell {
+  width: 50px;
+}
+/* ShowStudent.css */
+
+/* Container styles */
+.student-list-container {
+  font-family: 'Arial', sans-serif;
   
-  .add-student-button-container {
-    margin-bottom: 2rem;
+  margin: 0 auto;
+  padding: 20px;
+ 
+  color: #000;
+}
+
+.student-list-title {
+  text-align: center;
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.button-container {
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+/* Button styles */
+.add-student-button {
+  background-color: #000;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-student-button:hover {
+  background-color: #333;
+}
+
+/* Table styles */
+.student-table-container {
+  overflow-x: auto;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header th {
+  background-color: #000;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.student-item:hover {
+  background-color: #f2f2f2;
+}
+
+.student-item td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+  transition: background-color 0.3s;
+}
+
+.student-details {
+  background-color: #f9f9f9;
+}
+
+.student-details p {
+  margin: 5px 0;
+  padding-left: 20px;
+}
+
+.expand-icon-cell {
+  width: 50px;
+  text-align: center;
+}
+
+/* Animated styles */
+.student-item:hover {
+  background-color: #ddd;
+}
+
+.student-item:hover .expand-icon-cell {
+  background-color: #ccc;
+}
+
+.student-details-cell {
+  background-color: #eee;
+  transition: background-color 0.3s;
+}
+
+.student-details-cell:hover {
+  background-color: #ddd;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 600px) {
+  .student-list-title {
+    font-size: 24px;
   }
-  
-  .add-student-button {
-    padding: 0.5rem 1rem;
-    background-color: #333333;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
+}
+
+/* Responsive styles */
+@media screen and (max-width: 600px) {
+  .student-list-title {
+    font-size: 24px;
   }
-  
-  .student-table {
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  .student-table th,
-  .student-table td {
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-    text-align: left;
-  }
-  
-  .student-table th {
-    background-color: #333333;
-    color: #fff;
-    font-weight: normal;
-  }
-  
-  .student-item {
-    cursor: pointer;
-  }
-  
-  .student-item:hover {
-    background-color: #f5f5f5;
-  }
-  
-  .student-details td {
-    padding: 1rem;
-    background-color: #f5f5f5;
-  }
-  
-  .student-details p {
-    margin-bottom: 0.5rem;
-  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleRight, faUserPlus, faClipboardCheck } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faAngleRight, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { Link, useParams } from 'react-router-dom';
 import '../../styles/ShowStudent.css';
 
@@ -27,27 +27,31 @@ const StudentList = () => {
     setExpandedId((prevId) => (prevId === id ? null : id));
   };
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   return (
     <div className="student-list-container">
-      <h1 className="student-list-title">Student List</h1>
+      <h1 className="student-list-title">🎓 Student List</h1>
       <div className="button-container">
         <Link to={`/class/${id}/add-student`}>
           <button className="add-student-button">
-            <FontAwesomeIcon icon={faUserPlus} /> Add Student
+            <FontAwesomeIcon icon={faUserPlus} /> Add New Student
           </button>
         </Link>
-        
       </div>
-      <br/>
       <div className="student-table-container">
         <table className="student-table">
           <thead>
             <tr className="table-header">
               <th className="expand-icon-cell"></th>
               <th className="roll-no-cell">Roll No</th>
-              <th className="first-name-cell">First Name</th>
-              <th className="middle-name-cell">Middle Name</th>
-              <th className="last-name-cell">Last Name</th>
+              <th className="name-cell">Name</th>
             </tr>
           </thead>
           <tbody>
@@ -58,18 +62,16 @@ const StudentList = () => {
                     <FontAwesomeIcon icon={expandedId === student._id ? faAngleDown : faAngleRight} />
                   </td>
                   <td className="roll-no-cell">{student.rollNo}</td>
-                  <td className="first-name-cell">{student.firstName}</td>
-                  <td className="middle-name-cell">{student.middleName}</td>
-                  <td className="last-name-cell">{student.lastName}</td>
+                  <td className="name-cell">{`${student.firstName} ${student.lastName}`}</td>
                 </tr>
                 {expandedId === student._id && (
                   <tr className="student-details">
-                    <td colSpan="5" className="student-details-cell">
-                      <p>Gender: {student.gender}</p>
-                      <p>Contact No: {student.contactNo}</p>
-                      <p>Email: {student.email}</p>
-                      <p>Birthdate: {student.birthdate}</p>
-                      <p>Child UID: {student.childUid}</p>
+                    <td colSpan="3" className="student-details-cell">
+                      <p><strong>Gender:</strong> {student.gender}</p>
+                      <p><strong>Contact No:</strong> {student.contactNo}</p>
+                      <p><strong>Email:</strong> {student.email}</p>
+                      <p><strong>Birthdate:</strong> {formatDate(student.birthdate)}</p>
+                      <p><strong>Child UID:</strong> {student.childUid}</p>
                     </td>
                   </tr>
                 )}

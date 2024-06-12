@@ -1,7 +1,7 @@
 /* ShowSubject.css */
 
 .subjects-container {
-    max-width: 800px;
+   
     margin: 0 auto;
     padding: 20px;
   }
@@ -36,7 +36,7 @@
   }
   
   .add-subject-button {
-    background-color: #4caf50;
+    background-color: #000000;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -51,6 +51,6 @@
   }
   
   .add-subject-button:hover {
-    background-color: #45a049;
+    background-color: #000000be;
   }
   

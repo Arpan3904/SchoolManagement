@@ -9,6 +9,8 @@
     transition: width 0.3s ease; /* Smooth transition for width change */
     z-index: 1000; /* Ensure the sidebar is above other content */
   }
+
+  
   
   .navigation-bar.collapsed {
     width: 60px; /* Collapsed width of the sidebar */

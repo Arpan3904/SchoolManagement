@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
-import bwipjs from 'bwip-js'; // Import bwip-js library
-import '../../styles/IDCard.css'; // Import CSS for ID card styling
+import bwipjs from 'bwip-js';
+import moment from 'moment'; // Import moment library
+import '../../styles/IDCard.css';
 
 const IDCard = () => {
   const [classes, setClasses] = useState([]);
@@ -11,7 +12,6 @@ const IDCard = () => {
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [barcodeData, setBarcodeData] = useState('');
 
-  // Fetch classes from the server
   useEffect(() => {
     axios.get('http://localhost:5000/api/fetch-class')
       .then(response => {
@@ -22,7 +22,6 @@ const IDCard = () => {
       });
   }, []);
 
-  // Fetch students based on the selected class
   useEffect(() => {
     if (selectedClass) {
       axios.get(`http://localhost:5000/api/fetch-students?classId=${selectedClass}`)
@@ -35,26 +34,26 @@ const IDCard = () => {
     }
   }, [selectedClass]);
 
-  // Function to handle class selection
   const handleClassSelect = (event) => {
     const selectedClassId = event.target.value;
     setSelectedClass(selectedClassId);
-    setSelectedStudent(null); // Reset selected student when class changes
+    setSelectedStudent(null);
   };
 
-  // Function to handle student selection
   const handleStudentSelect = (event) => {
     const selectedStudentId = event.target.value;
     const student = students.find(student => student._id === selectedStudentId);
     setSelectedStudent(student);
 
-    // Generate barcode data
     if (student) {
       setBarcodeData(student.childUid.toString());
     }
   };
 
-  // Function to generate ID card content
+  const formatDate = (date) => {
+    return moment(date).format('DD/MM/YYYY'); // Format the date
+  };
+
   const generateIDCardContent = () => {
     if (selectedStudent) {
       return (
@@ -70,14 +69,12 @@ const IDCard = () => {
               <p><strong>Email:</strong> {selectedStudent.email}</p>
             </div>
           </div>
-        
           <div className="back-side">
-            <p><strong>Birthdate:</strong> {selectedStudent.birthdate}</p>
+            <p><strong>Birthdate:</strong> {formatDate(selectedStudent.birthdate)}</p> {/* Format the date */}
             <p><strong>Child UID:</strong> {selectedStudent.childUid}</p>
             <p><strong>Principal:</strong> {selectedStudent.principal}</p>
             <div className="barcode-scanner">
-              <canvas id="barcodeCanvas"></canvas> {/* Canvas for barcode */}
-             
+              <canvas id="barcodeCanvas"></canvas>
             </div>
           </div>
         </div>
@@ -87,22 +84,20 @@ const IDCard = () => {
     }
   };
 
-  // Function to generate barcode using bwip-js library
   useEffect(() => {
     if (barcodeData && selectedStudent) {
       const canvas = document.getElementById('barcodeCanvas');
       bwipjs.toCanvas(canvas, {
-        bcid: 'code128', // Barcode type
-        text: barcodeData, // Barcode data
-        scale: 3, // Scaling factor
-        height: 10, // Barcode height
-        includetext: true, // Include human-readable text below the barcode
-        textxalign: 'center' // Text alignment
+        bcid: 'code128',
+        text: barcodeData,
+        scale: 3,
+        height: 10,
+        includetext: true,
+        textxalign: 'center'
       });
     }
   }, [barcodeData, selectedStudent]);
 
-  // Function to download the ID card as a single PDF
   const downloadIDCard = () => {
     const idCardContent = document.querySelector('.id-card');
     const options = {
@@ -138,15 +133,14 @@ const IDCard = () => {
         ))}
       </select>
 
-      {/* Display ID card */}
       {generateIDCardContent()}
 
-      {/* Download ID card button */}
       {selectedStudent && (
         <button onClick={downloadIDCard}>Download ID Card</button>
       )}
     </div>
-  );
+
+);
 };
 
 export default IDCard;

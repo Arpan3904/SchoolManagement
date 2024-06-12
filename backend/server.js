@@ -186,22 +186,21 @@ const studentSchema = new mongoose.Schema({
     birthdate: Date,
     childUid: { type: Number, unique: true },
     classId: String,
-    password: String, // Change this to String
+    password: String,
     principal: String,
-    userRole: String
+    userRole: String,
+    photo: String  // Add photo field
 }, { collection: 'student' });
-
 const Student = mongoose.model('Student', studentSchema);
 
 
 // Assuming you have already defined '/api/add-student' endpoint
-app.post('/api/add-student', async(req, res) => {
+app.post('/api/add-student', async (req, res) => {
     try {
-        console.log('Inside /api/add-student route'); // Add log to check if route is hit
-        const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole } = req.body;
-        console.log('Received student data:', req.body); // Log received data
-
-        const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole });
+        const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo } = req.body;
+        
+        // Decode base64 photo and save it to the database
+        const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo });
         await newStudent.save();
 
         res.status(201).json(newStudent);
