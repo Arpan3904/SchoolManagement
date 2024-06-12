@@ -1,0 +1,75 @@
+.image-gallery-container {
+    max-width: 1500px;
+    height: 800px;
+    margin: 0;
+    padding: 20px;
+}
+
+.image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 0.25fr));
+}
+
+.image-frame {
+    width: 150px;
+    height: 150px;
+    overflow: hidden;
+    margin: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 5px;
+}
+
+.image-gallery-container {
+    position: relative;
+    /* Make the container relative to position the circle */
+}
+
+.circle-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: #555960;
+    /* Example background color */
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /* Add cursor pointer for better UX */
+}
+
+.circle-container:hover {
+    background-color: #080808;
+    /* Example background color on hover */
+}
+
+
+/* Gallery.css */
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-top: 4px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin: 50px auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

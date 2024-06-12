@@ -1,98 +1,55 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Lightbox from 'react-image-lightbox';
-import 'react-image-lightbox/style.css';
-import '../../styles/Gallery.css'; // Import CSS file for styling
+import { useNavigate } from 'react-router-dom';
+import '../../styles/Gallery.css'; 
 
-const ShowImage = () => {
-  const [images, setImages] = useState([]);
-  const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [photoIndex, setPhotoIndex] = useState(0);
+const Gallery = () => {
+  const [events, setEvents] = useState([]);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchImages();
-  }, []); 
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/showEvents');
+        const currentDate = new Date();
+        const pastEvents = response.data.filter(event => new Date(event.endDate) < currentDate);
+        setEvents(pastEvents);
+      } catch (err) {
+        console.error('Error fetching events:', err);
+        setError('An error occurred while fetching events.');
+      }
+    };
 
-  const fetchImages = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/getImages');
-      setImages(response.data.images);
-      setLoading(false);
-    } catch (error) {
-      console.log('Error fetching images:', error);
-      setLoading(false);
-    }
-  };
+    fetchEvents();
+  }, []);
 
-  const handleImageChange = async (e) => {
-    const selectedImage = e.target.files[0];
-    setImage(selectedImage);
-
-    try {
-      setLoading(true);
-      const formData = new FormData();
-      formData.append('image', selectedImage);
-
-      await axios.post('http://localhost:5000/api/addImage', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-
-      fetchImages();
-
-      setLoading(false);
-      alert('Image uploaded successfully');
-    } catch (error) {
-      setLoading(false);
-      alert('Failed to upload image');
-    }
-  };
-
-  const openLightbox = (index) => {
-    setPhotoIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const closeLightbox = () => {
-    setLightboxOpen(false);
+  const handleViewImages = (eventId) => {
+    navigate(`/showImages/${eventId}`);
   };
 
   return (
-    <div className="image-gallery-container">
-      <h2>Images</h2>
-      {loading ? (
-        <div className="loading-spinner"></div>
-      ) : (
-        <div className="image-grid">
-          {images.map((image, index) => (
-            <div className="image-frame" key={index} onClick={() => openLightbox(index)}>
-              <img className="image" src={`data:image/jpeg;base64,${image.imageData}`} alt={`Image ${index}`} />
+    <div>
+      <h2>Completed Events</h2>
+    <div className="gallery-container">
+      
+      {error && <p>{error}</p>}
+      <div className="event-grid">
+        {events.map(event => (
+          <div key={event._id} className="event-card" onClick={() => handleViewImages(event._id)}>
+            <h2>{event.title}</h2>
+            <p>{event.description}</p>
+            <div className="event-details">
+              <p><strong>Start Date:</strong> {new Date(event.startDate).toLocaleString()}</p>
+              <p><strong>End Date:</strong> {new Date(event.endDate).toLocaleString()}</p>
+              <p><strong>Location:</strong> {event.location}</p>
             </div>
-          ))}
-        </div>
-      )}
-
-      {lightboxOpen && (
-        <Lightbox
-          mainSrc={`data:image/jpeg;base64,${images[photoIndex].imageData}`}
-          nextSrc={`data:image/jpeg;base64,${images[(photoIndex + 1) % images.length].imageData}`}
-          prevSrc={`data:image/jpeg;base64,${images[(photoIndex + images.length - 1) % images.length].imageData}`}
-          onCloseRequest={closeLightbox}
-          onMovePrevRequest={() => setPhotoIndex((photoIndex + images.length - 1) % images.length)}
-          onMoveNextRequest={() => setPhotoIndex((photoIndex + 1) % images.length)}
-        />
-      )}
-
-      <label htmlFor="image-upload" className="circle-container">
-        +
-        <input id="image-upload" type="file" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
-      </label>
+          </div>
+        ))}
+      </div>
+    </div>
     </div>
   );
 };
 
-export default ShowImage;
+export default Gallery;

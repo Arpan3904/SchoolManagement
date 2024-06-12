@@ -20,6 +20,15 @@ const ShowEvents = () => {
     };
 
     fetchEvents();
+
+    // Set up interval to check for expired events every minute
+    const intervalId = setInterval(() => {
+      const currentTime = new Date();
+      setEvents(prevEvents => prevEvents.filter(event => new Date(event.endDate) > currentTime));
+    }, 60000); // 60000ms = 1 minute
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleCancelEvent = async (eventId) => {
@@ -55,7 +64,7 @@ const ShowEvents = () => {
       <div className="events-header-container">
         <h1 className="events-header">Events</h1>
         <button style={addEventButtonStyle} onClick={handleAddEvent}>Add Event</button>
-        </div>
+      </div>
       {error && <p>{error}</p>}
       {events.length === 0 ? (
         <p>No events available.</p>

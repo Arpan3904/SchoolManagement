@@ -1,67 +1,73 @@
-.image-gallery-container {
-    max-width: 1500px;
-    height: 800px;
-    margin: 0;
+/* Gallery.css */
+
+.gallery-container {
     padding: 20px;
-  }
-  
-  .image-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 0.25fr));
-   
-  }
-  
-  .image-frame {
-    width: 150px;
-    height: 150px;
-    overflow: hidden;
-    margin: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover; 
-    padding: 5px;
-  }
+    font-family: Arial, sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    background-color: #f0f4f8;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
-  .image-gallery-container {
-    position: relative; /* Make the container relative to position the circle */
-  }
-  
-  .circle-container {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    background-color: #555960; /* Example background color */
-    color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer; /* Add cursor pointer for better UX */
-  }
-  
-  .circle-container:hover {
-    background-color: #080808; /* Example background color on hover */
-  }
-  /* Gallery.css */
+.gallery-header {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
 
-.loading-spinner {
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-top: 4px solid #007bff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin: 50px auto;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-  
+.error {
+    color: red;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.no-events {
+    text-align: center;
+    font-size: 1.2em;
+    color: #777;
+}
+
+.gallery-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.gallery-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.gallery-item:hover {
+    transform: scale(1.02);
+}
+
+.event-title {
+    margin: 0 0 10px;
+    font-size: 1.5em;
+    color: #333;
+}
+
+.event-description {
+    margin: 0 0 10px;
+    color: #555;
+}
+
+.event-details {
+    color: #777;
+    font-size: 0.9em;
+}
+
+.event-details p {
+    margin: 5px 0;
+}
+
+strong {
+    color: #333;
+}

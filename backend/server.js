@@ -150,7 +150,7 @@ app.get('/api/fetch-teachers', async(req, res) => {
 
 
 
-// Endpoint to add a class
+
 app.post('/api/add-class', async(req, res) => {
     try {
         const { className, classTeacher, roomNo, capacity } = req.body;
@@ -383,16 +383,22 @@ const Image = mongoose.model('Image', imageSchema);
 // Endpoint for adding an image
 app.post('/api/addImage', async(req, res) => {
     try {
+
+        const { eventId } = req.query;
+        console.log(eventId);
+        
         if (!req.files || !req.files.image) {
             return res.status(400).json({ message: 'No image uploaded' });
         }
+
 
         const imageFile = req.files.image;
         const imageData = imageFile.data.toString('base64');
 
         // Create a new image document
         const newImage = new Image({
-            imageData,
+            eventId:eventId,
+            imageData:imageData,
         });
 
         // Save the image document to the database
@@ -404,6 +410,8 @@ app.post('/api/addImage', async(req, res) => {
         res.status(500).json({ message: 'Failed to upload image' });
     }
 });
+
+
 app.get('/api/timetable/pt/:selectedClass/:date', async(req, res) => {
   const { selectedClass, date } = req.params;
 
@@ -421,10 +429,17 @@ app.get('/api/timetable/pt/:selectedClass/:date', async(req, res) => {
   }
 });
 // Endpoint for retrieving images
-app.get('/api/getImages', async(req, res) => {
+app.get('/api/getImages', async (req, res) => {
     try {
-        // Retrieve all images from the database
-        const images = await Image.find();
+        const { eventId } = req.query;
+        
+        // Check if eventId is provided
+        if (!eventId) {
+            return res.status(400).json({ message: 'Event ID is required' });
+        }
+
+        // Retrieve images for the specific event from the database
+        const images = await Image.find({ eventId });
 
         res.status(200).json({ images });
     } catch (error) {

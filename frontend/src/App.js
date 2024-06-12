@@ -40,6 +40,7 @@ import ShowEvents from './components/principal/ShowEvent';
 import AddMaterial from './components/principal/AddMaterial';
 import ShowMaterial from './components/principal/ShowMaterial';
 import ShowStudentAttendance from './components/student/ShowStudentAttendance';
+import ShowImages from './components/principal/ShowImages';
 
 
 const App = () => {
@@ -102,7 +103,9 @@ const AppContent = ({ userRole }) => {
             <Route path="/event" element={<ShowEvents />} />
             <Route path="/add_event" element={<AddEvent />} />
             <Route path="/material" element={<ShowMaterial />} />
-            <Route path="/Add_material" element={<AddMaterial />} />
+            <Route path="/add_material" element={<AddMaterial />} />
+            <Route path="/showImages/:eventId" element={<ShowImages />} />
+
 
 
           </>

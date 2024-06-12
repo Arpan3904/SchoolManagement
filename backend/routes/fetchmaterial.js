@@ -12,7 +12,7 @@ router.get('/materials', async(req, res) => {
     }
 
     try {
-        const materials = await Material.find({ className, subjectName });
+        const materials = await Material.find({ class: className, subject: subjectName });
         console.log(materials);
         res.json(materials);
     } catch (err) {
