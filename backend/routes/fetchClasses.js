@@ -4,6 +4,7 @@ const Class = require('../models/class');
 
 router.get('/classes', async(req, res) => {
     try {
+        // console.log("before classes");
         const classes = await Class.find();
         res.json(classes);
     } catch (err) {

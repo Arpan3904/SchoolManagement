@@ -39,7 +39,7 @@ const ShowSubjects = () => {
 
   const fetchSubjects = async (selectedClass) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/subjects?class=${selectedClass}`);
+      const response = await axios.get(`http://localhost:5000/api/subjectss?class=${selectedClass}`);
       setSubjects(response.data);
     } catch (err) {
       console.error('Error fetching subjects:', err);

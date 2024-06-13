@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { Schema } = mongoose;
 const cors = require('cors'); // Import cors 
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
@@ -8,6 +9,8 @@ require('dotenv').config();
 
 const Class = require('./models/class');
 const Subject = require('./models/subject');
+const Homework = require('./models/homework');
+
 
 
 
@@ -30,8 +33,8 @@ const userSchema = new mongoose.Schema({
     lastName: String,
     email: { type: String, unique: true },
     password: String,
-    schoolName: String, // Add schoolName field to the schema
-    schoolIndexId: String, // Add schoolIndexId field to the schema
+    schoolName: String,
+    schoolIndexId: String,
     userRole: String
 }, { collection: 'principal' });
 
@@ -252,14 +255,14 @@ app.get('/api/fetch-students', async(req, res) => {
 });
 
 app.get('/api/fetch-student-by-email', async(req, res) => {
-  try {
-      const { email } = req.query;
-      const student = await Student.findOne({ email });
-      res.status(200).json(student);
-  } catch (error) {
-      console.error('Error fetching student by email:', error);
-      res.status(500).json({ message: 'Failed to fetch student' });
-  }
+    try {
+        const { email } = req.query;
+        const student = await Student.findOne({ email });
+        res.status(200).json(student);
+    } catch (error) {
+        console.error('Error fetching student by email:', error);
+        res.status(500).json({ message: 'Failed to fetch student' });
+    }
 });
 
 // // Assuming you have already defined '/api/fetch-attendance-by-studentId' endpoint
@@ -305,7 +308,7 @@ app.post('/api/add-subject', async (req, res) => {
 });
 
 // Fetch Subjects by Class endpoint
-app.get('/api/subjects', async (req, res) => {
+app.get('/api/subjectss', async (req, res) => {
     try {
         const { class: className } = req.query;
         const subjects = await Subject.find({ class: className });
@@ -368,60 +371,65 @@ app.post('/api/timetable', (req, res) => {
         .catch(err => res.status(500).json({ error: err.message }));
 });
 
-app.get('/api/timetable/:teacherEmail/:selectedDate', async (req, res) => {
-  try {
-    const { teacherEmail, selectedDate } = req.params;
+app.get('/api/timetable/:teacherEmail/:selectedDate', async(req, res) => {
+    try {
+        const { teacherEmail, selectedDate } = req.params;
 
-    // Find the teacher by email
-    const teacher = await Teacher.findOne({ email: teacherEmail });
+        // Find the teacher by email
+        const teacher = await Teacher.findOne({ email: teacherEmail });
 
-    if (!teacher) {
-      console.log("teacher n maila.");
-      return res.status(404).json({ message: "Teacher not found." });
+        if (!teacher) {
+            console.log("teacher n maila.");
+            return res.status(404).json({ message: "Teacher not found." });
+        }
+
+        // Get the full name of the teacher
+        const teacherFullName = `${teacher.firstName} ${teacher.lastName}`;
+
+        // Find the timetable based on teacher's full name and selected date
+        const timetable = await Timetable.findOne({ 'periods.teacher': teacherFullName, date: selectedDate });
+
+        if (!timetable) {
+            return res.status(404).json({ message: "Timetable not found for the selected date and teacher." });
+        }
+
+        res.json(timetable);
+    } catch (error) {
+        console.error('Error fetching timetable:', error);
+        res.status(500).json({ message: "Internal server error" });
     }
 
-    // Get the full name of the teacher
-    const teacherFullName = `${teacher.firstName} ${teacher.lastName}`;
-
-    // Find the timetable based on teacher's full name and selected date
-    const timetable = await Timetable.findOne({ 'periods.teacher': teacherFullName, date: selectedDate });
-
-    if (!timetable) {
-      return res.status(404).json({ message: "Timetable not found for the selected date and teacher." });
-    }
-
-    res.json(timetable);
-  } catch (error) {
-    console.error('Error fetching timetable:', error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-  
 });
 
 
-app.get('/api/teacher/:email', async (req, res) => {
-  try {
-    const { email } = req.params;
-    const teacher = await Teacher.findOne({ email });
+app.get('/api/teacher/:email', async(req, res) => {
+    try {
+        const { email } = req.params;
+        const teacher = await Teacher.findOne({ email });
 
-    if (!teacher) {
-      return res.status(404).json({ message: "Teacher not found." });
+        if (!teacher) {
+            return res.status(404).json({ message: "Teacher not found." });
+        }
+
+        res.json({
+            firstName: teacher.firstName,
+            lastName: teacher.lastName
+        });
+    } catch (error) {
+        console.error('Error fetching teacher:', error);
+        res.status(500).json({ message: "Internal server error" });
     }
-
-    res.json({
-      firstName: teacher.firstName,
-      lastName: teacher.lastName
-    });
-  } catch (error) {
-    console.error('Error fetching teacher:', error);
-    res.status(500).json({ message: "Internal server error" });
-  }
 });
 
 const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
 const imageSchema = new mongoose.Schema({
+    eventId: {
+        type: Schema.Types.ObjectId,
+        ref: 'Event',
+        required: true,
+    },
     imageData: {
         type: String,
         required: true,
@@ -436,7 +444,7 @@ app.post('/api/addImage', async(req, res) => {
 
         const { eventId } = req.query;
         console.log(eventId);
-        
+
         if (!req.files || !req.files.image) {
             return res.status(400).json({ message: 'No image uploaded' });
         }
@@ -447,8 +455,8 @@ app.post('/api/addImage', async(req, res) => {
 
         // Create a new image document
         const newImage = new Image({
-            eventId:eventId,
-            imageData:imageData,
+            eventId: eventId,
+            imageData: imageData,
         });
 
         // Save the image document to the database
@@ -463,26 +471,26 @@ app.post('/api/addImage', async(req, res) => {
 
 
 app.get('/api/timetable/pt/:selectedClass/:date', async(req, res) => {
-  const { selectedClass, date } = req.params;
+    const { selectedClass, date } = req.params;
 
-  try {
-      console.log("selectedClass" + date);
-      const timetable = await Timetable.findOne({ selectedClass, date });
-      if (!timetable) {
+    try {
+        console.log("selectedClass" + date);
+        const timetable = await Timetable.findOne({ selectedClass, date });
+        if (!timetable) {
 
-          return res.status(404).json({ message: 'Timetable not found' });
-      }
-      res.status(200).json(timetable);
-  } catch (error) {
-      console.error('Error fetching timetable:', error);
-      res.status(500).json({ error: 'Server error' });
-  }
+            return res.status(404).json({ message: 'Timetable not found' });
+        }
+        res.status(200).json(timetable);
+    } catch (error) {
+        console.error('Error fetching timetable:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
 });
 // Endpoint for retrieving images
-app.get('/api/getImages', async (req, res) => {
+app.get('/api/getImages', async(req, res) => {
     try {
         const { eventId } = req.query;
-        
+
         // Check if eventId is provided
         if (!eventId) {
             return res.status(400).json({ message: 'Event ID is required' });
@@ -712,9 +720,256 @@ app.delete('/api/complaints/:id', async(req, res) => {
     }
 });
 
+app.get('/api/fetchStudents', async(req, res) => {
+    try {
+        const { class: className } = req.query;
+        console.log(className);
+
+        const classInfo = await Class.findOne({ className: className });
+        const cId = classInfo._id;
+
+        const students = await Student.find({ classId: cId });
+
+        res.json(students);
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch students' });
+    }
+});
+
+
+// app.get('/homeworkDetails', async(req, res) => {
+//     try {
+//         const { studentId, date, class: className } = req.query;
+
+//         // Find the class by name
+//         const classData = await Class.findOne({ className });
+//         if (!classData) {
+//             return res.status(404).json({ success: false, message: 'Class not found' });
+//         }
+
+//         // Convert date to the start and end of the day to match the date in the database
+//         const startDate = new Date(date);
+//         startDate.setHours(0, 0, 0, 0);
+//         const endDate = new Date(date);
+//         endDate.setHours(23, 59, 59, 999);
+
+//         // Find homeworks for the class and date
+//         const homeworks = await Homework.find({
+//             classId: classData._id,
+//             date: { $gte: startDate, $lte: endDate },
+//             "submissions.studentId": studentId
+//         }).populate('subjectId', 'subjectName').populate('submissions.studentId', 'name');
+
+//         if (homeworks.length === 0) {
+//             return res.json([]); // No homework given for the selected student, date, and class
+//         }
+
+//         // Map the homework details
+//         const homeworkDetails = homeworks.map(homework => {
+//             const studentSubmission = homework.submissions.find(sub => sub.studentId.toString() === studentId);
+//             return {
+//                 _id: homework._id,
+//                 subjectName: homework.subjectId.subjectName,
+//                 title: homework.title,
+//                 description: homework.description,
+//                 questionLink: homework.questionsLink,
+//                 submissionStatus: studentSubmission ? {
+//                     submissionDate: studentSubmission.submissionDate,
+//                     submissionFile: studentSubmission.submissionFile
+//                 } : null
+//             };
+//         });
+
+//         res.json(homeworkDetails);
+//     } catch (error) {
+//         console.error('Error fetching homework details:', error);
+//         res.status(500).json({ success: false, message: 'Failed to fetch homework details' });
+//     }
+// });
+
+app.get('/api/fetchStudentClass', async(req, res) => {
+    try {
+        const { email } = req.query;
+        console.log("emaillll");
+        console.log(email);
+
+        const student = await Student.findOne({ email });
+        if (!student) {
+            return res.status(404).json({ success: false, message: 'Student not found' });
+        }
+
+        // Find the class details by class ID
+        const studentClass = await Class.findById(student.classId);
+        if (!studentClass) {
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+        console.log(studentClass);
+
+        // Respond with the class details
+        res.status(200).json({ success: true, classId: studentClass._id, className: studentClass.className });
+    } catch (error) {
+        console.error('Error fetching student class:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch student class' });
+    }
+});
+
+
+app.get('/api/fetchStudentHomework', async(req, res) => {
+    try {
+        const { date, classId, email } = req.query;
+        console.log(date);
+        console.log(classId);
+        console.log("hello");
+        console.log(email);
+        // Convert the date string to a Date object
+        const selectedDate = new Date(date);
+
+        const student = await Student.findOne({ email });
+        if (!student) {
+            return res.status(404).json({ success: false, message: 'Student not found' });
+        }
+
+        console.log(student);
+
+        // Find homework assignments for the given date and class ID
+        const homeworkList = await Homework.find({
+            classId: classId,
+            date: {
+                $gte: selectedDate.setHours(0, 0, 0, 0),
+                $lt: selectedDate.setHours(23, 59, 59, 999)
+            }
+        }).populate('subjectId', 'subjectName');
+
+        console.log("after");
+        console.log(homeworkList);
+
+        if (!homeworkList || homeworkList.length === 0) {
+            return res.status(404).json({ success: false, message: 'No homework found for the selected date and class' });
+        }
+
+        // Respond with the homework details
+        const formattedHomeworkList = await Promise.all(homeworkList.map(async(homework) => {
+            const subject = await Subject.findById(homework.subjectId);
+            const submission = homework.submissions.find(sub => sub.studentId.toString() === student._id.toString());
+            return {
+                ...homework.toObject(),
+                subjectName: subject ? subject.subjectName : '',
+                isPending: !submission // If no submission, mark as pending
+            };
+        }));
+
+        // Respond with the formatted homework details
+        res.status(200).json({ success: true, homework: formattedHomeworkList });
+
+    } catch (error) {
+        console.error('Error fetching student homework:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch student homework' });
+    }
+});
+
+
+
+app.post('/api/submitHomework', async(req, res) => {
+    try {
+        const { homeworkId, submissionLink, email } = req.body;
+
+        // Validate inputs
+        if (!homeworkId || !submissionLink || !email) {
+            return res.status(400).json({ success: false, message: 'Missing required fields' });
+        }
+
+        // Find the student by email
+        const student = await Student.findOne({ email });
+        if (!student) {
+            return res.status(404).json({ success: false, message: 'Student not found' });
+        }
+
+        // Find the homework by ID
+        const homework = await Homework.findById(homeworkId);
+        if (!homework) {
+            return res.status(404).json({ success: false, message: 'Homework not found' });
+        }
+
+        // Check if the student has already submitted the homework
+        const existingSubmission = homework.submissions.find(sub => sub.studentId.toString() === student._id.toString());
+
+        if (existingSubmission) {
+            return res.status(400).json({ success: false, message: 'Homework already submitted' });
+        }
+
+        // Add the new submission to the homework's submissions array
+        const newSubmission = {
+            studentId: student._id,
+            submissionFile: submissionLink,
+            submissionDate: new Date(),
+            isPending:false
+        };
+
+        homework.submissions.push(newSubmission);
+
+        // Update the pending status based on submissions
+        // homework.isPending = homework.submissions.length === 0;
+
+        await homework.save();
+
+        res.status(200).json({ success: true, message: 'Homework submitted successfully' });
+
+    } catch (error) {
+        console.error('Error submitting homework:', error);
+        res.status(500).json({ success: false, message: 'Failed to submit homework' });
+    }
+});
+
+
+app.get('/api/homeworkDetails', async (req, res) => {
+    try {
+        const { studentId, date, class: className } = req.query;
+        
+
+        const classDocument = await Class.findOne({ className });
+        // console.log(classDocument);
+        if (!classDocument) {
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+
+        const classId = classDocument._id;
+
+        const homeworkDetails = await Homework.find({
+            classId,
+            date: {
+                $gte: new Date(date), // Greater than or equal to the provided date
+                $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1)) // Less than the next day
+            },
+            'submissions.studentId': studentId
+        }).populate('submissions.studentId', 'firstName lastName');
+
+        const processedHomeworkDetails = await Promise.all(homeworkDetails.map(async (homework) => {
+            const subject = await Subject.findById(homework.subjectId);
+            const subjectName = subject ? subject.subjectName : '';
+            return {
+                ...homework.toObject(),
+                subjectName
+            };
+        }));
+
+        // console.log(processedHomeworkDetails);
+
+        res.status(200).json(processedHomeworkDetails);
+    } catch (error) {
+        console.error('Error fetching homework details:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch homework details' });
+    }
+});
+
+
+
+
+
+
+
 app.use('/api', require("./routes/saveNotice"));
 app.use('/api', require('./routes/fetchNotice'));
-
 app.use('/api', require('./routes/saveEvent'));
 app.use('/api', require('./routes/fetchEvents'));
 app.use('/api', require('./routes/fetchClasses'));
@@ -722,6 +977,9 @@ app.use('/api', require('./routes/fetchSubjects'));
 app.use('/api', require('./routes/saveMaterial'));
 app.use('/api', require('./routes/fetchmaterial'));
 app.use('/api', require('./routes/attendance'));
+app.use('/api', require('./routes/saveHomework'));
+// app.use('/api', require('./routes/fetchStudentHomework'));
+
 
 
 
