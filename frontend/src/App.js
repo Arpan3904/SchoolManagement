@@ -21,6 +21,7 @@ import TakeAttendance from './components/principal/TakeAttendence'
 import ShowAttendance from './components/principal/ShowAttendence';
 import AddSubject from './components/principal/AddSubject';
 import ShowSubject from './components/principal/ShowSubject';
+import ShowStudentSubject from './components/student/ShowStudentSubject';
 import AddTimetable from './components/principal/AddTimetable';
 import ShowTimetable from './components/principal/ShowTimetable';
 import Gallery from './components/principal/Gallery';
@@ -147,7 +148,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route path="/assignments" element={<AssignmentList />} />
             
-            <Route path="/subject-management" element={<ShowSubject/>} />
+            <Route path="/subject-management" element={<ShowStudentSubject/>} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/show-syllabus" element={<ShowSyllabus />} />

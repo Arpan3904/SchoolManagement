@@ -8,25 +8,27 @@ const ShowSubjects = () => {
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
   const [userRole, setUserRole] = useState('');
+  const [studentClass, setStudentClass] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve userRole from localStorage
+    // Retrieve userRole and email from localStorage
     const storedUserRole = localStorage.getItem('userRole');
+    const email = localStorage.getItem('email');
     setUserRole(storedUserRole);
 
-    // Fetch classes if user is not a student
-    if (storedUserRole !== 'student') {
+    if (storedUserRole === 'student') {
+      fetchStudentClassDetails(email);
+    } else {
       fetchClasses();
     }
   }, []);
 
   useEffect(() => {
-    // Fetch subjects based on selectedClass when it changes
-    if (selectedClass) {
-      fetchSubjects(selectedClass);
+    if (userRole === 'student' && studentClass.className) {
+      fetchSubjects();
     }
-  }, [selectedClass]);
+  }, [studentClass.className, userRole]);
 
   const fetchClasses = async () => {
     try {
@@ -37,9 +39,20 @@ const ShowSubjects = () => {
     }
   };
 
-  const fetchSubjects = async (selectedClass) => {
+  const fetchStudentClassDetails = async (email) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/subjects?class=${selectedClass}`);
+      const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+      const student = studentResponse.data;
+      const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+      setStudentClass(classResponse.data);
+    } catch (err) {
+      console.error('Error fetching student or class data:', err);
+    }
+  };
+
+  const fetchSubjects = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/show-subjects');
       setSubjects(response.data);
     } catch (err) {
       console.error('Error fetching subjects:', err);
@@ -65,17 +78,22 @@ const ShowSubjects = () => {
         </button>
       )}
 
-      {/* Render the dropdown menu for selecting a class */}
-      {userRole !== 'student' && (
-        <select value={selectedClass} onChange={handleClassChange}>
-          <option value="">Select Class</option>
-          {classes.map((classItem) => (
-            <option key={classItem._id} value={classItem.className}>
-              {classItem.className}
-            </option>
-          ))}
-        </select>
-      )}
+      {/* Display class details */}
+      <div className="class-details">
+        {userRole === 'student' ? (
+          <h3>Class Name: {studentClass.className}</h3>
+        ) : (
+          <select value={selectedClass} onChange={handleClassChange}>
+            <option value="">Select Class</option>
+            {classes.map((classItem) => (
+              <option key={classItem._id} value={classItem.className}>
+                {classItem.className}
+              </option>
+            ))}
+          </select>
+        )}
+        {/* Add other class details as needed */}
+      </div>
 
       {/* Table to display subjects */}
       <table className="subjects-table">
@@ -86,8 +104,14 @@ const ShowSubjects = () => {
           </tr>
         </thead>
         <tbody>
-          {/* Render subjects based on selected class */}
-          {subjects.map((subject) => (
+          {/* Filter subjects based on the selected class */}
+          {subjects.filter(subject => {
+            if (userRole === 'student') {
+              return subject.class === studentClass.className;
+            } else {
+              return selectedClass === '' || subject.class === selectedClass;
+            }
+          }).map((subject) => (
             <tr key={subject._id}>
               <td>{subject.subjectName}</td>
               <td>{subject.subjectCode}</td>

@@ -174,6 +174,35 @@ app.get('/api/fetch-class', async(req, res) => {
     }
 });
 
+app.get('/api/fetchStbyEmail', async (req, res) => {
+    try {
+        const { email } = req.query;
+        const student = await Student.findOne({ email });
+        if (student) {
+            res.status(200).json(student);
+        } else {
+            res.status(404).json({ message: 'Student not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching student by email:', error);
+        res.status(500).json({ message: 'Failed to fetch student' });
+    }
+});
+
+app.get('/api/class/:classId', async (req, res) => {
+    try {
+        const { classId } = req.params;
+        const classInfo = await Class.findById(classId);
+        if (classInfo) {
+            res.status(200).json(classInfo);
+        } else {
+            res.status(404).json({ message: 'Class not found' });
+        }
+    } catch (error) {
+        console.error('Error fetching class:', error);
+        res.status(500).json({ message: 'Failed to fetch class' });
+    }
+});
 
 const studentSchema = new mongoose.Schema({
     rollNo: { type: Number, unique: true },
@@ -263,7 +292,7 @@ app.get('/api/fetch-student-by-email', async(req, res) => {
 
 
 
-app.post('/api/add-subject', async(req, res) => {
+app.post('/api/add-subject', async (req, res) => {
     const { class: selectedClass, subjectName, subjectCode } = req.body;
     try {
         const newSubject = new Subject({ class: selectedClass, subjectName, subjectCode });
@@ -275,6 +304,28 @@ app.post('/api/add-subject', async(req, res) => {
     }
 });
 
+// Fetch Subjects by Class endpoint
+app.get('/api/subjects', async (req, res) => {
+    try {
+        const { class: className } = req.query;
+        const subjects = await Subject.find({ class: className });
+        res.status(200).json(subjects);
+    } catch (error) {
+        console.error('Error fetching subjects:', error);
+        res.status(500).json({ message: 'Error fetching subjects' });
+    }
+});
+
+app.get('/api/subjectsByClassName', async (req, res) => {
+    try {
+        const { className } = req.query;
+        const subjects = await Subject.find({ class: className });
+        res.status(200).json(subjects);
+    } catch (error) {
+        console.error('Error fetching subjects by className:', error);
+        res.status(500).json({ message: 'Error fetching subjects' });
+    }
+});
 
 app.get('/api/show-subjects', async(req, res) => {
     try {
