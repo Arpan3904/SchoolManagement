@@ -134,7 +134,28 @@ app.get('/api/fetch-teachers', async(req, res) => {
     }
 });
 
+app.get('/api/fetch-teacher-by-email', async (req, res) => {
+    try {
+        const { email } = req.query;
+        const teacher = await Teacher.findOne({ email });
+        res.status(200).json(teacher);
+    } catch (error) {
+        console.error('Error fetching teacher:', error);
+        res.status(500).json({ message: 'Failed to fetch teacher' });
+    }
+});
 
+// Fetch attendance by teacherId
+app.get('/api/fetch-attendance-by-teacherId', async (req, res) => {
+    try {
+        const { teacherId } = req.query;
+        const attendance = await Attendance.find({ teacherId });
+        res.status(200).json(attendance);
+    } catch (error) {
+        console.error('Error fetching attendance:', error);
+        res.status(500).json({ message: 'Failed to fetch attendance' });
+    }
+});
 
 
 
@@ -243,9 +264,10 @@ app.post('/api/add-student', async (req, res) => {
 });
 
 
-app.get('/api/fetch-students', async(req, res) => {
+app.get('/api/fetch-students', async (req, res) => {
     try {
         const { classId } = req.query;
+        console.log(`Fetching students for classId: ${classId}`);  // Log the classId
         const students = await Student.find({ classId });
         res.status(200).json(students);
     } catch (error) {
@@ -539,39 +561,40 @@ app.get('/api/fetch-fees', async(req, res) => {
 });
 
 const syllabusSchema = new mongoose.Schema({
-    className: { type: String, unique: true },
-    syllabus1: String
-});
+    className: { type: String, required: true },
+    subjectName: { type: String, required: true },
+    syllabus: { type: String, required: true }
+}, { collection: 'syllabus' });
 
 const Syllabus = mongoose.model('Syllabus', syllabusSchema);
 
-app.post('/api/add-syllabus', async(req, res) => {
-    const { className, syllabus1 } = req.body;
+app.get('/api/syllabus', async (req, res) => {
     try {
-        const syllabus = new Syllabus({ className, syllabus1 });
-        await syllabus.save();
-        res.status(200).json({ message: 'Syllabus added successfully' });
-    } catch (error) {
-        console.error('Error adding syllabus:', error);
-        res.status(500).json({ message: 'Failed to add syllabus' });
-    }
-});
-
-// Get syllabus by class name
-app.get('/api/get-syllabus', async(req, res) => {
-    const { className } = req.query;
-    try {
-        const syllabus = await Syllabus.findOne({ className });
-        if (!syllabus) {
-            return res.status(404).json({ message: 'Syllabus not found for the specified class' });
+        const { className, subject } = req.query;
+        const syllabus = await Syllabus.findOne({ className, subjectName: subject });
+        if (syllabus) {
+            res.status(200).json(syllabus);
+        } else {
+            res.status(404).json({ message: 'Syllabus not found' });
         }
-        res.status(200).json({ syllabus });
-    } catch (error) {
-        console.error('Error fetching syllabus:', error);
+    } catch (err) {
+        console.error('Error fetching syllabus:', err);
         res.status(500).json({ message: 'Failed to fetch syllabus' });
     }
 });
 
+// Add syllabus
+app.post('/api/add-syllabus', async (req, res) => {
+    try {
+        const { className, subject, syllabus } = req.body;
+        const newSyllabus = new Syllabus({ className, subjectName: subject, syllabus });
+        await newSyllabus.save();
+        res.status(201).json(newSyllabus);
+    } catch (err) {
+        console.error('Error adding syllabus:', err);
+        res.status(500).json({ message: 'Failed to add syllabus' });
+    }
+});
 
 app.post('/api/send-email', async(req, res) => {
     const { email, subject, body } = req.body;
@@ -979,6 +1002,8 @@ app.use('/api', require('./routes/fetchmaterial'));
 app.use('/api', require('./routes/attendance'));
 app.use('/api', require('./routes/saveHomework'));
 // app.use('/api', require('./routes/fetchStudentHomework'));
+const teacherRoutes = require('./routes/attendanceTeacher');
+app.use(teacherRoutes);
 
 
 

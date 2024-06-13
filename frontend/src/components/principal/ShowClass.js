@@ -38,9 +38,9 @@ const ClassList = () => {
           <div key={index} className="class-card" onClick={() => handleClassClick(classDetails._id)}>
             
             <h3>{classDetails.className}</h3>
-            <p><i className="fas fa-user icon"></i><strong>Teacher:</strong> {classDetails.classTeacher}</p>
-            <p><i className="fas fa-door-open icon"></i><strong>Room:</strong> {classDetails.roomNo}</p>
-            <p><i className="fas fa-users icon"></i><strong>Capacity:</strong> {classDetails.capacity}</p>
+            <p><strong>Teacher:</strong> {classDetails.classTeacher}</p>
+            <p><strong>Room:</strong> {classDetails.roomNo}</p>
+            <p><strong>Capacity:</strong> {classDetails.capacity}</p>
           </div>
         ))}
       </div>

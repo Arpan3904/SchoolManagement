@@ -22,13 +22,14 @@ const TeacherDashboard = () => {
     <div className="container">
       <div className="school-dashboard-container">
         <div className="dashboard-section">
-          <h2>Class Management</h2>
+          <h2>Personal Management</h2>
           <div className="administration-setup">
             {renderSectionCard('🏫', 'Class', '/class-management')}
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
-            {renderSectionCard('🤳', 'QR code', '/qr-code-management')}
+            {renderSectionCard('📋', 'Attendance', '/show-teacher-attendance')}
+            {renderSectionCard('🆔', 'Id Card', '/teacher-idcard')}
           </div>
         </div>
 
@@ -37,9 +38,9 @@ const TeacherDashboard = () => {
           <div className="students-section">
             {renderSectionCard('➕', 'Add Student', '/class-management')}
             {renderSectionCard('👨‍🎓', 'Student List', '/student-list')}
-            {renderSectionCard('📋', 'Attendance', '/attendance')}
+            {renderSectionCard('📋', 'Student Attendance', '/attendance')}
             {renderSectionCard('📝', 'Homework', '/homework')}
-            {renderSectionCard('🆔', 'ID Card', '/idcard')}
+            {renderSectionCard('🆔', 'Student Id Card', '/idcard')}
           </div>
         </div>
 

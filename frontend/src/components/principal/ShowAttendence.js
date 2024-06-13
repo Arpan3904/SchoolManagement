@@ -3,12 +3,14 @@ import axios from 'axios';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import '../../styles/Attendance.css';
 
+
 const TakeAttendance = () => {
     const [classes, setClasses] = useState([]);
     const [students, setStudents] = useState([]);
     const [selectedClass, setSelectedClass] = useState('');
     const [attendance, setAttendance] = useState({});
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [holidayMessage, setHolidayMessage] = useState('');
 
     useEffect(() => {
         const fetchClasses = async () => {
@@ -36,6 +38,11 @@ const TakeAttendance = () => {
         }
     };
 
+    const isHolidayMessageAllowed = (selectedDate) => {
+        const currentDate = new Date().toISOString().split('T')[0];
+        return new Date(selectedDate) < new Date(currentDate);
+    };
+
     const fetchStudentsAndAttendance = async (classId, date) => {
         try {
             const [studentsResponse, attendanceResponse] = await Promise.all([
@@ -51,12 +58,24 @@ const TakeAttendance = () => {
                     return acc;
                 }, {});
                 setAttendance(fetchedAttendance);
+                setHolidayMessage('');
             } else {
                 const initialAttendance = studentsResponse.data.reduce((acc, student) => {
                     acc[student._id] = false; // default all students to absent
                     return acc;
                 }, {});
                 setAttendance(initialAttendance);
+
+                if (isHolidayMessageAllowed(date)) {
+                    const dayOfWeek = new Date(date).getDay();
+                    if (dayOfWeek === 0) {
+                        setHolidayMessage("It's Sunday! Enjoy your day off! 🌞");
+                    } else {
+                        setHolidayMessage("It's a holiday! Take a break and have fun! 🎉");
+                    }
+                } else {
+                    setHolidayMessage('');
+                }
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -104,36 +123,55 @@ const TakeAttendance = () => {
                 <label>Select Date:</label>
                 <input type="date" value={date} onChange={handleDateChange} />
             </div>
-            <div className="students-container">
-                <h2>Students</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Present</th>
-                        </tr>
-                    </thead>
-                    <TransitionGroup component="tbody">
-                        {students.map(student => (
-                            <CSSTransition key={student._id} timeout={500} classNames="fade">
-                                <tr>
-                                    <td>{student.firstName} {student.lastName}</td>
-                                    <td>
-                                        <label className="switch">
-                                            <input
-                                                type="checkbox"
-                                                checked={attendance[student._id] || false}
-                                                onChange={() => handleAttendanceChange(student._id)}
-                                            />
-                                            <span className="slider"></span>
-                                        </label>
-                                    </td>
-                                </tr>
-                            </CSSTransition>
-                        ))}
-                    </TransitionGroup>
-                </table>
-            </div>
+            <CSSTransition
+                in={students.length > 0}
+                timeout={300}
+                classNames="fade"
+                unmountOnExit
+            >
+                <div className="students-container">
+                    <h2>Students</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Present</th>
+                            </tr>
+                        </thead>
+                        <TransitionGroup component="tbody">
+                            {students.map(student => (
+                                <CSSTransition key={student._id} timeout={500} classNames="fade">
+                                    <tr>
+                                        <td>{student.firstName} {student.lastName}</td>
+                                        <td>
+                                            <label className="switch">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={attendance[student._id] || false}
+                                                    onChange={() => handleAttendanceChange(student._id)}
+                                                />
+                                                <span className="slider round"></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </CSSTransition>
+                            ))}
+                        </TransitionGroup>
+                    </table>
+                </div>
+            </CSSTransition>
+            {holidayMessage && (
+                <CSSTransition
+                    in={!!holidayMessage}
+                    timeout={300}
+                    classNames="fade"
+                    unmountOnExit
+                >
+                    <div className="holiday-message">
+                        <p>{holidayMessage}</p>
+                    </div>
+                </CSSTransition>
+            )}
             <button onClick={handleSubmit} className="submit-btn">Save Attendance</button>
         </div>
     );

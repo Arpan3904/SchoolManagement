@@ -10,7 +10,7 @@ import Assignment from './components/teacher/Assignment';
 import Marks from './components/teacher/Marks';
 import StudentDashboard from './components/student/StudentDashboard';
 import AssignmentList from './components/student/AssignmentList';
-import StudentAttendance from './components/student/Attendance';
+import ShowTeacherAttendance from './components/teacher/ShowTeacherAttendance';
 import NavigationBar from './components/NavigationBar';
 import AddTeacher from './components/principal/AddTeacher';
 import AddClass from './components/principal/AddClass';
@@ -45,6 +45,9 @@ import ShowImages from './components/principal/ShowImages';
 import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
+import TeacherAttendance from './components/principal/TeacherAtt';
+
+import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
 
 
 const App = () => {
@@ -75,6 +78,7 @@ const AppContent = ({ userRole }) => {
       {!isLoginPage && !isSignupPage && <NavigationBar userRole={dataFromChild} />}
       <Routes>
         {/* Public Routes */}
+
         <Route path="/login" element={<Login sendDataToParent={handleDataFromChild}/>} />
         <Route path="/signup" element={<Signup />} />
         
@@ -111,7 +115,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/showImages/:eventId" element={<ShowImages />} />
             <Route path="/homework" element={<ShowHomework />} />
             <Route path="/add_homework" element={<AddHomework />} />
-
+            <Route path="/teacher-attendance" element={<TeacherAttendance />} />
 
 
           </>
@@ -138,10 +142,11 @@ const AppContent = ({ userRole }) => {
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/student-list" element={<StudentList />} />
-          
+          <Route path="/teacher-attendance" element={<TeacherAttendance />} />
           <Route path="/complain" element={<AddComplaint />} />
           <Route path="/event" element={<ShowEvents />} />
           <Route path="/notice" element={<ShowNotices />} />
+          <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
           
           </>
         )}
@@ -164,7 +169,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/complain" element={<AddComplaint />} />
           <Route path="/event" element={<ShowEvents />} />
           <Route path="/homework" element={<ShowStudentHomework />} />
-
+          <Route path="/show-student-syllabus" element={<ShowStudentSyllabus />} />
 
           </>
         )}
