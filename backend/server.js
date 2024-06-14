@@ -189,7 +189,7 @@ app.get('/api/fetch-class', async(req, res) => {
     }
 });
 
-app.get('/api/fetchStbyEmail', async (req, res) => {
+app.get('/api/fetchStbyEmail', async(req, res) => {
     try {
         const { email } = req.query;
         const student = await Student.findOne({ email });
@@ -204,7 +204,7 @@ app.get('/api/fetchStbyEmail', async (req, res) => {
     }
 });
 
-app.get('/api/class/:classId', async (req, res) => {
+app.get('/api/class/:classId', async(req, res) => {
     try {
         const { classId } = req.params;
         const classInfo = await Class.findById(classId);
@@ -233,16 +233,16 @@ const studentSchema = new mongoose.Schema({
     password: String,
     principal: String,
     userRole: String,
-    photo: String  // Add photo field
+    photo: String
 }, { collection: 'student' });
 const Student = mongoose.model('Student', studentSchema);
 
 
 // Assuming you have already defined '/api/add-student' endpoint
-app.post('/api/add-student', async (req, res) => {
+app.post('/api/add-student', async(req, res) => {
     try {
         const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo } = req.body;
-        
+
         // Decode base64 photo and save it to the database
         const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo });
         await newStudent.save();
@@ -308,7 +308,7 @@ app.get('/api/fetch-student-by-email', async(req, res) => {
 
 
 
-app.post('/api/add-subject', async (req, res) => {
+app.post('/api/add-subject', async(req, res) => {
     const { class: selectedClass, subjectName, subjectCode } = req.body;
     try {
         const newSubject = new Subject({ class: selectedClass, subjectName, subjectCode });
@@ -321,7 +321,7 @@ app.post('/api/add-subject', async (req, res) => {
 });
 
 // Fetch Subjects by Class endpoint
-app.get('/api/subjectss', async (req, res) => {
+app.get('/api/subjectss', async(req, res) => {
     try {
         const { class: className } = req.query;
         const subjects = await Subject.find({ class: className });
@@ -332,7 +332,7 @@ app.get('/api/subjectss', async (req, res) => {
     }
 });
 
-app.get('/api/subjectsByClassName', async (req, res) => {
+app.get('/api/subjectsByClassName', async(req, res) => {
     try {
         const { className } = req.query;
         const subjects = await Subject.find({ class: className });
@@ -917,7 +917,7 @@ app.post('/api/submitHomework', async(req, res) => {
             studentId: student._id,
             submissionFile: submissionLink,
             submissionDate: new Date(),
-            isPending:false
+            isPending: false
         };
 
         homework.submissions.push(newSubmission);
@@ -936,10 +936,10 @@ app.post('/api/submitHomework', async(req, res) => {
 });
 
 
-app.get('/api/homeworkDetails', async (req, res) => {
+app.get('/api/homeworkDetails', async(req, res) => {
     try {
         const { studentId, date, class: className } = req.query;
-        
+
 
         const classDocument = await Class.findOne({ className });
         // console.log(classDocument);
@@ -958,7 +958,7 @@ app.get('/api/homeworkDetails', async (req, res) => {
             'submissions.studentId': studentId
         }).populate('submissions.studentId', 'firstName lastName');
 
-        const processedHomeworkDetails = await Promise.all(homeworkDetails.map(async (homework) => {
+        const processedHomeworkDetails = await Promise.all(homeworkDetails.map(async(homework) => {
             const subject = await Subject.findById(homework.subjectId);
             const subjectName = subject ? subject.subjectName : '';
             return {
@@ -976,6 +976,39 @@ app.get('/api/homeworkDetails', async (req, res) => {
     }
 });
 
+app.get('/api/birthdays', async(req, res) => {
+    try {
+        const today = new Date();
+        const start = new Date(today.setHours(0, 0, 0, 0));
+        const end = new Date(today.setHours(23, 59, 59, 999));
+
+        // Fetch students whose birthday is today
+        const students = await Student.find({ birthdate: { $gte: start, $lt: end } });
+        //   console.log(students);
+
+        // Fetch class names and attach to students
+        const studentsWithClassNames = await Promise.all(
+            students.map(async(student) => {
+                const classDoc = await Class.findById(student.classId);
+                return {
+                    _id: student._id,
+                    firstName: student.firstName,
+                    middleName: student.middleName,
+                    lastName: student.lastName,
+                    birthdate: student.birthdate,
+                    classId: student.classId,
+                    className: classDoc ? classDoc.className : 'Unknown',
+                    photo: student.photo
+                };
+            })
+        );
+
+        res.status(200).json(studentsWithClassNames);
+    } catch (error) {
+        console.error('Error fetching birthdays:', error);
+        res.status(500).json({ success: false, message: 'Failed to fetch birthdays' });
+    }
+});
 
 
 
@@ -992,6 +1025,8 @@ app.use('/api', require('./routes/saveMaterial'));
 app.use('/api', require('./routes/fetchmaterial'));
 app.use('/api', require('./routes/attendance'));
 app.use('/api', require('./routes/saveHomework'));
+app.use('/api', require('./routes/showPrayer'));
+
 // app.use('/api', require('./routes/fetchStudentHomework'));
 const teacherRoutes = require('./routes/attendanceTeacher');
 app.use(teacherRoutes);

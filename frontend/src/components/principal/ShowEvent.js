@@ -12,7 +12,8 @@ const ShowEvents = () => {
     const fetchEvents = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/showEvents');
-        setEvents(response.data);
+        const upcomingEvents = response.data.filter(event => new Date(event.endDate) > new Date());
+        setEvents(upcomingEvents);
       } catch (err) {
         console.error('Error fetching events:', err);
         setError('An error occurred while fetching events.');
@@ -62,12 +63,12 @@ const ShowEvents = () => {
   return (
     <div className="events-container">
       <div className="events-header-container">
-        <h1 className="events-header">Events</h1>
+        <h1 className="events-header">Upcoming Events</h1>
         <button style={addEventButtonStyle} onClick={handleAddEvent}>Add Event</button>
       </div>
       {error && <p>{error}</p>}
       {events.length === 0 ? (
-        <p>No events available.</p>
+        <p>No upcoming events available.</p>
       ) : (
         <ul className="events-list">
           {events.map((event) => (
