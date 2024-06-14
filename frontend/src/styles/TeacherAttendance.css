@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+.att-container {
+   
+    margin: 0 auto;
+    
+    padding: 20px;
+    font-family: 'Comic Neue', cursive;
+
+}
+
+.title {
+    text-align: center;
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.dropdowns {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.dropdown-label {
+    margin-top: 14px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+#month-select, #year-select {
+    padding: 5px;
+    margin-right: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#month-select:hover, #year-select:hover {
+    border-color: #333;
+}
+
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.calendar th {
+    background: #f7f7f7;
+    color: #333;
+    padding: 5px 0;
+}
+
+.calendar td {
+    width: 14.28%;
+    border: 1px solid #ddd;
+    height: 50px;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.day {
+    text-align: center;
+    vertical-align: top;
+}
+
+.day.present .day-content {
+    background: #dff0d8;
+    border-radius: 5px;
+    padding: 5px;
+    transition: transform 0.3s ease;
+}
+
+.day.absent .day-content {
+    background: #f2dede;
+    border-radius: 5px;
+    padding: 5px;
+    transition: transform 0.3s ease;
+}
+
+.day.present .day-content:hover, .day.absent .day-content:hover {
+    transform: scale(1.1);
+}
+
+.day-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.day-number {
+    font-weight: bold;
+}
+
+.icon {
+    margin-top: 5px;
+    font-size: 1.5rem;
+}
+
+.tick {
+    color: #3c763d;
+}
+
+.cross {
+    color: #a94442;
+}
+
+.attendance-summary {
+    display: flex;
+    justify-content: space-around;
+    background: #f9f9f9;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+}
+
+.summary-item {
+    font-size: 1.2rem;
+}
+
+.total {
+    color: #555;
+}
+
+.present {
+    color: #3c763d;
+}
+
+.absent {
+    color: #a94442;
+}
+
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #f0f0f0;
+}

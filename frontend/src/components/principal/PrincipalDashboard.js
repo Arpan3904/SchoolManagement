@@ -89,6 +89,7 @@ const SchoolDashboard = () => {
             {renderSectionCard('➕', 'Add Teacher', '/add-teacher')}
             {renderSectionCard('👨‍🏫', 'Teacher List', '/staff-management')}
             {renderSectionCard('📋', 'Attendance', '/teacher-attendance')}
+            {renderSectionCard('🆔', 'Id Card', '/show-teacher-idcard')}
           </div>
         </div>
 

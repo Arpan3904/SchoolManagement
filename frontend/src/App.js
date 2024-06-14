@@ -46,7 +46,7 @@ import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
 import TeacherAttendance from './components/principal/TeacherAtt';
-
+import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
 import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
 
 
@@ -116,7 +116,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/homework" element={<ShowHomework />} />
             <Route path="/add_homework" element={<AddHomework />} />
             <Route path="/teacher-attendance" element={<TeacherAttendance />} />
-
+            <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
 
           </>
         )}
@@ -147,7 +147,7 @@ const AppContent = ({ userRole }) => {
           <Route path="/event" element={<ShowEvents />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
-          
+          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
           </>
         )}
 

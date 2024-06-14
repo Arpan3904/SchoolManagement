@@ -12,6 +12,7 @@ const AddTeacher = () => {
   const [email, setEmail] = useState('');
   const [userRole, setUserRole] = useState('teacher');
   const [errorMessage, setErrorMessage] = useState('');
+  const [photo, setPhoto] = useState(null);
   const navigate = useNavigate(); // Initialize useNavigate
 
   
@@ -31,6 +32,7 @@ const AddTeacher = () => {
         contactNo,
         email,
         password,
+        photo,
         userRole
       });
 
@@ -42,6 +44,19 @@ const AddTeacher = () => {
       setErrorMessage('Failed to add teacher. Please try again.');
     }
   };
+
+  const handlePhotoChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+        setPhoto(reader.result);
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    }
+};
 
   return (
     <div className="add-teacher-container">
@@ -60,7 +75,8 @@ const AddTeacher = () => {
         <input type="text" value={contactNo} onChange={(e) => setContactNo(e.target.value)} required />
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        {/* Password field removed from form */}
+        <label>Photo:</label>
+        <input type="file" accept="image/*" onChange={handlePhotoChange} />
         <button type="submit">Add Teacher</button>
       </form>
     </div>

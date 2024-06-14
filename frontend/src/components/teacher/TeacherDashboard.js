@@ -29,7 +29,7 @@ const TeacherDashboard = () => {
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📋', 'Attendance', '/show-teacher-attendance')}
-            {renderSectionCard('🆔', 'Id Card', '/teacher-idcard')}
+            {renderSectionCard('🆔', 'Id Card', '/show-teacher-idcard')}
           </div>
         </div>
 

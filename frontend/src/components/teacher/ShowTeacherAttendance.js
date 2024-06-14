@@ -3,7 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { TiTick } from 'react-icons/ti';
 import { AiOutlineClose } from 'react-icons/ai';
-import '../../styles/Attendance.css';
+import '../../styles/TeacherAttendance.css';
 
 const months = [
     "January", "February", "March", "April", "May", "June",
@@ -29,7 +29,7 @@ const TeacherAttendance = () => {
                     params: { email }
                 });
                 setTeacher(teacherResponse.data);
-
+                
                 const attendanceResponse = await axios.get('http://localhost:5000/api/fetch-attendance-by-teacherId', {
                     params: { teacherId: teacherResponse.data._id }
                 });
@@ -63,13 +63,15 @@ const TeacherAttendance = () => {
             const date = new Date(selectedYear, selectedMonth, day);
             const isPresent = getAttendanceForDate(date);
             week.push(
-                <td key={day} className={isPresent !== null ? (isPresent ? 'present' : 'absent') : ''}>
-                    {day}
-                    {isPresent !== null && (
-                        <span className={`icon ${isPresent ? 'tick' : 'cross'}`}>
-                            {isPresent ? <TiTick /> : <AiOutlineClose />}
-                        </span>
-                    )}
+                <td key={day} className={`day ${isPresent !== null ? (isPresent ? 'present' : 'absent') : ''}`}>
+                    <div className="day-content">
+                        <span className="day-number">{day}</span>
+                        {isPresent !== null && (
+                            <span className={`icon ${isPresent ? 'tick' : 'cross'}`}>
+                                {isPresent ? <TiTick /> : <AiOutlineClose />}
+                            </span>
+                        )}
+                    </div>
                 </td>
             );
             if (week.length === 7 || day === daysInMonth) {
@@ -155,9 +157,32 @@ const TeacherAttendance = () => {
             </table>
 
             <div className="attendance-summary">
-                <p style={{marginRight:'33%',marginLeft:'5%'}}>Total Attendance: {totalAttendance}</p>
-                <p>Present: {presentCount}</p>
-                <p style={{marginLeft:'33%'}}>Absent: {absentCount}</p>
+                <motion.p 
+                    className="summary-item total" 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{marginRight:'33%',marginLeft:'5%'}}
+                >
+                    Total Attendance: {totalAttendance}
+                </motion.p>
+                <motion.p 
+                    className="summary-item present" 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    Present: {presentCount}
+                </motion.p>
+                <motion.p 
+                    className="summary-item absent" 
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5 }}
+                    style={{marginLeft:'33%'}}
+                >
+                    Absent: {absentCount}
+                </motion.p>
             </div>
         </motion.div>
     );

@@ -106,7 +106,8 @@ const teacherSchema = new mongoose.Schema({
     email: { type: String, unique: true },
     password: Number,
     principal: String,
-    userRole: String
+    userRole: String,
+    photo: String
 }, { collection: 'teacher' });
 
 const Teacher = mongoose.model('Teacher', teacherSchema);
@@ -114,8 +115,8 @@ const Teacher = mongoose.model('Teacher', teacherSchema);
 // Routes
 app.post('/api/add-teachers', async(req, res) => {
     try {
-        const { firstName, lastName, degree, subject, contactNo, email, password, principal, userRole } = req.body; // Include password in the request body
-        const newTeacher = new Teacher({ firstName, lastName, degree, subject, contactNo, email, password, principal, userRole }); // Include password in the Teacher model
+        const { firstName, lastName, degree, subject, contactNo, email, password, principal, userRole ,photo} = req.body; // Include password in the request body
+        const newTeacher = new Teacher({ firstName, lastName, degree, subject, contactNo, email, password, principal, userRole ,photo}); // Include password in the Teacher model
         await newTeacher.save();
         res.status(201).json(newTeacher);
     } catch (error) {
@@ -146,16 +147,6 @@ app.get('/api/fetch-teacher-by-email', async (req, res) => {
 });
 
 // Fetch attendance by teacherId
-app.get('/api/fetch-attendance-by-teacherId', async (req, res) => {
-    try {
-        const { teacherId } = req.query;
-        const attendance = await Attendance.find({ teacherId });
-        res.status(200).json(attendance);
-    } catch (error) {
-        console.error('Error fetching attendance:', error);
-        res.status(500).json({ message: 'Failed to fetch attendance' });
-    }
-});
 
 
 

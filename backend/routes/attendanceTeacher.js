@@ -45,6 +45,18 @@ router.post('/api/save-teacher-attendance', async (req, res) => {
     }
 });
 
+router.get('/api/fetch-attendance-by-teacherId', async (req, res) => {
+    try {
+        const { teacherId } = req.query;
+        
+         const attendance = await TeacherAttendance.find({ teacherId });
+         console.log("abcd"+attendance);
+        res.status(200).json(attendance);
+    } catch (error) {
+        console.error('Error fetching attendance:', error);
+        res.status(500).json({ message: 'Failed to fetch attendance' });
+    }
+});
 
 
 module.exports = router;
