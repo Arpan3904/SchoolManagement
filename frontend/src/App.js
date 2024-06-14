@@ -5,9 +5,9 @@ import Signup from './components/auth/Signup';
 import PrincipalDashboard from './components/principal/PrincipalDashboard';
 import StaffManagement from './components/principal/StaffManagement';
 import TeacherDashboard from './components/teacher/TeacherDashboard';
-import Attendance from './components/teacher/Attendance';
-import Assignment from './components/teacher/Assignment';
-import Marks from './components/teacher/Marks';
+
+
+
 import StudentDashboard from './components/student/StudentDashboard';
 import AssignmentList from './components/student/AssignmentList';
 import ShowTeacherAttendance from './components/teacher/ShowTeacherAttendance';
@@ -50,6 +50,8 @@ import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
 import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
 import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
 import Prayer from './components/principal/showPrayer';
+
+
 
 
 const App = () => {
@@ -122,6 +124,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/birthday" element={<ShowStudentBirthday />} />
             <Route path="/prayer" element={<Prayer />} />
 
+
           </>
         )}
 
@@ -130,9 +133,9 @@ const AppContent = ({ userRole }) => {
           <>
             <Route path="/" element={<TeacherDashboard />} />
         
-            <Route path="/assignment" element={<Assignment />} />
-            <Route path="/marks" element={<Marks />} />
-            <Route path="/" element={<TeacherDashboard />} />
+           
+           
+           
           <Route path="/staff-management" element={<StaffManagement />} />
           <Route path="/add-teacher" element={<AddTeacher />} />
           <Route path="/subject-management" element={<ShowSubject />} />

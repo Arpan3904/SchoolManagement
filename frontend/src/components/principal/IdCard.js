@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import html2pdf from 'html2pdf.js';
 import bwipjs from 'bwip-js';
-import moment from 'moment'; // Import moment library
+import moment from 'moment';
 import '../../styles/IDCard.css';
 
 const IDCard = () => {
@@ -11,19 +11,40 @@ const IDCard = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [barcodeData, setBarcodeData] = useState('');
+  const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
+  const userEmail = localStorage.getItem('email'); // Retrieve user email from localStorage
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/fetch-class')
-      .then(response => {
+    const fetchClasses = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/fetch-class');
         setClasses(response.data);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Error fetching classes:', error);
-      });
-  }, []);
+      }
+    };
+
+    const fetchStudentDetails = async (email) => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/fetch-student-by-email?email=${email}`);
+        const student = response.data;
+        setSelectedStudent(student);
+        setSelectedClass(student.classId);
+        setBarcodeData(student.childUid.toString());
+      } catch (error) {
+        console.error('Error fetching student details:', error);
+      }
+    };
+
+    if (userRole === 'student' && userEmail) {
+      fetchStudentDetails(userEmail);
+    } else {
+      fetchClasses();
+    }
+  }, [userRole, userEmail]);
 
   useEffect(() => {
-    if (selectedClass) {
+    if (selectedClass && userRole !== 'student') {
       axios.get(`http://localhost:5000/api/fetch-students?classId=${selectedClass}`)
         .then(response => {
           setStudents(response.data);
@@ -32,7 +53,7 @@ const IDCard = () => {
           console.error('Error fetching students:', error);
         });
     }
-  }, [selectedClass]);
+  }, [selectedClass, userRole]);
 
   const handleClassSelect = (event) => {
     const selectedClassId = event.target.value;
@@ -51,7 +72,7 @@ const IDCard = () => {
   };
 
   const formatDate = (date) => {
-    return moment(date).format('DD/MM/YYYY'); // Format the date
+    return moment(date).format('DD/MM/YYYY');
   };
 
   const generateIDCardContent = () => {
@@ -70,7 +91,7 @@ const IDCard = () => {
             </div>
           </div>
           <div className="back-side">
-            <p><strong>Birthdate:</strong> {formatDate(selectedStudent.birthdate)}</p> {/* Format the date */}
+            <p><strong>Birthdate:</strong> {formatDate(selectedStudent.birthdate)}</p>
             <p><strong>Child UID:</strong> {selectedStudent.childUid}</p>
             <p><strong>Principal:</strong> {selectedStudent.principal}</p>
             <div className="barcode-scanner">
@@ -113,25 +134,29 @@ const IDCard = () => {
 
   return (
     <div className="id-card-container">
-      <h2>Select Class:</h2>
-      <select onChange={handleClassSelect}>
-        <option value="">Select Class</option>
-        {classes.map(classItem => (
-          <option key={classItem._id} value={classItem._id}>
-            {classItem.className}
-          </option>
-        ))}
-      </select>
+      {userRole !== 'student' && (
+        <>
+          <h2>Select Class:</h2>
+          <select onChange={handleClassSelect}>
+            <option value="">Select Class</option>
+            {classes.map(classItem => (
+              <option key={classItem._id} value={classItem._id}>
+                {classItem.className}
+              </option>
+            ))}
+          </select>
 
-      <h2>Select Student:</h2>
-      <select onChange={handleStudentSelect} disabled={!selectedClass}>
-        <option value="">Select Student</option>
-        {students.map(student => (
-          <option key={student._id} value={student._id}>
-            {student.firstName} {student.middleName} {student.lastName}
-          </option>
-        ))}
-      </select>
+          <h2>Select Student:</h2>
+          <select onChange={handleStudentSelect} disabled={!selectedClass}>
+            <option value="">Select Student</option>
+            {students.map(student => (
+              <option key={student._id} value={student._id}>
+                {student.firstName} {student.middleName} {student.lastName}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
 
       {generateIDCardContent()}
 
@@ -139,8 +164,7 @@ const IDCard = () => {
         <button onClick={downloadIDCard}>Download ID Card</button>
       )}
     </div>
-
-);
+  );
 };
 
 export default IDCard;

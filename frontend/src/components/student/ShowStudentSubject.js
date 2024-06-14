@@ -41,10 +41,12 @@ const ShowSubjects = () => {
 
   const fetchStudentClassDetails = async (email) => {
     try {
+      
       const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
       const student = studentResponse.data;
       const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
       setStudentClass(classResponse.data);
+      
     } catch (err) {
       console.error('Error fetching student or class data:', err);
     }

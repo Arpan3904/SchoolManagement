@@ -8,9 +8,10 @@ const ShowTimetable = () => {
   const [selectedClass, setSelectedClass] = useState('');
   const [timetable, setTimetable] = useState(null);
   const [classes, setClasses] = useState([]);
-  const [showClassSection, setShowClassSection] = useState(true);
+  const [studentClass, setStudentClass] = useState(null);
   const navigate = useNavigate();
   const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
+  const userEmail = localStorage.getItem('email'); // Retrieve user email from localStorage
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -23,12 +24,15 @@ const ShowTimetable = () => {
       }
     };
 
-    fetchTimetable();
+    if (selectedClass) {
+      fetchTimetable();
+    }
   }, [date, selectedClass]);
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
+        
         const response = await axios.get('http://localhost:5000/api/fetch-class');
         setClasses(response.data);
       } catch (error) {
@@ -36,8 +40,33 @@ const ShowTimetable = () => {
       }
     };
 
-    fetchClasses();
-  }, []);
+    if (userRole !== 'student' && userEmail) {
+      fetchClasses();
+    }
+  }, [userRole]);
+
+  useEffect(() => {
+    const fetchStudentClassDetails = async (email) => {
+      try {
+        
+        const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+        const student = studentResponse.data;
+         
+        const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+        setStudentClass(classResponse.data.className);
+        
+        setSelectedClass(classResponse.data.className); // Set selected class for fetching timetable
+      } catch (err) {
+        console.error('Error fetching student or class data:', err);
+      }
+    };
+
+    if (userRole === 'student' && userEmail) {
+    console.log(userEmail);
+
+      fetchStudentClassDetails(userEmail);
+    }
+  }, [userRole, userEmail]);
 
   const handleAddTimetable = () => {
     navigate("/add-timetable");
@@ -64,17 +93,21 @@ const ShowTimetable = () => {
           onChange={e => setDate(e.target.value)}
         />
       </div>
-      <div className="class-section">
-        <label>Class:</label>
-        <select id="classSelect" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
-          <option value="">Select Class</option>
-          {classes.map((classItem) => (
-            <option key={classItem._id} value={classItem.className}>
-              {classItem.className}
-            </option>
-          ))}
-        </select>
-      </div>
+      {userRole !== 'student' ? (
+        <div className="class-section">
+          <label>Class:</label>
+          <select id="classSelect" value={selectedClass} onChange={(e) => setSelectedClass(e.target.value)}>
+            <option value="">Select Class</option>
+            {classes.map((classItem) => (
+              <option key={classItem._id} value={classItem.className}>
+                {classItem.className}
+              </option>
+            ))}
+          </select>
+        </div>
+      ) : (
+        <></>
+      )}
       <div className="timetable-section">
         {timetable !== null ? (
           <table>

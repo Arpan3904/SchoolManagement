@@ -134,19 +134,21 @@ app.get('/api/fetch-teachers', async(req, res) => {
         res.status(500).json({ message: 'Failed to fetch teachers' });
     }
 });
-
 app.get('/api/fetch-teacher-by-email', async (req, res) => {
+    const { email } = req.query;
     try {
-        const { email } = req.query;
-        const teacher = await Teacher.findOne({ email });
+      const teacher = await Teacher.findOne({ email });
+      if (teacher) {
         res.status(200).json(teacher);
+      } else {
+        res.status(404).json({ message: 'Teacher not found' });
+      }
     } catch (error) {
-        console.error('Error fetching teacher:', error);
-        res.status(500).json({ message: 'Failed to fetch teacher' });
+      console.error('Error fetching teacher by email:', error);
+      res.status(500).json({ message: 'Failed to fetch teacher' });
     }
-});
+  });
 
-// Fetch attendance by teacherId
 
 
 
@@ -186,6 +188,17 @@ app.get('/api/fetch-class', async(req, res) => {
     } catch (error) {
         console.error('Error fetching classes:', error);
         res.status(500).json({ message: 'Failed to fetch classes' });
+    }
+});
+
+app.post('/api/delete-classes', async (req, res) => {
+    try {
+        const { classIds } = req.body;
+        await Class.deleteMany({ _id: { $in: classIds } });
+        res.status(200).json({ message: 'Classes deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting classes:', error);
+        res.status(500).json({ message: 'Failed to delete classes' });
     }
 });
 
@@ -267,6 +280,44 @@ app.get('/api/fetch-students', async (req, res) => {
     }
 });
 
+app.delete('/api/delete-students', async (req, res) => {
+    const { studentIds } = req.body;
+  
+    try {
+      // Use Mongoose $in operator to find and delete multiple students by their IDs
+      const deleteResult = await Student.deleteMany({ _id: { $in: studentIds } });
+  
+      if (deleteResult.deletedCount > 0) {
+        res.status(200).json({ message: `${deleteResult.deletedCount} students deleted successfully` });
+      } else {
+        res.status(404).json({ message: 'No students found to delete' });
+      }
+    } catch (error) {
+      console.error('Error deleting students:', error);
+      res.status(500).json({ message: 'Failed to delete students' });
+    }
+  });
+app.post('/api/delete-classes', async (req, res) => {
+    try {
+        const { classIds, reassignToClassId } = req.body;
+
+        if (reassignToClassId) {
+            await Student.updateMany(
+                { classId: { $in: classIds } },
+                { classId: reassignToClassId }
+            );
+        } else {
+            await Student.deleteMany({ classId: { $in: classIds } });
+        }
+
+        await Class.deleteMany({ _id: { $in: classIds } });
+
+        res.status(200).json({ message: 'Classes deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting classes:', error);
+        res.status(500).json({ message: 'Failed to delete classes' });
+    }
+});
 app.get('/api/fetch-student-by-email', async(req, res) => {
     try {
         const { email } = req.query;
@@ -331,6 +382,9 @@ app.get('/api/subjectss', async(req, res) => {
         res.status(500).json({ message: 'Error fetching subjects' });
     }
 });
+
+
+
 
 app.get('/api/subjectsByClassName', async(req, res) => {
     try {
@@ -577,13 +631,25 @@ app.get('/api/syllabus', async (req, res) => {
 // Add syllabus
 app.post('/api/add-syllabus', async (req, res) => {
     try {
-        const { className, subject, syllabus } = req.body;
-        const newSyllabus = new Syllabus({ className, subjectName: subject, syllabus });
-        await newSyllabus.save();
-        res.status(201).json(newSyllabus);
+        const { className, subject, syllabus: newSyllabus } = req.body;
+
+        // Check if syllabus already exists
+        let existingSyllabus = await Syllabus.findOne({ className, subjectName: subject });
+
+        if (existingSyllabus) {
+            // Update existing syllabus
+            existingSyllabus.syllabus = newSyllabus;
+            await existingSyllabus.save();
+            res.status(200).json(existingSyllabus); // Return the updated syllabus
+        } else {
+            // Add new syllabus
+            const newSyllabusEntry = new Syllabus({ className, subjectName: subject, syllabus: newSyllabus });
+            await newSyllabusEntry.save();
+            res.status(201).json(newSyllabusEntry); // Return the newly added syllabus
+        }
     } catch (err) {
-        console.error('Error adding syllabus:', err);
-        res.status(500).json({ message: 'Failed to add syllabus' });
+        console.error('Error adding/updating syllabus:', err);
+        res.status(500).json({ message: 'Failed to add/update syllabus' });
     }
 });
 

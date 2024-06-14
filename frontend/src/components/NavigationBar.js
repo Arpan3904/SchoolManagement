@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faAngleLeft,
-  faAngleRight,
   faUserGraduate,
   faUsers,
   faUserFriends,
@@ -22,12 +20,24 @@ const NavigationBar = ({ userRole }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
 
+  // Effect to handle automatic collapse based on screen width
+  useEffect(() => {
+    const handleResize = () => {
+      setIsExpanded(window.innerWidth > 600); // Expand if screen width is greater than 600px
+    };
+
+    // Initial check on component mount
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleNavigation = (path) => {
     navigate(path);
-  };
-
-  const toggleSidebar = () => {
-    setIsExpanded(!isExpanded);
   };
 
   const handleLogout = () => {
@@ -36,47 +46,25 @@ const NavigationBar = ({ userRole }) => {
 
   return (
     <aside className={`navigation-bar ${isExpanded ? 'expanded' : 'collapsed'}`}>
-      <div className="toggle-button" onClick={toggleSidebar}>
-        {isExpanded ? (
-          <FontAwesomeIcon icon={faAngleLeft} size="2x" />
-        ) : (
-          <FontAwesomeIcon icon={faAngleRight} size="2x" />
-        )}
-      </div>
       <ul>
         {userRole === 'principal' && (
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faUserGraduate} size="2x" /> Principal Dashboard
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faUserGraduate} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faUserGraduate} size="2x" />
+                {isExpanded && 'Principal Dashboard'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/staff-management')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faUsers} size="2x" /> Staff
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faUsers} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faUsers} size="2x" />
+                {isExpanded && 'Staff'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/class-management')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faUserFriends} size="2x" /> Students
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faUserFriends} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faUserFriends} size="2x" />
+                {isExpanded && 'Students'}
               </button>
             </li>
           </>
@@ -86,46 +74,26 @@ const NavigationBar = ({ userRole }) => {
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faChalkboardTeacher} size="2x" /> Teacher Dashboard
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faChalkboardTeacher} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faChalkboardTeacher} size="2x" />
+                {isExpanded && 'Teacher Dashboard'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/attendance')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faCalendarCheck} size="2x" /> Attendance
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faCalendarCheck} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faCalendarCheck} size="2x" />
+                {isExpanded && 'Attendance'}
               </button>
             </li>
             <li>
-              <button onClick={() => handleNavigation('/assignments')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faTasks} size="2x" /> Assignments
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faTasks} size="2x" />
-                )}
+              <button onClick={() => handleNavigation('/homework')}>
+                <FontAwesomeIcon icon={faTasks} size="2x" />
+                {isExpanded && 'Homework'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/marks')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faChartLine} size="2x" /> Marks
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faChartLine} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faChartLine} size="2x" />
+                {isExpanded && 'Marks'}
               </button>
             </li>
           </>
@@ -135,35 +103,20 @@ const NavigationBar = ({ userRole }) => {
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faGraduationCap} size="2x" /> Student Dashboard
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faGraduationCap} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faGraduationCap} size="2x" />
+                {isExpanded && 'Student Dashboard'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/assignments')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faFileAlt} size="2x" /> Assignments
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faFileAlt} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faFileAlt} size="2x" />
+                {isExpanded && 'Assignments'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/attendance')}>
-                {isExpanded ? (
-                  <>
-                    <FontAwesomeIcon icon={faClipboardCheck} size="2x" /> Attendance
-                  </>
-                ) : (
-                  <FontAwesomeIcon icon={faClipboardCheck} size="2x" />
-                )}
+                <FontAwesomeIcon icon={faClipboardCheck} size="2x" />
+                {isExpanded && 'Attendance'}
               </button>
             </li>
           </>
@@ -171,13 +124,8 @@ const NavigationBar = ({ userRole }) => {
       </ul>
       <div className="logout-button">
         <button onClick={handleLogout}>
-          {isExpanded ? (
-            <>
-              <FontAwesomeIcon icon={faSignOutAlt} size="2x" /> Logout
-            </>
-          ) : (
-            <FontAwesomeIcon icon={faSignOutAlt} size="2x" />
-          )}
+          <FontAwesomeIcon icon={faSignOutAlt} size="2x" />
+          {isExpanded && 'Logout'}
         </button>
       </div>
     </aside>

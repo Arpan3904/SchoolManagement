@@ -63,14 +63,21 @@ const StudentAttendance = () => {
             const date = new Date(selectedYear, selectedMonth, day);
             const isPresent = getAttendanceForDate(date);
             week.push(
-                <td key={day} className={isPresent !== null ? (isPresent ? 'present' : 'absent') : ''}>
+                <motion.td 
+                    key={day} 
+                    className={isPresent !== null ? (isPresent ? 'present' : 'absent') : ''}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    whileHover={{ scale: 1.1 }}
+                >
                     {day}
                     {isPresent !== null && (
                         <span className={`icon ${isPresent ? 'tick' : 'cross'}`}>
                             {isPresent ? <TiTick /> : <AiOutlineClose />}
                         </span>
                     )}
-                </td>
+                </motion.td>
             );
             if (week.length === 7 || day === daysInMonth) {
                 calendar.push(<tr key={day}>{week}</tr>);
@@ -155,9 +162,9 @@ const StudentAttendance = () => {
             </table>
 
             <div className="attendance-summary">
-                <p style={{marginRight:'33%',marginLeft:'5%'}}>Total Attendance: {totalAttendance}</p>
-                <p>Present: {presentCount}</p>
-                <p style={{marginLeft:'33%'}}>Absent: {absentCount}</p>
+                <p className="total">Total Attendance: {totalAttendance}</p>
+                <p className="present">Present: {presentCount}</p>
+                <p className="absent">Absent: {absentCount}</p>
             </div>
         </motion.div>
     );

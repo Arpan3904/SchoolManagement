@@ -1,56 +1,130 @@
-/* ShowSubject.css */
-
 .subjects-container {
-   
-    margin: 0 auto;
-    padding: 20px;
-  }
   
+  padding: 20px;
+ 
+}
+
+.subjects-container h2 {
+  font-size: 28px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.subjects-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.subjects-table th,
+.subjects-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.subjects-table th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #333;
+}
+
+.subjects-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.add-subject-button {
+  background-color: #000000;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-subject-button:hover {
+  background-color: #45a049;
+}
+
+.delete-button {
+  background-color: transparent;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.delete-button:hover {
+  transform: scale(1.2);
+}
+
+.delete-icon {
+  color: #ff4d4d;
+  font-size: 20px;
+}
+
+.select-class {
+  margin-bottom: 20px;
+  padding: 8px 16px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.select-class option {
+  background-color: #fff;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+
+  .subjects-container {
+    padding: 15px;
+  }
+
   .subjects-container h2 {
     font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
   }
-  
+
   .subjects-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    font-size: 14px;
   }
-  
+
+  .add-subject-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .subjects-container {
+    padding: 10px;
+  }
+
+  .subjects-container h2 {
+    font-size: 20px;
+  }
+
   .subjects-table th,
   .subjects-table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+    padding: 10px;
   }
-  
-  .subjects-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .subjects-table tr:hover {
-    background-color: #f9f9f9;
-  }
-  
+
   .add-subject-button {
-    background-color: #000000;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-bottom: 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    font-size: 12px;
+    padding: 8px 16px;
   }
-  
-  .add-subject-button:hover {
-    background-color: #000000be;
-  }
-  
+}

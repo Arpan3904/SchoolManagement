@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/ShowSubject.css';
+import { FaTrash } from 'react-icons/fa'; // Importing the trash icon from React Icons
 
 const ShowSubjects = () => {
   const [subjects, setSubjects] = useState([]);
@@ -55,6 +56,15 @@ const ShowSubjects = () => {
     setSelectedClass(selectedClass);
   };
 
+  const handleDeleteSubject = async (subjectId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/delete-subject/${subjectId}`);
+      setSubjects(subjects.filter(subject => subject._id !== subjectId));
+    } catch (error) {
+      console.error('Error deleting subject:', error);
+    }
+  };
+
   return (
     <div className="subjects-container">
       <h2>Subjects</h2>
@@ -83,6 +93,7 @@ const ShowSubjects = () => {
           <tr>
             <th>Subject Name</th>
             <th>Subject Code</th>
+            {userRole !== 'student' && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
@@ -91,6 +102,13 @@ const ShowSubjects = () => {
             <tr key={subject._id}>
               <td>{subject.subjectName}</td>
               <td>{subject.subjectCode}</td>
+              {userRole !== 'student' && (
+                <td>
+                  <button className="delete-button" onClick={() => handleDeleteSubject(subject._id)}>
+                    <FaTrash className="delete-icon" />
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

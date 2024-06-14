@@ -30,6 +30,7 @@ const TeacherDashboard = () => {
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📋', 'Attendance', '/show-teacher-attendance')}
             {renderSectionCard('🆔', 'Id Card', '/show-teacher-idcard')}
+      
           </div>
         </div>
 

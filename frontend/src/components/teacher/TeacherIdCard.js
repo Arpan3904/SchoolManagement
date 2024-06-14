@@ -6,53 +6,47 @@ import moment from 'moment';
 import '../../styles/IDCard.css';
 
 const TeacherIDCard = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [selectedTeacher, setSelectedTeacher] = useState(null);
+  const [teacher, setTeacher] = useState(null);
   const [barcodeData, setBarcodeData] = useState('');
+  const email = localStorage.getItem('email');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/fetch-teachers')
-      .then(response => {
-        setTeachers(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching teachers:', error);
-      });
-  }, []);
-
-  const handleTeacherSelect = (event) => {
-    const selectedTeacherId = event.target.value;
-    const teacher = teachers.find(teacher => teacher._id === selectedTeacherId);
-    setSelectedTeacher(teacher);
-
-    if (teacher) {
-      setBarcodeData(teacher.contactNo.toString());
-    }
-  };
+    
+    axios.get('http://localhost:5000/api/fetch-teacher-by-email', {
+      params: { email }
+    })
+    .then(response => {
+      setTeacher(response.data);
+      setBarcodeData(response.data.contactNo.toString());
+    })
+    .catch(error => {
+      console.error('Error fetching teacher:', error);
+    });
+  }, [email]);
 
   const formatDate = (date) => {
     return moment(date).format('DD/MM/YYYY');
   };
 
   const generateIDCardContent = () => {
-    if (selectedTeacher) {
+    if (teacher) {
       return (
         <div className="id-card">
           <div className="front-side">
             <div className="photo-section">
-              <img src={selectedTeacher.photo || 'https://via.placeholder.com/150'} alt="Teacher Photo" />
+              <img src={teacher.photo || 'https://via.placeholder.com/150'} alt="Teacher Photo" />
             </div>
             <div className="info-section">
-              <p><strong>Name:</strong> {selectedTeacher.firstName} {selectedTeacher.lastName}</p>
-              <p><strong>Degree:</strong> {selectedTeacher.degree}</p>
-              <p><strong>Subject:</strong> {selectedTeacher.subject}</p>
-              <p><strong>Contact No:</strong> {selectedTeacher.contactNo}</p>
-              <p><strong>Email:</strong> {selectedTeacher.email}</p>
+              <p><strong>Name:</strong> {teacher.firstName} {teacher.lastName}</p>
+              <p><strong>Degree:</strong> {teacher.degree}</p>
+              <p><strong>Subject:</strong> {teacher.subject}</p>
+              <p><strong>Contact No:</strong> {teacher.contactNo}</p>
+              <p><strong>Email:</strong> {teacher.email}</p>
             </div>
           </div>
           <div className="back-side">
-            <p><strong>User Role:</strong> {selectedTeacher.userRole}</p>
-            <p><strong>Principal:</strong> {selectedTeacher.principal}</p>
+            <p><strong>User Role:</strong> {teacher.userRole}</p>
+            <p><strong>Principal:</strong> {teacher.principal}</p>
             <div className="barcode-scanner">
               <canvas id="barcodeCanvas"></canvas>
             </div>
@@ -60,12 +54,12 @@ const TeacherIDCard = () => {
         </div>
       );
     } else {
-      return <p>Select a teacher to view ID card</p>;
+      return <p>Loading teacher data...</p>;
     }
   };
 
   useEffect(() => {
-    if (barcodeData && selectedTeacher) {
+    if (barcodeData && teacher) {
       const canvas = document.getElementById('barcodeCanvas');
       bwipjs.toCanvas(canvas, {
         bcid: 'code128',
@@ -76,7 +70,7 @@ const TeacherIDCard = () => {
         textxalign: 'center'
       });
     }
-  }, [barcodeData, selectedTeacher]);
+  }, [barcodeData, teacher]);
 
   const downloadIDCard = () => {
     const idCardContent = document.querySelector('.id-card');
@@ -93,19 +87,9 @@ const TeacherIDCard = () => {
 
   return (
     <div className="id-card-container">
-      <h2>Select Teacher:</h2>
-      <select onChange={handleTeacherSelect}>
-        <option value="">Select Teacher</option>
-        {teachers.map(teacher => (
-          <option key={teacher._id} value={teacher._id}>
-            {teacher.firstName} {teacher.lastName}
-          </option>
-        ))}
-      </select>
-
+      <h2>Teacher ID Card</h2>
       {generateIDCardContent()}
-
-      {selectedTeacher && (
+      {teacher && (
         <button onClick={downloadIDCard}>Download ID Card</button>
       )}
     </div>

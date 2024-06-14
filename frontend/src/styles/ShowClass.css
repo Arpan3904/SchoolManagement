@@ -1,10 +1,7 @@
 /* Container for the entire class list */
 .class-list-container {
-  
   padding: 20px;
-  
   border-radius: 15px;
-  
   max-width: 1600px;
   margin: 0 auto;
   font-family: 'Roboto', sans-serif;
@@ -19,7 +16,6 @@ h2 {
 
 /* Flexbox container for the list of classes */
 .class-list {
-  
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -65,18 +61,33 @@ h2 {
   margin-left: 8px;
 }
 
+/* Checkbox styling */
+.class-card input[type="checkbox"] {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  accent-color: #2c3e50; /* Modern browsers */
+}
+
 /* Icon styling */
 .class-card .icon {
   font-size: 1.2em;
   color: #000000;
 }
 
-/* Add Class button styling */
-.add-class-button-container {
+/* Button container styling */
+.button-container {
   text-align: center;
   margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
+/* Add Class button styling */
 .add-class-button {
   background-color: #000000aa;
   color: white;
@@ -91,4 +102,30 @@ h2 {
 .add-class-button:hover {
   background-color: #000000;
   transform: translateY(-3px);
+}
+
+/* Delete Class button styling */
+.delete-class-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 12px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.delete-class-button:hover {
+  background-color: #c0392b;
+  transform: translateY(-3px);
+}
+
+/* Dropdown styling */
+.button-container select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
 }

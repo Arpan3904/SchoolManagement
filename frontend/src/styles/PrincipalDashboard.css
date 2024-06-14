@@ -1,12 +1,11 @@
-/* PrincipalDashboard.css */
-
 /* Global Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #f2f2f2;
-  margin-left: 280px;
+  margin-left: 280px; /* Default margin-left when expanded */
+  transition: margin-left 0.3s ease; /* Smooth transition for margin-left */
 }
 
 .container {
@@ -20,6 +19,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  transition: margin-left 0.3s ease; /* Apply the same transition for margin-left */
 }
 
 .dashboard-section {
@@ -73,7 +73,7 @@ body {
   flex-wrap: wrap;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   /* Change to vertical layout on smaller screens */
   .administration-setup,
   .students-section,
@@ -85,31 +85,12 @@ body {
   .section-card {
     width: 100%;
   }
+
+  body {
+    margin-left: 70px; /* Adjusted margin-left for collapsed state */
+  }
+
+  .school-dashboard-container.collapsed {
+    margin-left: 70px; /* Ensure the container adjusts with margin-left */
+  }
 }
-
-/* PrincipalDashboard.css */
-
-.box-layout {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.overview-box {
-  width: 150px;
-  height: 100px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0 10px;
-  padding: 10px;
-}
-
-.overview-box p:first-child {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
