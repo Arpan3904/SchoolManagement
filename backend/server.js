@@ -115,8 +115,8 @@ const Teacher = mongoose.model('Teacher', teacherSchema);
 // Routes
 app.post('/api/add-teachers', async(req, res) => {
     try {
-        const { firstName, lastName, degree, subject, contactNo, email, password, principal, userRole ,photo} = req.body; // Include password in the request body
-        const newTeacher = new Teacher({ firstName, lastName, degree, subject, contactNo, email, password, principal, userRole ,photo}); // Include password in the Teacher model
+        const { firstName, lastName, degree, subject, contactNo, email, password, principal, userRole, photo } = req.body; // Include password in the request body
+        const newTeacher = new Teacher({ firstName, lastName, degree, subject, contactNo, email, password, principal, userRole, photo }); // Include password in the Teacher model
         await newTeacher.save();
         res.status(201).json(newTeacher);
     } catch (error) {
@@ -134,20 +134,21 @@ app.get('/api/fetch-teachers', async(req, res) => {
         res.status(500).json({ message: 'Failed to fetch teachers' });
     }
 });
-app.get('/api/fetch-teacher-by-email', async (req, res) => {
+
+app.get('/api/fetch-teacher-by-email', async(req, res) => {
     const { email } = req.query;
     try {
-      const teacher = await Teacher.findOne({ email });
-      if (teacher) {
-        res.status(200).json(teacher);
-      } else {
-        res.status(404).json({ message: 'Teacher not found' });
-      }
+        const teacher = await Teacher.findOne({ email });
+        if (teacher) {
+            res.status(200).json(teacher);
+        } else {
+            res.status(404).json({ message: 'Teacher not found' });
+        }
     } catch (error) {
-      console.error('Error fetching teacher by email:', error);
-      res.status(500).json({ message: 'Failed to fetch teacher' });
+        console.error('Error fetching teacher by email:', error);
+        res.status(500).json({ message: 'Failed to fetch teacher' });
     }
-  });
+});
 
 
 
@@ -191,7 +192,7 @@ app.get('/api/fetch-class', async(req, res) => {
     }
 });
 
-app.post('/api/delete-classes', async (req, res) => {
+app.post('/api/delete-classes', async(req, res) => {
     try {
         const { classIds } = req.body;
         await Class.deleteMany({ _id: { $in: classIds } });
@@ -268,10 +269,10 @@ app.post('/api/add-student', async(req, res) => {
 });
 
 
-app.get('/api/fetch-students', async (req, res) => {
+app.get('/api/fetch-students', async(req, res) => {
     try {
         const { classId } = req.query;
-        console.log(`Fetching students for classId: ${classId}`);  // Log the classId
+        console.log(`Fetching students for classId: ${classId}`); // Log the classId
         const students = await Student.find({ classId });
         res.status(200).json(students);
     } catch (error) {
@@ -280,32 +281,29 @@ app.get('/api/fetch-students', async (req, res) => {
     }
 });
 
-app.delete('/api/delete-students', async (req, res) => {
+app.delete('/api/delete-students', async(req, res) => {
     const { studentIds } = req.body;
-  
+
     try {
-      // Use Mongoose $in operator to find and delete multiple students by their IDs
-      const deleteResult = await Student.deleteMany({ _id: { $in: studentIds } });
-  
-      if (deleteResult.deletedCount > 0) {
-        res.status(200).json({ message: `${deleteResult.deletedCount} students deleted successfully` });
-      } else {
-        res.status(404).json({ message: 'No students found to delete' });
-      }
+        // Use Mongoose $in operator to find and delete multiple students by their IDs
+        const deleteResult = await Student.deleteMany({ _id: { $in: studentIds } });
+
+        if (deleteResult.deletedCount > 0) {
+            res.status(200).json({ message: `${deleteResult.deletedCount} students deleted successfully` });
+        } else {
+            res.status(404).json({ message: 'No students found to delete' });
+        }
     } catch (error) {
-      console.error('Error deleting students:', error);
-      res.status(500).json({ message: 'Failed to delete students' });
+        console.error('Error deleting students:', error);
+        res.status(500).json({ message: 'Failed to delete students' });
     }
-  });
-app.post('/api/delete-classes', async (req, res) => {
+});
+app.post('/api/delete-classes', async(req, res) => {
     try {
         const { classIds, reassignToClassId } = req.body;
 
         if (reassignToClassId) {
-            await Student.updateMany(
-                { classId: { $in: classIds } },
-                { classId: reassignToClassId }
-            );
+            await Student.updateMany({ classId: { $in: classIds } }, { classId: reassignToClassId });
         } else {
             await Student.deleteMany({ classId: { $in: classIds } });
         }
@@ -613,7 +611,7 @@ const syllabusSchema = new mongoose.Schema({
 
 const Syllabus = mongoose.model('Syllabus', syllabusSchema);
 
-app.get('/api/syllabus', async (req, res) => {
+app.get('/api/syllabus', async(req, res) => {
     try {
         const { className, subject } = req.query;
         const syllabus = await Syllabus.findOne({ className, subjectName: subject });
@@ -629,7 +627,7 @@ app.get('/api/syllabus', async (req, res) => {
 });
 
 // Add syllabus
-app.post('/api/add-syllabus', async (req, res) => {
+app.post('/api/add-syllabus', async(req, res) => {
     try {
         const { className, subject, syllabus: newSyllabus } = req.body;
 
