@@ -44,6 +44,12 @@ import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
 import Video from './components/principal/Video';
+import ShowTeacherEvents from './components/teacher/showTeacherEvents';
+import ShowGalleryImages from './components/teacher/showGalleryImages';
+import ShowVideo from './components/teacher/ShowVideos';
+import ShowStudentMaterial from './components/student/ShowStudentMaterial';
+
+
 
 const App = () => {
   const [userRole, setUserRole] = useState('');
@@ -130,23 +136,40 @@ const AppContent = () => {
         {dataFromChild === "teacher" && (
           <>
             <Route path="/" element={<TeacherDashboard />} />
-            <Route path="/staff-management" element={<StaffManagement />} />
-            <Route path="/add-teacher" element={<AddTeacher />} />
-            <Route path="/subject-management" element={<ShowSubject />} />
-            <Route path="/class-management" element={<ShowClass />} />
-            <Route path="/class/:id/add-student" element={<AddStudent />} />
-            <Route path="/class/:id/student-management" element={<ShowStudent />} />
-            <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
-            <Route path="/attendance" element={<ShowAttendance />} />
-            <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/show-syllabus" element={<ShowSyllabus />} />
-            <Route path="/idcard" element={<IDCard />} />
-            <Route path="/student-list" element={<StudentList />} />
-            <Route path="/teacher-attendance" element={<ShowTeacherAttendance />} />
-            <Route path="/complain" element={<AddComplaint />} />
-            <Route path="/event" element={<ShowTeacherEvents />} />
-            <Route path="/notice" element={<ShowNotices />} />
+        
+           
+           
+           
+          <Route path="/staff-management" element={<StaffManagement />} />
+          <Route path="/add-teacher" element={<AddTeacher />} />
+          <Route path="/subject-management" element={<ShowSubject />} />
+          <Route path="/class-management" element={<ShowClass />} />
+          <Route path="/class/:id/add-student" element={<AddStudent />} />
+          <Route path="/class/:id/student-management" element={<ShowStudent />} />
+          <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
+          <Route path="/attendance" element={<ShowAttendance />} />
+          <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/show-syllabus" element={<ShowSyllabus />} />
+          <Route path="/idcard" element={<IDCard />} />
+          <Route path="/student-list" element={<StudentList />} />
+          <Route path="/teacher-attendance" element={<TeacherAttendance />} />
+          <Route path="/complain" element={<AddComplaint />} />
+          <Route path="/event" element={<ShowTeacherEvents />} />
+          <Route path="/notice" element={<ShowNotices />} />
+          <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
+          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
+          <Route path="/homework" element={<ShowHomework />} />
+          <Route path="/add_homework" element={<AddHomework />} />
+          <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
+          <Route path="/prayer" element={<Prayer />} />
+          <Route path="/birthday" element={<ShowStudentBirthday />} />
+          <Route path="/video" element={<ShowVideo />} />
+          <Route path="/material" element={<ShowMaterial />} />
+          <Route path="/add_material" element={<AddMaterial />} />
+
+
+          
           </>
         )}
 
@@ -158,16 +181,22 @@ const AppContent = () => {
             <Route path="/assignments" element={<AssignmentList />} />
             <Route path="/subject-management" element={<ShowStudentSubject />} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/showImages/:eventId" element={<ShowImages />} />
-            <Route path="/show-syllabus" element={<ShowSyllabus />} />
-            <Route path="/idcard" element={<IDCard />} />
-            <Route path="/attendance" element={<ShowStudentAttendance />} />
-            <Route path="/student-fee" element={<ShowFees />} />
-            <Route path="/notice" element={<ShowNotices />} />
-            <Route path="/complain" element={<AddComplaint />} />
-            <Route path="/event" element={<ShowTeacherEvents />} />
-            <Route path="/homework" element={<ShowStudentHomework />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
+          <Route path="/show-syllabus" element={<ShowSyllabus />} />
+          <Route path="/idcard" element={<IDCard />} />
+          <Route path="/attendance" element={<ShowStudentAttendance />} />
+          <Route path="/student-fee" element={<ShowFees />} />
+          <Route path="/notice" element={<ShowNotices />} />
+          <Route path="/complain" element={<AddComplaint />} />
+          <Route path="/event" element={<ShowTeacherEvents />} />
+          <Route path="/homework" element={<ShowStudentHomework />} />
+          <Route path="/show-student-syllabus" element={<ShowStudentSyllabus />} />
+          <Route path="/prayer" element={<Prayer />} />
+          <Route path="/birthday" element={<ShowStudentBirthday />} />
+          <Route path="/video" element={<ShowVideo />} />
+          <Route path="/material" element={<ShowStudentMaterial />} />
+
           </>
         )}
 
