@@ -58,6 +58,9 @@ const AddMaterial = () => {
     if (authResult && !authResult.error) {
       setOauthToken(authResult.access_token);
       createPicker(authResult.access_token);
+    } else {
+      console.error('Authentication error:', authResult.error);
+      setError('Failed to authenticate with Google Drive.');
     }
   };
 
@@ -78,6 +81,11 @@ const AddMaterial = () => {
       const fileId = data.docs[0].id;
       const driveLink = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
       setMaterialLink(driveLink);
+    } else if (data.action === window.google.picker.Action.CANCEL) {
+      console.log('User cancelled picking files.');
+    } else {
+      console.error('Error picking files:', data);
+      setError('An error occurred while picking the file.');
     }
   };
 

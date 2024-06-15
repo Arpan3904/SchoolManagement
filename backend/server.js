@@ -68,8 +68,8 @@ app.post('/api/login', async(req, res) => {
 
         // Check if user exists
         const user = await User.findOne({ email });
-
-        if (user) {
+        
+        if (user && user.password.toString() === password) {
             // If the user is found in the User collection, set userrole as 'principal'
             res.status(200).json({ message: 'Login successful', user, userrole: 'principal' });
             return;
@@ -135,21 +135,29 @@ app.get('/api/fetch-teachers', async(req, res) => {
     }
 });
 
-app.get('/api/fetch-teacher-by-email', async(req, res) => {
-    const { email } = req.query;
+
+app.get('/api/fetch-teacher-by-email', async (req, res) => {
     try {
+        const { email } = req.query;
         const teacher = await Teacher.findOne({ email });
-        if (teacher) {
-            res.status(200).json(teacher);
-        } else {
-            res.status(404).json({ message: 'Teacher not found' });
-        }
+        res.status(200).json(teacher);
     } catch (error) {
-        console.error('Error fetching teacher by email:', error);
+        console.error('Error fetching teacher:', error);
         res.status(500).json({ message: 'Failed to fetch teacher' });
     }
 });
 
+// Fetch attendance by teacherId
+app.get('/api/fetch-attendance-by-teacherId', async (req, res) => {
+    try {
+        const { teacherId } = req.query;
+        const attendance = await Attendance.find({ teacherId });
+        res.status(200).json(attendance);
+    } catch (error) {
+        console.error('Error fetching attendance:', error);
+        res.status(500).json({ message: 'Failed to fetch attendance' });
+    }
+});
 
 
 
@@ -269,10 +277,11 @@ app.post('/api/add-student', async(req, res) => {
 });
 
 
-app.get('/api/fetch-students', async(req, res) => {
+app.get('/api/fetch-students', async (req, res) => {
     try {
         const { classId } = req.query;
         console.log(`Fetching students for classId: ${classId}`); // Log the classId
+       
         const students = await Student.find({ classId });
         res.status(200).json(students);
     } catch (error) {
@@ -611,7 +620,7 @@ const syllabusSchema = new mongoose.Schema({
 
 const Syllabus = mongoose.model('Syllabus', syllabusSchema);
 
-app.get('/api/syllabus', async(req, res) => {
+app.get('/api/syllabus', async (req, res) => {
     try {
         const { className, subject } = req.query;
         const syllabus = await Syllabus.findOne({ className, subjectName: subject });
@@ -627,27 +636,15 @@ app.get('/api/syllabus', async(req, res) => {
 });
 
 // Add syllabus
-app.post('/api/add-syllabus', async(req, res) => {
+app.post('/api/add-syllabus', async (req, res) => {
     try {
-        const { className, subject, syllabus: newSyllabus } = req.body;
-
-        // Check if syllabus already exists
-        let existingSyllabus = await Syllabus.findOne({ className, subjectName: subject });
-
-        if (existingSyllabus) {
-            // Update existing syllabus
-            existingSyllabus.syllabus = newSyllabus;
-            await existingSyllabus.save();
-            res.status(200).json(existingSyllabus); // Return the updated syllabus
-        } else {
-            // Add new syllabus
-            const newSyllabusEntry = new Syllabus({ className, subjectName: subject, syllabus: newSyllabus });
-            await newSyllabusEntry.save();
-            res.status(201).json(newSyllabusEntry); // Return the newly added syllabus
-        }
+        const { className, subject, syllabus } = req.body;
+        const newSyllabus = new Syllabus({ className, subjectName: subject, syllabus });
+        await newSyllabus.save();
+        res.status(201).json(newSyllabus);
     } catch (err) {
-        console.error('Error adding/updating syllabus:', err);
-        res.status(500).json({ message: 'Failed to add/update syllabus' });
+        console.error('Error adding syllabus:', err);
+        res.status(500).json({ message: 'Failed to add syllabus' });
     }
 });
 
@@ -1090,6 +1087,7 @@ app.use('/api', require('./routes/fetchmaterial'));
 app.use('/api', require('./routes/attendance'));
 app.use('/api', require('./routes/saveHomework'));
 app.use('/api', require('./routes/showPrayer'));
+app.use('/api', require('./routes/manageVideos'));
 
 // app.use('/api', require('./routes/fetchStudentHomework'));
 const teacherRoutes = require('./routes/attendanceTeacher');

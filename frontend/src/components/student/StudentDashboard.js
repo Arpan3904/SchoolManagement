@@ -26,8 +26,9 @@ const StudentDashboard = () => {
           <div className="administration-setup">
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
-            {renderSectionCard('📜', 'Syllabus', '/show-student-syllabus')}
-           
+            {renderSectionCard('💵', 'Fee', '/student-fee')}
+            {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
+            {renderSectionCard('🤳', 'QR code', '/qr-code-management')}
           </div>
         </div>
 

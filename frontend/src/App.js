@@ -1,13 +1,10 @@
-import React, { useEffect,useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import PrincipalDashboard from './components/principal/PrincipalDashboard';
 import StaffManagement from './components/principal/StaffManagement';
 import TeacherDashboard from './components/teacher/TeacherDashboard';
-
-
-
 import StudentDashboard from './components/student/StudentDashboard';
 import AssignmentList from './components/student/AssignmentList';
 import ShowTeacherAttendance from './components/teacher/ShowTeacherAttendance';
@@ -17,7 +14,7 @@ import AddClass from './components/principal/AddClass';
 import ShowClass from './components/principal/ShowClass';
 import AddStudent from './components/principal/AddStudent';
 import ShowStudent from './components/principal/ShowStudent';
-import TakeAttendance from './components/principal/TakeAttendence'
+import TakeAttendance from './components/principal/TakeAttendence';
 import ShowAttendance from './components/principal/ShowAttendence';
 import AddSubject from './components/principal/AddSubject';
 import ShowSubject from './components/principal/ShowSubject';
@@ -38,6 +35,7 @@ import ShowNotices from './components/principal/ShowNotice';
 import ShowComplaints from './components/principal/ShowComplaint';
 import AddEvent from './components/principal/AddEvent';
 import ShowEvents from './components/principal/ShowEvent';
+import ShowTeacherEvents from './components/teacher/showTeacherEvents';
 import AddMaterial from './components/principal/AddMaterial';
 import ShowMaterial from './components/principal/ShowMaterial';
 import ShowStudentAttendance from './components/student/ShowStudentAttendance';
@@ -45,18 +43,7 @@ import ShowImages from './components/principal/ShowImages';
 import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
-import TeacherAttendance from './components/principal/TeacherAtt';
-import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
-import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
-import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
-import Prayer from './components/principal/showPrayer';
 import Video from './components/principal/Video';
-import ShowTeacherEvents from './components/teacher/showTeacherEvents';
-import ShowGalleryImages from './components/teacher/showGalleryImages';
-import ShowVideo from './components/teacher/ShowVideos';
-
-
-
 
 const App = () => {
   const [userRole, setUserRole] = useState('');
@@ -64,30 +51,42 @@ const App = () => {
   return (
     <Router>
       <>
-        <AppContent userRole={userRole} />
+        <AppContent />
       </>
     </Router>
   );
 };
 
-const AppContent = ({ userRole }) => {
+const AppContent = () => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
   const isSignupPage = location.pathname === '/signup';
   const [dataFromChild, setDataFromChild] = useState(null);
+
+  useEffect(() => {
+    // Simulate fetching userRole from localStorage or backend
+    const storedUserRole = localStorage.getItem('userRole');
+    if (storedUserRole) {
+      setDataFromChild(storedUserRole);
+    }
+  }, []);
+
+  if (!dataFromChild && !isLoginPage && !isSignupPage) {
+    // Redirect to login if no userRole is set
+    return <Navigate to="/login" />;
+  }
+
   const handleDataFromChild = (data) => {
     // Receive data from child component and set it in parent state
     setDataFromChild(data);
-    console.log(dataFromChild);
-    // userRole=dataFromChild;
   };
+
   return (
     <>
       {!isLoginPage && !isSignupPage && <NavigationBar userRole={dataFromChild} />}
       <Routes>
         {/* Public Routes */}
-
-        <Route path="/login" element={<Login sendDataToParent={handleDataFromChild}/>} />
+        <Route path="/login" element={<Login sendDataToParent={handleDataFromChild} />} />
         <Route path="/signup" element={<Signup />} />
         
         {/* Routes for Principal */}
@@ -95,14 +94,14 @@ const AppContent = ({ userRole }) => {
           <>
             <Route path="/" element={<PrincipalDashboard />} />
             <Route path="/staff-management" element={<StaffManagement />} />
-            <Route path="/add-teacher" element={<AddTeacher/>} />
-            <Route path="/add-subject" element={<AddSubject/>} />
-            <Route path="/subject-management" element={<ShowSubject/>} />
-            <Route path="/class-management" element={<ShowClass/>} />
-            <Route path="/add-class" element={<AddClass/>} />
+            <Route path="/add-teacher" element={<AddTeacher />} />
+            <Route path="/add-subject" element={<AddSubject />} />
+            <Route path="/subject-management" element={<ShowSubject />} />
+            <Route path="/class-management" element={<ShowClass />} />
+            <Route path="/add-class" element={<AddClass />} />
             <Route path="/class/:id/add-student" element={<AddStudent />} />
             <Route path="/class/:id/student-management" element={<ShowStudent />} />
-            <Route path="class/:id/take-attendance" element={<TakeAttendance />} />
+            <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
             <Route path="/showattendance" element={<ShowAttendance />} />
             <Route path="/add-timetable" element={<AddTimetable />} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
@@ -123,13 +122,7 @@ const AppContent = ({ userRole }) => {
             <Route path="/showImages/:eventId" element={<ShowImages />} />
             <Route path="/homework" element={<ShowHomework />} />
             <Route path="/add_homework" element={<AddHomework />} />
-            <Route path="/teacher-attendance" element={<TeacherAttendance />} />
-            <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
-            <Route path="/birthday" element={<ShowStudentBirthday />} />
-            <Route path="/prayer" element={<Prayer />} />
             <Route path="/video" element={<Video />} />
-
-
           </>
         )}
 
@@ -137,39 +130,23 @@ const AppContent = ({ userRole }) => {
         {dataFromChild === "teacher" && (
           <>
             <Route path="/" element={<TeacherDashboard />} />
-        
-           
-           
-           
-          <Route path="/staff-management" element={<StaffManagement />} />
-          <Route path="/add-teacher" element={<AddTeacher />} />
-          <Route path="/subject-management" element={<ShowSubject />} />
-          <Route path="/class-management" element={<ShowClass />} />
-          <Route path="/class/:id/add-student" element={<AddStudent />} />
-          <Route path="/class/:id/student-management" element={<ShowStudent />} />
-          <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
-          <Route path="/attendance" element={<ShowAttendance />} />
-          <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/show-syllabus" element={<ShowSyllabus />} />
-          <Route path="/idcard" element={<IDCard />} />
-          <Route path="/student-list" element={<StudentList />} />
-          <Route path="/teacher-attendance" element={<TeacherAttendance />} />
-          <Route path="/complain" element={<AddComplaint />} />
-          <Route path="/event" element={<ShowTeacherEvents />} />
-          <Route path="/notice" element={<ShowNotices />} />
-          <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
-          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
-          <Route path="/homework" element={<ShowHomework />} />
-          <Route path="/add_homework" element={<AddHomework />} />
-          <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
-          <Route path="/prayer" element={<Prayer />} />
-          <Route path="/birthday" element={<ShowStudentBirthday />} />
-          <Route path="/video" element={<ShowVideo />} />
-
-
-
-          
+            <Route path="/staff-management" element={<StaffManagement />} />
+            <Route path="/add-teacher" element={<AddTeacher />} />
+            <Route path="/subject-management" element={<ShowSubject />} />
+            <Route path="/class-management" element={<ShowClass />} />
+            <Route path="/class/:id/add-student" element={<AddStudent />} />
+            <Route path="/class/:id/student-management" element={<ShowStudent />} />
+            <Route path="/class/:id/take-attendance" element={<TakeAttendance />} />
+            <Route path="/attendance" element={<ShowAttendance />} />
+            <Route path="/timetable-management" element={<ShowTeacherTimetable />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/show-syllabus" element={<ShowSyllabus />} />
+            <Route path="/idcard" element={<IDCard />} />
+            <Route path="/student-list" element={<StudentList />} />
+            <Route path="/teacher-attendance" element={<ShowTeacherAttendance />} />
+            <Route path="/complain" element={<AddComplaint />} />
+            <Route path="/event" element={<ShowTeacherEvents />} />
+            <Route path="/notice" element={<ShowNotices />} />
           </>
         )}
 
@@ -179,24 +156,18 @@ const AppContent = ({ userRole }) => {
             <Route path="/" element={<StudentDashboard />} />
             <Route path="/student-dashboard" element={<StudentDashboard />} />
             <Route path="/assignments" element={<AssignmentList />} />
-            
-            <Route path="/subject-management" element={<ShowStudentSubject/>} />
+            <Route path="/subject-management" element={<ShowStudentSubject />} />
             <Route path="/timetable-management" element={<ShowTimetable />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
-          <Route path="/show-syllabus" element={<ShowSyllabus />} />
-          <Route path="/idcard" element={<IDCard />} />
-          <Route path="/attendance" element={<ShowStudentAttendance />} />
-          <Route path="/student-fee" element={<ShowFees />} />
-          <Route path="/notice" element={<ShowNotices />} />
-          <Route path="/complain" element={<AddComplaint />} />
-          <Route path="/event" element={<ShowTeacherEvents />} />
-          <Route path="/homework" element={<ShowStudentHomework />} />
-          <Route path="/show-student-syllabus" element={<ShowStudentSyllabus />} />
-          <Route path="/prayer" element={<Prayer />} />
-          <Route path="/birthday" element={<ShowStudentBirthday />} />
-          <Route path="/video" element={<ShowVideo />} />
-
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/showImages/:eventId" element={<ShowImages />} />
+            <Route path="/show-syllabus" element={<ShowSyllabus />} />
+            <Route path="/idcard" element={<IDCard />} />
+            <Route path="/attendance" element={<ShowStudentAttendance />} />
+            <Route path="/student-fee" element={<ShowFees />} />
+            <Route path="/notice" element={<ShowNotices />} />
+            <Route path="/complain" element={<AddComplaint />} />
+            <Route path="/event" element={<ShowTeacherEvents />} />
+            <Route path="/homework" element={<ShowStudentHomework />} />
           </>
         )}
 
