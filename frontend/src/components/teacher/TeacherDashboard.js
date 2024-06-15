@@ -28,7 +28,7 @@ const TeacherDashboard = () => {
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
-            {renderSectionCard('🤳', 'QR code', '/qr-code-management')}
+            {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
           </div>
         </div>
 

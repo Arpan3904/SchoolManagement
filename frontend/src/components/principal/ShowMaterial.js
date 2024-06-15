@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/ShowMaterial.css'; 
+import '../../styles/ShowMaterial.css'; // Import regular CSS file
 
 const ShowMaterial = () => {
   const [classes, setClasses] = useState([]);
@@ -48,11 +48,17 @@ const ShowMaterial = () => {
 
     try {
       const response = await axios.get(`http://localhost:5000/api/materials?class=${selectedClass}&subject=${selectedSubject}`);
+      console.log(response);
       setMaterials(response.data);
     } catch (err) {
       console.error('Error fetching materials:', err);
       setError('An error occurred while fetching materials.');
     }
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
   return (
@@ -83,8 +89,7 @@ const ShowMaterial = () => {
         <table className="materials-table">
           <thead>
             <tr>
-              <th>Class</th>
-              <th>Subject</th>
+              <th>Uploaded At</th>
               <th>Material Link</th>
             </tr>
           </thead>
@@ -92,14 +97,13 @@ const ShowMaterial = () => {
             {materials.length > 0 ? (
               materials.map((material, index) => (
                 <tr key={index}>
-                  <td>{material.className}</td>
-                  <td>{material.subjectName}</td>
+                  <td>{formatDate(material.uploadedAt)}</td>
                   <td><a href={material.materialLink} target="_blank" rel="noopener noreferrer">View Material</a></td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="3">No Material Found</td>
+                <td colSpan="2">No Material Found</td>
               </tr>
             )}
           </tbody>
@@ -115,7 +119,8 @@ const ShowMaterial = () => {
           border: 'none',
           borderRadius: '5px',
           cursor: 'pointer',
-          fontSize: '16px'
+          fontSize: '16px',
+          textAlign: 'center'
         }}
         onClick={() => navigate('/add_material')}
       >

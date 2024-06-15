@@ -44,11 +44,17 @@ import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
 import Video from './components/principal/Video';
-import ShowTeacherEvents from './components/teacher/showTeacherEvents';
+
 import ShowGalleryImages from './components/teacher/showGalleryImages';
 import ShowVideo from './components/teacher/ShowVideos';
 import ShowStudentMaterial from './components/student/ShowStudentMaterial';
-
+import Prayer from './components/principal/showPrayer';
+import TeacherAttendance from './components/teacher/ShowTeacherAttendance';
+import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
+import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
+import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
+import AddExamSchedule from './components/principal/AddExamSchedule';
+import ShowExamSchedule from './components/principal/ShowExamSchedule';
 
 
 const App = () => {
@@ -129,6 +135,9 @@ const AppContent = () => {
             <Route path="/homework" element={<ShowHomework />} />
             <Route path="/add_homework" element={<AddHomework />} />
             <Route path="/video" element={<Video />} />
+            <Route path="/prayer" element={<Prayer />} />
+            <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
+            <Route path="/add-exam-schedule" element={<AddExamSchedule />} />
           </>
         )}
 
@@ -169,7 +178,7 @@ const AppContent = () => {
           <Route path="/add_material" element={<AddMaterial />} />
 
 
-          
+          <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           </>
         )}
 
@@ -196,7 +205,7 @@ const AppContent = () => {
           <Route path="/birthday" element={<ShowStudentBirthday />} />
           <Route path="/video" element={<ShowVideo />} />
           <Route path="/material" element={<ShowStudentMaterial />} />
-
+          <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           </>
         )}
 

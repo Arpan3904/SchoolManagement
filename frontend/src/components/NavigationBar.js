@@ -108,9 +108,9 @@ const NavigationBar = ({ userRole }) => {
               </button>
             </li>
             <li>
-              <button onClick={() => handleNavigation('/assignments')}>
+              <button onClick={() => handleNavigation('/marks')}>
                 <FontAwesomeIcon icon={faFileAlt} size="2x" />
-                {isExpanded && 'Assignments'}
+                {isExpanded && 'marks'}
               </button>
             </li>
             <li>

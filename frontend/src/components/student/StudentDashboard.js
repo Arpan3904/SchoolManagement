@@ -28,7 +28,7 @@ const StudentDashboard = () => {
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
-            {renderSectionCard('🤳', 'QR code', '/qr-code-management')}
+            
           </div>
         </div>
 
@@ -39,6 +39,7 @@ const StudentDashboard = () => {
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}
+            {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
           </div>
         </div>
 

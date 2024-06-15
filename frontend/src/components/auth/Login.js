@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import useNavigate and Link
 import '../../styles/Login.css'; // Import CSS file for styling
 
 const Login = ({ sendDataToParent }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // const [schoolIndexId, setSchoolIndexId] = useState(''); // State for schoolIndexId
   const navigate = useNavigate();
 
   const handleLogin = () => {
@@ -16,20 +15,18 @@ const Login = ({ sendDataToParent }) => {
         var userRole = response.data.user.userRole;
        
         localStorage.setItem('email', email);
-        console.log("aaa"+email);
         localStorage.setItem('userRole', userRole);
         sendDataToParent(userRole);
         navigate('/');
       })
       .catch(error => {
         console.error('Error:', error);
-       
       });
   };
 
   return (
-    <div className="login-container"> {/* Apply CSS class to the container */}
-      <h2 className="login-title">Login</h2> {/* Apply CSS class to the title */}
+    <div className="login-container">
+      <h2 className="login-title">Login</h2>
       <input
         className="login-input"
         type="email"
@@ -45,7 +42,10 @@ const Login = ({ sendDataToParent }) => {
         onChange={(e) => setPassword(e.target.value)}
       />
       
-      <button className="login-button" onClick={handleLogin}>Login</button> {/* Apply CSS class to the button */}
+      <button className="login-button" onClick={handleLogin}>Login</button>
+      
+      {/* Signup button using Link */}
+      <Link to="/signup" className="signup-link">Sign Up</Link>
     </div>
   );
 };

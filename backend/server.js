@@ -1070,8 +1070,43 @@ app.get('/api/birthdays', async(req, res) => {
         res.status(500).json({ success: false, message: 'Failed to fetch birthdays' });
     }
 });
+const examScheduleSchema = new mongoose.Schema({
+    class: String,
+    date: Date,
+    from: String,
+    to: String,
+    subject: String,
+    frequency: String // Added frequency field
+}, { collection: 'examSchedule' });
 
+// Create ExamSchedule model
+const ExamSchedule = mongoose.model('ExamSchedule', examScheduleSchema);
 
+// Fetch schedules for a class
+app.get('/api/fetch-schedule', async (req, res) => {
+    const { class: className } = req.query;
+
+    try {
+        const schedules = await ExamSchedule.find({ class: className }).exec();
+        res.status(200).json(schedules);
+    } catch (error) {
+        console.error('Error fetching schedules:', error);
+        res.status(500).json({ message: 'Failed to fetch schedules' });
+    }
+});
+
+// Add new exam schedule
+app.post('/api/add-exam-schedule', async (req, res) => {
+    try {
+        const { class: className, date, from, to, subject, frequency } = req.body;
+        const newSchedule = new ExamSchedule({ class: className, date, from, to, subject, frequency });
+        await newSchedule.save();
+        res.status(200).json({ message: 'Exam schedule added successfully' });
+    } catch (error) {
+        console.error('Error adding exam schedule:', error);
+        res.status(500).json({ message: 'Failed to add exam schedule' });
+    }
+});
 
 
 
