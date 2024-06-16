@@ -70,6 +70,7 @@ const SchoolDashboard = () => {
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
+            
           </div>
         </div>
 
@@ -82,6 +83,7 @@ const SchoolDashboard = () => {
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}
+            {renderSectionCard('💯', 'Marks', '/marks')}
           </div>
         </div>
 
@@ -98,7 +100,7 @@ const SchoolDashboard = () => {
         <div className="dashboard-section">
           <h2>Others</h2>
           <div className="others-section">
-            {renderSectionCard('📅', 'Examination', '/examination')}
+           
             {renderSectionCard('🖼️', 'Gallery', '/gallery')}
             {renderSectionCard('🔔', 'Notice', '/notice')}
             {renderSectionCard('💬', 'Complain', '/complain')}

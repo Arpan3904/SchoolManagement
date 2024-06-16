@@ -226,6 +226,17 @@ app.get('/api/fetchStbyEmail', async(req, res) => {
     }
 });
 
+app.get('/api/fetch-class-by-name', async (req, res) => {
+    const { className } = req.query;
+
+    try {
+        const classDetails = await Class.findOne({ className }).exec();
+        res.status(200).json(classDetails);
+    } catch (error) {
+        console.error('Error fetching class details:', error);
+        res.status(500).json({ message: 'Failed to fetch class details' });
+    }
+});
 app.get('/api/class/:classId', async(req, res) => {
     try {
         const { classId } = req.params;
@@ -281,6 +292,19 @@ app.get('/api/fetch-students', async(req, res) => {
     try {
         const { classId } = req.query;
         console.log(`Fetching students for classId: ${classId}`); // Log the classId
+
+        const students = await Student.find({ classId });
+        res.status(200).json(students);
+    } catch (error) {
+        console.error('Error fetching students:', error);
+        res.status(500).json({ message: 'Failed to fetch students' });
+    }
+});
+
+app.get('/api/fetch-students-for-marks', async (req, res) => {
+    try {
+        const { classId } = req.query;
+        console.log(`Fetching students for classId: ${classId}`);
 
         const students = await Student.find({ classId });
         res.status(200).json(students);
@@ -1088,6 +1112,7 @@ app.get('/api/fetch-schedule', async (req, res) => {
 
     try {
         const schedules = await ExamSchedule.find({ class: className }).exec();
+        
         res.status(200).json(schedules);
     } catch (error) {
         console.error('Error fetching schedules:', error);
@@ -1108,6 +1133,68 @@ app.post('/api/add-exam-schedule', async (req, res) => {
     }
 });
 
+
+
+const examResultSchema = new mongoose.Schema({
+    examScheduleId: { type: mongoose.Schema.Types.ObjectId, ref: 'ExamSchedule' },
+    examDate: Date,
+    totalMarks: Number,
+    studentResults: [
+        {
+            studentEmail: String,
+            fullName: String, // Add fullName field
+            marks: Number,
+            absent: Boolean
+        }
+    ]
+}, { collection: 'examResults' });
+
+const ExamResult = mongoose.model('ExamResult', examResultSchema);
+app.post('/api/save-exam-results', async (req, res) => {
+    const { examScheduleId, examDate, totalMarks, studentResults } = req.body;
+
+    try {
+        await ExamResult.findOneAndUpdate(
+            { examScheduleId, examDate },
+            { totalMarks, studentResults },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+        res.status(200).json({ message: 'Exam results saved successfully' });
+    } catch (error) {
+        console.error('Error saving exam results:', error);
+        res.status(500).json({ message: 'Failed to save exam results' });
+    }
+});
+
+
+app.get('/api/fetch-exam-results', async (req, res) => {
+    const { examScheduleId } = req.query;
+    
+    try {
+        const examResults = await ExamResult.find({ examScheduleId }).exec();
+        
+        res.status(200).json(examResults);
+    } catch (error) {
+        console.error('Error fetching exam results:', error);
+        res.status(500).json({ error: 'Failed to fetch exam results' });
+    }
+});
+
+
+
+
+app.get('/api/fetch-exam-results-for-exams', async (req, res) => {
+    const { examIds } = req.query;
+    const examIdsArray = examIds.split(',');
+
+    try {
+        const examResults = await ExamResult.find({ examScheduleId: { $in: examIdsArray } }).exec();
+        res.status(200).json(examResults);
+    } catch (error) {
+        console.error('Error fetching exam results for exams:', error);
+        res.status(500).json({ error: 'Failed to fetch exam results for exams' });
+    }
+});
 
 
 

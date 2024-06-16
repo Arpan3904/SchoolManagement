@@ -40,13 +40,14 @@ const StudentDashboard = () => {
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
+            {renderSectionCard('💯', 'Marks', '/marks')}
           </div>
         </div>
 
         <div className="dashboard-section">
           <h2>Additional Features</h2>
           <div className="others-section">
-            {renderSectionCard('📅', 'Examination', '/examination')}
+           
             {renderSectionCard('🖼️', 'Gallery', '/gallery')}
             {renderSectionCard('🔔', 'Notice', '/notice')}
             {renderSectionCard('💬', 'Complain', '/complain')}

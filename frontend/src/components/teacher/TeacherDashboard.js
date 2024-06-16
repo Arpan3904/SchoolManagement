@@ -29,6 +29,7 @@ const TeacherDashboard = () => {
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
+
           </div>
         </div>
 
@@ -40,13 +41,14 @@ const TeacherDashboard = () => {
             {renderSectionCard('📋', 'Student Attendance', '/attendance')}
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('🆔', 'Student Id Card', '/idcard')}
+            {renderSectionCard('💯', 'Marks', '/marks')}
           </div>
         </div>
 
         <div className="dashboard-section">
           <h2>Additional Features</h2>
           <div className="others-section">
-            {renderSectionCard('📅', 'Examination', '/examination')}
+           
             {renderSectionCard('🖼️', 'Gallery', '/gallery')}
             {renderSectionCard('🔔', 'Notice', '/notice')}
             {renderSectionCard('💬', 'Complain', '/complain')}

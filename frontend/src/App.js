@@ -55,7 +55,7 @@ import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
 import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
 import AddExamSchedule from './components/principal/AddExamSchedule';
 import ShowExamSchedule from './components/principal/ShowExamSchedule';
-
+import AddMarks from './components/principal/AddMarks';
 
 const App = () => {
   const [userRole, setUserRole] = useState('');
@@ -138,6 +138,7 @@ const AppContent = () => {
             <Route path="/prayer" element={<Prayer />} />
             <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
             <Route path="/add-exam-schedule" element={<AddExamSchedule />} />
+            <Route path="/marks" element={<AddMarks />} />
           </>
         )}
 
@@ -176,8 +177,7 @@ const AppContent = () => {
           <Route path="/video" element={<ShowVideo />} />
           <Route path="/material" element={<ShowMaterial />} />
           <Route path="/add_material" element={<AddMaterial />} />
-
-
+          <Route path="/marks" element={<AddMarks />} />
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           </>
         )}
@@ -206,6 +206,7 @@ const AppContent = () => {
           <Route path="/video" element={<ShowVideo />} />
           <Route path="/material" element={<ShowStudentMaterial />} />
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
+          <Route path="/marks" element={<AddMarks />} />
           </>
         )}
 
