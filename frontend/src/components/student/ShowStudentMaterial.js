@@ -59,6 +59,11 @@ const ShowStudentMaterial = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="show-material-container">
       <h2>Show Materials</h2>
@@ -79,8 +84,7 @@ const ShowStudentMaterial = () => {
         <table className="materials-table">
           <thead>
             <tr>
-              <th>Class</th>
-              <th>Subject</th>
+              <th>Uploaded At</th>
               <th>Material Link</th>
             </tr>
           </thead>
@@ -88,8 +92,7 @@ const ShowStudentMaterial = () => {
             {materials.length > 0 ? (
               materials.map((material, index) => (
                 <tr key={index}>
-                  <td>{material.className}</td>
-                  <td>{material.subjectName}</td>
+                  <td>{formatDate(material.uploadedAt)}</td>
                   <td><a href={material.materialLink} target="_blank" rel="noopener noreferrer">View Material</a></td>
                 </tr>
               ))

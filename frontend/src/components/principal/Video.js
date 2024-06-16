@@ -64,6 +64,7 @@ const Video = () => {
               allowFullScreen
               onError={(e) => { e.target.style.display = 'none'; alert("Video cannot be embedded"); }}
             ></iframe>
+            <div className="video-title">{video.title}</div> {/* Display the video title */}
             <div className="remove-tooltip">Remove</div>
             <button className="remove-button" onClick={() => removeVideo(video._id)}>×</button>
           </div>

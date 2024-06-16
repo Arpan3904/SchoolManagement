@@ -20,7 +20,7 @@ const AddStudent = () => {
         birthdate: '',
         childUid: '',
         password: '',
-        principal: localStorage.getItem('principal'),
+        principal: localStorage.getItem('email'),
         classId: id,
         userRole: 'student',
         photo: null // Add photo field

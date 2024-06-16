@@ -44,18 +44,26 @@ import AddHomework from './components/principal/AddHomework';
 import ShowHomework from './components/principal/showHomework';
 import ShowStudentHomework from './components/student/showStudentHomework';
 import Video from './components/principal/Video';
-
 import ShowGalleryImages from './components/teacher/showGalleryImages';
 import ShowVideo from './components/teacher/ShowVideos';
-import ShowStudentMaterial from './components/student/ShowStudentMaterial';
-import Prayer from './components/principal/showPrayer';
 import TeacherAttendance from './components/teacher/ShowTeacherAttendance';
-import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
+import Prayer from './components/principal/showPrayer';
 import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
 import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
+import TeacherIDCard from './components/teacher/TeacherIdCard';
+import ShowStudentMaterial from './components/student/ShowStudentMaterial';
+// import Prayer from './components/principal/showPrayer';
+// import TeacherAttendance from './components/teacher/ShowTeacherAttendance';
+import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
+// import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
+// import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
 import AddExamSchedule from './components/principal/AddExamSchedule';
 import ShowExamSchedule from './components/principal/ShowExamSchedule';
 import AddMarks from './components/principal/AddMarks';
+import ShowStudentFees from './components/student/ShowStudentFees';
+import ShowFeePayment from './components/principal/ShowFeesPayment';
+import Birthday from './components/principal/ShowStudentBirthday';
+import ShowSchoolDetails from './components/ShowSchoolDetails';
 
 const App = () => {
   const [userRole, setUserRole] = useState('');
@@ -139,6 +147,11 @@ const AppContent = () => {
             <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
             <Route path="/add-exam-schedule" element={<AddExamSchedule />} />
             <Route path="/marks" element={<AddMarks />} />
+            <Route path="/studentFeeStatus" element={<ShowFeePayment />} />
+            <Route path="/birthday" element={<Birthday />} />
+            <Route path="/show-school-details" element={<ShowSchoolDetails />} />
+
+
           </>
         )}
 
@@ -168,7 +181,7 @@ const AppContent = () => {
           <Route path="/event" element={<ShowTeacherEvents />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
-          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
+          <Route path="/show-teacher-idcard" element={<TeacherIDCard />} />
           <Route path="/homework" element={<ShowHomework />} />
           <Route path="/add_homework" element={<AddHomework />} />
           <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
@@ -179,6 +192,11 @@ const AppContent = () => {
           <Route path="/add_material" element={<AddMaterial />} />
           <Route path="/marks" element={<AddMarks />} />
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
+          <Route path="/birthday" element={<Birthday />} />
+          <Route path="/show-school-details" element={<ShowSchoolDetails />} />
+
+
+          
           </>
         )}
 
@@ -195,7 +213,7 @@ const AppContent = () => {
           <Route path="/show-syllabus" element={<ShowSyllabus />} />
           <Route path="/idcard" element={<IDCard />} />
           <Route path="/attendance" element={<ShowStudentAttendance />} />
-          <Route path="/student-fee" element={<ShowFees />} />
+          <Route path="/student-fee" element={<ShowStudentFees />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/complain" element={<AddComplaint />} />
           <Route path="/event" element={<ShowTeacherEvents />} />
@@ -207,6 +225,8 @@ const AppContent = () => {
           <Route path="/material" element={<ShowStudentMaterial />} />
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           <Route path="/marks" element={<AddMarks />} />
+          <Route path="/show-school-details" element={<ShowSchoolDetails />} />
+
           </>
         )}
 

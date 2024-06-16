@@ -6,19 +6,22 @@ const cors = require('cors'); // Import cors
 const nodemailer = require('nodemailer');
 const twilio = require('twilio');
 require('dotenv').config();
-
+const multer = require('multer');
+const path = require('path');
 const Class = require('./models/class');
 const Subject = require('./models/subject');
 const Homework = require('./models/homework');
-
-
+const FeePayment = require('./models/feePayment');
+const Razorpay = require('razorpay');
+const shortid = require('shortid');
+const SchoolDetails = require('./models/schoolDetails');
 
 
 
 const app = express();
 
 // Middleware
-app.use(cors()); // Enable CORS for all routes
+app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
@@ -226,7 +229,7 @@ app.get('/api/fetchStbyEmail', async(req, res) => {
     }
 });
 
-app.get('/api/fetch-class-by-name', async (req, res) => {
+app.get('/api/fetch-class-by-name', async(req, res) => {
     const { className } = req.query;
 
     try {
@@ -253,7 +256,7 @@ app.get('/api/class/:classId', async(req, res) => {
 });
 
 const studentSchema = new mongoose.Schema({
-    rollNo: { type: Number, unique: true },
+    rollNo: { type: Number },
     firstName: String,
     middleName: String,
     lastName: String,
@@ -272,18 +275,29 @@ const Student = mongoose.model('Student', studentSchema);
 
 
 // Assuming you have already defined '/api/add-student' endpoint
-app.post('/api/add-student', async (req, res) => {
+app.post('/api/add-student', async(req, res) => {
     try {
         const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo } = req.body;
 
-        // Decode base64 photo and save it to the database
+        // Create new student
         const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo });
         await newStudent.save();
 
-        // Send credentials email to the student
-        await sendCredentialsEmail(newStudent);
+        // Create fee payment record for the student
+        const studentClass = await Class.findById(classId);
+        const dueDate = new Date();
+        dueDate.setMonth(dueDate.getMonth() + 1); // Example: set due date to one month from now
 
-        res.status(201).json(newStudent);
+        const feePayment = new FeePayment({
+            studentId: newStudent._id,
+            classId: studentClass._id,
+            dueDate,
+            amount: studentClass.feeAmount, // Assuming fee amount is stored in Class model
+        });
+
+        await feePayment.save();
+
+        res.status(201).json({ newStudent, feePayment });
     } catch (error) {
         console.error('Error adding student:', error);
         res.status(500).json({ message: 'Failed to add student' });
@@ -309,9 +323,9 @@ async function sendCredentialsEmail(student) {
             to: student.email,
             subject: 'Credentials',
             text: `Hello ${student.firstName} ${student.lastName},\n\n` +
-                  `Credentials of your School:\n` +
-                  `Email ID: ${student.email}\n` +
-                  `Password: ${student.password}\n`,
+                `Credentials of your School:\n` +
+                `Email ID: ${student.email}\n` +
+                `Password: ${student.password}\n`,
         };
 
         // Send mail with defined transport object
@@ -337,7 +351,7 @@ app.get('/api/fetch-students', async(req, res) => {
     }
 });
 
-app.get('/api/fetch-students-for-marks', async (req, res) => {
+app.get('/api/fetch-students-for-marks', async(req, res) => {
     try {
         const { classId } = req.query;
         console.log(`Fetching students for classId: ${classId}`);
@@ -1143,12 +1157,12 @@ const examScheduleSchema = new mongoose.Schema({
 const ExamSchedule = mongoose.model('ExamSchedule', examScheduleSchema);
 
 // Fetch schedules for a class
-app.get('/api/fetch-schedule', async (req, res) => {
+app.get('/api/fetch-schedule', async(req, res) => {
     const { class: className } = req.query;
 
     try {
         const schedules = await ExamSchedule.find({ class: className }).exec();
-        
+
         res.status(200).json(schedules);
     } catch (error) {
         console.error('Error fetching schedules:', error);
@@ -1157,7 +1171,7 @@ app.get('/api/fetch-schedule', async (req, res) => {
 });
 
 // Add new exam schedule
-app.post('/api/add-exam-schedule', async (req, res) => {
+app.post('/api/add-exam-schedule', async(req, res) => {
     try {
         const { class: className, date, from, to, subject, frequency } = req.body;
         const newSchedule = new ExamSchedule({ class: className, date, from, to, subject, frequency });
@@ -1170,31 +1184,35 @@ app.post('/api/add-exam-schedule', async (req, res) => {
 });
 
 
+app.get('/api/fetch-fee-details', async(req, res) => {
+    const { studentId } = req.query;
+    try {
+        const feeDetails = await FeePayment.find({ studentId }).populate('classId');
+        res.json(feeDetails);
+    } catch (error) {
+        console.error('Error fetching fee details:', error);
+        res.status(500).json({ message: 'Failed to fetch fee details' });
+    }
+});
 
 const examResultSchema = new mongoose.Schema({
     examScheduleId: { type: mongoose.Schema.Types.ObjectId, ref: 'ExamSchedule' },
     examDate: Date,
     totalMarks: Number,
-    studentResults: [
-        {
-            studentEmail: String,
-            fullName: String, // Add fullName field
-            marks: Number,
-            absent: Boolean
-        }
-    ]
+    studentResults: [{
+        studentEmail: String,
+        fullName: String, // Add fullName field
+        marks: Number,
+        absent: Boolean
+    }]
 }, { collection: 'examResults' });
 
 const ExamResult = mongoose.model('ExamResult', examResultSchema);
-app.post('/api/save-exam-results', async (req, res) => {
+app.post('/api/save-exam-results', async(req, res) => {
     const { examScheduleId, examDate, totalMarks, studentResults } = req.body;
 
     try {
-        await ExamResult.findOneAndUpdate(
-            { examScheduleId, examDate },
-            { totalMarks, studentResults },
-            { upsert: true, new: true, setDefaultsOnInsert: true }
-        );
+        await ExamResult.findOneAndUpdate({ examScheduleId, examDate }, { totalMarks, studentResults }, { upsert: true, new: true, setDefaultsOnInsert: true });
         res.status(200).json({ message: 'Exam results saved successfully' });
     } catch (error) {
         console.error('Error saving exam results:', error);
@@ -1203,12 +1221,12 @@ app.post('/api/save-exam-results', async (req, res) => {
 });
 
 
-app.get('/api/fetch-exam-results', async (req, res) => {
+app.get('/api/fetch-exam-results', async(req, res) => {
     const { examScheduleId } = req.query;
-    
+
     try {
         const examResults = await ExamResult.find({ examScheduleId }).exec();
-        
+
         res.status(200).json(examResults);
     } catch (error) {
         console.error('Error fetching exam results:', error);
@@ -1219,7 +1237,7 @@ app.get('/api/fetch-exam-results', async (req, res) => {
 
 
 
-app.get('/api/fetch-exam-results-for-exams', async (req, res) => {
+app.get('/api/fetch-exam-results-for-exams', async(req, res) => {
     const { examIds } = req.query;
     const examIdsArray = examIds.split(',');
 
@@ -1232,6 +1250,132 @@ app.get('/api/fetch-exam-results-for-exams', async (req, res) => {
     }
 });
 
+app.get('/api/fetch-student-fees', async(req, res) => {
+    const { studentId } = req.query;
+    try {
+        const feeDetails = await FeePayment.find({ studentId }).populate('classId');
+        res.json(feeDetails);
+    } catch (error) {
+        console.error('Error fetching fee details:', error);
+        res.status(500).json({ message: 'Failed to fetch fee details' });
+    }
+});
+
+
+const razorpay = new Razorpay({
+    key_id: 'rzp_test_UXwDn93TnrUjql',
+    key_secret: '9snsccyX3BiS5pWZTAixOq8R',
+});
+
+app.post('/api/create-order', async(req, res) => {
+    const { amount, studentId } = req.body; // Ensure you are sending studentId along with amount from frontend
+
+    const options = {
+        amount: amount * 100, // amount in smallest currency unit
+        currency: 'INR',
+        receipt: `receipt_order_${Date.now()}`,
+        payment_capture: 1,
+    };
+
+    try {
+        const response = await razorpay.orders.create(options);
+        await FeePayment.findOneAndUpdate({ studentId, paymentStatus: 'Pending' }, { 'paymentDetails.orderId': response.id }, { new: true });
+        res.json({
+            id: response.id,
+            currency: response.currency,
+            amount: response.amount,
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+
+
+app.post('/api/update-payment-status', async(req, res) => {
+    const { studentId, orderId, paymentId, signature } = req.body;
+    console.log("hello api", studentId, orderId, paymentId, signature); // Debug log
+
+    try {
+        const feeRecord = await FeePayment.findOne({ studentId, 'paymentDetails.orderId': orderId });
+        if (!feeRecord) {
+            console.log('Fee record not found'); // Debug log
+            return res.status(404).send('Fee record not found');
+        }
+
+        // Update the payment details
+        feeRecord.paymentStatus = 'Paid';
+        feeRecord.paymentDetails = {
+            orderId,
+            paymentId,
+            signature,
+            paymentDate: new Date(),
+        };
+
+        await feeRecord.save();
+        res.status(200).send('Payment status updated successfully');
+    } catch (error) {
+        console.error('Error updating payment status:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // Set the directory to save the files
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+app.get('/api/school-details', async(req, res) => {
+    try {
+        console.log("enter");
+        const schoolDetails = await SchoolDetails.findOne(); // Assuming there's only one document
+        res.json(schoolDetails);
+    } catch (err) {
+        console.error('Error fetching school details:', err);
+        res.status(500).json({ error: 'Error fetching school details' });
+    }
+});
+
+// Update school details
+app.put('/api/school-details', upload.single('schoolLogo'), async(req, res) => {
+    try {
+        let formData = req.body;
+        // console.log(formData);
+
+        const schoolDetails = await SchoolDetails.findOne();
+
+        if (schoolDetails) {
+            schoolDetails.schoolLogo = formData.schoolLogo;
+            schoolDetails.schoolName = formData.schoolName;
+            schoolDetails.schoolEmail = formData.schoolEmail;
+            schoolDetails.schoolAddress = formData.schoolAddress;
+            schoolDetails.schoolContactNo = formData.schoolContactNo;
+            schoolDetails.principalEmail = formData.principalEmail;
+
+            await schoolDetails.save();
+
+            res.json(schoolDetails);
+        } else {
+            res.status(404).json({ error: 'School details not found' });
+        }
+
+
+    } catch (err) {
+        console.error('Error updating school details:', err);
+        res.status(500).json({ error: 'Error updating school details' });
+    }
+});
 
 
 app.use('/api', require("./routes/saveNotice"));

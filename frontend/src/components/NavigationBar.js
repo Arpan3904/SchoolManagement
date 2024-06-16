@@ -14,26 +14,35 @@ import {
   faClipboardCheck,
   faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
 import '../styles/NavigationBar.css';
 
 const NavigationBar = ({ userRole }) => {
   const navigate = useNavigate();
   const [isExpanded, setIsExpanded] = useState(true);
+  const [schoolDetails, setSchoolDetails] = useState({});
 
-  // Effect to handle automatic collapse based on screen width
   useEffect(() => {
     const handleResize = () => {
-      setIsExpanded(window.innerWidth > 600); // Expand if screen width is greater than 600px
+      setIsExpanded(window.innerWidth > 600);
     };
 
-    // Initial check on component mount
     handleResize();
-
-    // Event listener for window resize
     window.addEventListener('resize', handleResize);
-
-    // Clean up the event listener on component unmount
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const fetchSchoolDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/school-details');
+        setSchoolDetails(response.data);
+      } catch (err) {
+        console.error('Error fetching school details:', err);
+      }
+    };
+
+    fetchSchoolDetails();
   }, []);
 
   const handleNavigation = (path) => {
@@ -44,8 +53,18 @@ const NavigationBar = ({ userRole }) => {
     navigate('/login');
   };
 
+  const handleLogoClick = () => {
+    navigate('/show-school-details');
+  };
+
   return (
     <aside className={`navigation-bar ${isExpanded ? 'expanded' : 'collapsed'}`}>
+      <div className="school-details" onClick={handleLogoClick}>
+        {schoolDetails.schoolLogo && (
+          <img src={schoolDetails.schoolLogo} alt="School Logo" className="school-logo" />
+        )}
+        {isExpanded && <p className="school-name">{schoolDetails.schoolName}</p>}
+      </div>
       <ul>
         {userRole === 'principal' && (
           <>
@@ -69,7 +88,6 @@ const NavigationBar = ({ userRole }) => {
             </li>
           </>
         )}
-
         {userRole === 'teacher' && (
           <>
             <li>
@@ -98,7 +116,6 @@ const NavigationBar = ({ userRole }) => {
             </li>
           </>
         )}
-
         {userRole === 'student' && (
           <>
             <li>

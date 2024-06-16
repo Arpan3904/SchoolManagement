@@ -68,6 +68,7 @@ const SchoolDashboard = () => {
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
+            {renderSectionCard('💵', 'Fee Status', '/studentFeeStatus')}
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
             
