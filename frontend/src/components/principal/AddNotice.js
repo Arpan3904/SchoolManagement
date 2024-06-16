@@ -104,7 +104,7 @@ const AddNotice = () => {
             onChange={(e) => setAdditionalInfo(e.target.value)}
           />
         </div>
-        <button type="submit">Save Notice</button>
+        <button type="submit" className='button-st'>Save Notice</button>
       </form>
     </div>
   );

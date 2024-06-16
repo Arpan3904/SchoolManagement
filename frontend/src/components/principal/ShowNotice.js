@@ -49,7 +49,7 @@ const ShowNotices = () => {
       )}
       {/* Conditionally render Add Notice button based on user role */}
       {userRole !== 'teacher' && userRole !== 'student' && (
-        <button className="add-notice-button" onClick={handleAddNotice}>Add Notice</button>
+        <button  className='button-st' onClick={handleAddNotice}>Add Notice</button>
       )}
     </div>
   );

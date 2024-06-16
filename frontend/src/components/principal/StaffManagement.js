@@ -53,7 +53,7 @@ const StaffManagement = () => {
   return (
     <div className="staff-management-container">
       <h2>Teacher Management</h2>
-      <Link to="/add-teacher" className="add-teacher-link">Add Teacher</Link>
+      <Link to="/add-teacher" className="button-st">Add Teacher</Link>
       <table className="teacher-table">
         <thead>
           <tr>
@@ -78,8 +78,8 @@ const StaffManagement = () => {
               <td>{teacher.email}</td>
               <td>{teacher.password}</td>
               <td>
-                <button onClick={() => sendEmail(teacher)}>Send Login Email</button>
-                <button onClick={() => sendSMS(teacher)}>Send Login SMS</button>
+                <button onClick={() => sendEmail(teacher)}>Send Mail</button>
+                <button onClick={() => sendSMS(teacher)}> Send SMS</button>
               </td>
             </tr>
           ))}

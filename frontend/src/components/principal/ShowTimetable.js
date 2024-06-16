@@ -137,10 +137,12 @@ const ShowTimetable = () => {
         )}
       </div>
       {/* Conditionally render Add Timetable button based on user role */}
-      {userRole !== 'student' && (
-        <button className="button-st" onClick={handleAddTimetable}>Add Timetable</button>
-      )}
-      <button className="button-st" onClick={handlePrint}>Print</button>
+      <div className="button-container">
+        {userRole !== 'student' && (
+          <button className="button-st" onClick={handleAddTimetable}>Add Timetable</button>
+        )}
+        <button className="button-st" onClick={handlePrint}>Print</button>
+      </div>
     </div>
   );
 };

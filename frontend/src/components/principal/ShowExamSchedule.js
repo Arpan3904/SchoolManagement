@@ -139,7 +139,7 @@ const ShowSchedule = () => {
                 <p>No upcoming exams found for the selected class.</p>
             )}
             {userRole === 'principal' && (
-                <button onClick={handleAddSchedule}>Add Schedule</button>
+                <button onClick={handleAddSchedule} className='button-st'>Add Schedule</button>
             )}
         </div>
     );

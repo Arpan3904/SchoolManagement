@@ -145,8 +145,9 @@ const AddSchedule = () => {
                 </tbody>
             </table>
             <br/><br/>
-            <button onClick={handleAddRow}>Add More Rows</button>
-            <button onClick={handleSubmit}>Submit</button>
+            <button onClick={handleAddRow} className='button-st'>Add More Rows</button>
+            <br />
+            <button onClick={handleSubmit} className='button-st'>Submit</button>
             {successMessage && <p className="success-message">{successMessage}</p>}
             {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>

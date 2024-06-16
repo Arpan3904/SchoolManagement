@@ -49,7 +49,7 @@ const AddFeesComponent = () => {
         <label className="form-label">Amount:</label>
         <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} className="form-input" />
         <br />
-        <button type="submit" className="submit-button">Add Fees</button>
+        <button type="submit" className="button-st">Add Fees</button>
       </form>
     </div>
   );

@@ -1,10 +1,6 @@
-/* ShowTimetable.css */
-
 .show-timetable-container {
-  
   margin: 0 auto;
   padding: 20px;
-  
 }
 
 .input-section {
@@ -68,6 +64,12 @@
   background-color: #f2f2f2;
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Ensures the buttons are spread out evenly */
+  margin-top: 20px;
+}
+
 .button-st {
   padding: 10px 20px;
   font-size: 16px;
@@ -77,13 +79,11 @@
   background-color: #040609;
   color: #fff;
   transition: background-color 0.3s ease;
-  margin-top: 10px;
 }
 
 .button-st:hover {
   background-color: #000000ba;
 }
-/* ShowTimetable.css */
 
 @media print {
   body * {
@@ -100,4 +100,3 @@
     top: 0;
   }
 }
-

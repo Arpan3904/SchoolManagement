@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/ShowFees.css'; // Import CSS file for styling
 
 const ShowFeesComponent = () => {
@@ -9,6 +9,7 @@ const ShowFeesComponent = () => {
   const [loading, setLoading] = useState(true);
   const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
   const userEmail = localStorage.getItem('email'); // Retrieve user email from localStorage
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFees = async () => {
@@ -44,14 +45,22 @@ const ShowFeesComponent = () => {
     ? fees.filter(fee => fee.className === studentClass)
     : fees;
 
+  const handleNavigateToStudentFeeStatus = () => {
+    navigate('/studentFeeStatus');
+  };
+
   return (
     <div className="fees-container">
       <h2 className="fees-heading">Fees Details</h2>
-      {userRole !== 'student' && (
-        <Link to="/add-fee" className="add-fee-link">
-          <button className="add-fee-button">Add Fees</button>
-        </Link>
-      )}
+      
+     
+        <button
+          className="button-st"
+          onClick={handleNavigateToStudentFeeStatus}
+        >
+          View Fee Status
+        </button>
+      
       {loading ? (
         <div className="loading-spinner"></div> // Add loading spinner while fetching data
       ) : (
@@ -71,6 +80,12 @@ const ShowFeesComponent = () => {
             ))}
           </tbody>
         </table>
+        
+      )}
+      {userRole !== 'student' && (
+        <Link to="/add-fee" className="add-fee-link">
+          <button className="add-fee-button">Add Fees</button>
+        </Link>
       )}
     </div>
   );

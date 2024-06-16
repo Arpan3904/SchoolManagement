@@ -5,8 +5,6 @@
     margin: 0 auto;
     padding: 20px;
     
-   
-   
   }
   
   .add-fees-heading {
@@ -45,5 +43,20 @@
   
   .submit-button:hover {
     background-color: #000000b4;
+  }
+
+  .button-st {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #040609;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-st:hover {
+    background-color: #000000ba;
   }
   

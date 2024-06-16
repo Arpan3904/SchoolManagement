@@ -253,7 +253,7 @@ const ShowPreviousExams = () => {
                             ))}
                         </tbody>
                     </table>
-                    <button onClick={handleSave}>Save</button>
+                    <button onClick={handleSave} className='button-st'>Save</button>
                 </div>
             )}
 
@@ -285,7 +285,7 @@ const ShowPreviousExams = () => {
                     ) : (
                         <p>No results available.</p>
                     )}
-                    <button onClick={() => setShowMarksForExam(false)}>Close</button>
+                    <button onClick={() => setShowMarksForExam(false)} className='button-st'>Close</button>
                 </div>
             )}
         </div>

@@ -1,12 +1,10 @@
 /* ShowMaterial.css */
 
 .show-material-container {
-    max-width: 800px;
+    
     margin: 0 auto;
     padding: 20px;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+  
 }
 
 h2 {
@@ -68,11 +66,3 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}

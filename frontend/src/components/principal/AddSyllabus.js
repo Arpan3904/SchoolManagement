@@ -91,7 +91,7 @@ const AddSyllabus = () => {
                     <label>Syllabus:</label>
                     <textarea value={syllabus} onChange={handleSyllabusChange} disabled={!selectedSubject}></textarea>
                 </div>
-                <button type="submit" className="submit-btn">Save Syllabus</button>
+                <button type="submit" className="button-st">Save Syllabus</button>
             </form>
         </div>
     );

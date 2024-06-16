@@ -1,13 +1,10 @@
 /* AddHomework.css */
 
 .add-homework-container {
-    max-width: 600px;
+    
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   
 }
 
 .add-homework-container h2 {
@@ -19,7 +16,7 @@
 .homework-form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    
 }
 
 .form-group {
@@ -38,11 +35,10 @@
 .form-group textarea,
 .react-datepicker-wrapper {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+  
     font-size: 16px;
     width: 100%;
-    box-sizing: border-box;
+   
 }
 
 .react-datepicker-wrapper {
@@ -58,25 +54,22 @@ textarea {
     resize: vertical;
 }
 
-.submit-button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
+.button-st {
+    padding: 10px 20px;
+    font-size: 16px;
     border: none;
     border-radius: 4px;
-    font-size: 16px;
     cursor: pointer;
+    background-color: #040609;
+    color: #fff;
     transition: background-color 0.3s ease;
-}
+  }
+  
+  .button-st:hover {
+    background-color: #000000ba;
+  }
 
-.submit-button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-}
 
-.submit-button:hover:not(:disabled) {
-    background-color: #0056b3;
-}
 
 .loading-spinner {
     display: flex;
@@ -100,13 +93,11 @@ textarea {
 /* AddHomework.css */
 
 .add-homework-container {
-    max-width: 600px;
+   
     margin: 0 auto;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+   
+    
 }
 
 .add-homework-container h2 {
@@ -152,3 +143,18 @@ textarea {
 .submit-button:disabled {
     background-color: #aaa;
 }
+
+.button-st {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #040609;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-st:hover {
+    background-color: #000000ba;
+  }

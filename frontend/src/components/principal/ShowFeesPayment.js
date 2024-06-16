@@ -85,7 +85,7 @@ const ShowFeePayment = () => {
                     <td>{student.rollNo}</td>
                     <td>{`${student.firstName} ${student.lastName}`}</td>
                     <td>
-                      <button className="view-details-button" onClick={() => handleStudentClick(student._id)}>View Details</button>
+                      <button className="button-st" onClick={() => handleStudentClick(student._id)}>View Details</button>
                     </td>
                   </tr>
                   {selectedStudent === student._id && (

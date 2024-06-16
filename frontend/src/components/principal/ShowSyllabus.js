@@ -105,7 +105,7 @@ const ShowSyllabus = () => {
                     <p>{syllabus}</p>
                 </div>
             )}
-            <button onClick={handleAddSyllabus}>Add Syllabus</button>
+            <button onClick={handleAddSyllabus} className="button-st">Add Syllabus</button>
         </div>
     );
 };

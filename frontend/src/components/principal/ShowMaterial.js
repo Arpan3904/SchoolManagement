@@ -110,18 +110,7 @@ const ShowMaterial = () => {
         </table>
       )}
       <button 
-        style={{
-          display: 'block',
-          margin: '20px auto',
-          padding: '10px 20px',
-          backgroundColor: '#007bff',
-          color: '#fff',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          fontSize: '16px',
-          textAlign: 'center'
-        }}
+        className='button-st'
         onClick={() => navigate('/add_material')}
       >
         Add Material

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import '../../styles/ShowSubject.css';
-import { FaTrash } from 'react-icons/fa'; // Importing the trash icon from React Icons
+import { FaTrash, FaPlus } from 'react-icons/fa'; // Importing the trash and plus icons from React Icons
 
 const ShowSubjects = () => {
   const [subjects, setSubjects] = useState([]);
@@ -68,12 +68,7 @@ const ShowSubjects = () => {
   return (
     <div className="subjects-container">
       <h2>Subjects</h2>
-      {/* Render the "Add Subject" button only if userRole is not "student" */}
-      {userRole !== 'student' && (
-        <button className="add-subject-button" onClick={navigateToAddSubject}>
-          Add Subject
-        </button>
-      )}
+     
 
       {/* Render the dropdown menu for selecting a class */}
       {userRole !== 'student' && (
@@ -86,7 +81,12 @@ const ShowSubjects = () => {
           ))}
         </select>
       )}
-
+       {/* Render the "+" button only if userRole is not "student" */}
+       {userRole !== 'student' && (
+        <button className="add-subject-button" onClick={navigateToAddSubject}>
+          <FaPlus className="add-icon" />
+        </button>
+      )}
       {/* Table to display subjects */}
       <table className="subjects-table">
         <thead>
@@ -113,6 +113,8 @@ const ShowSubjects = () => {
           ))}
         </tbody>
       </table>
+
+      
     </div>
   );
 };

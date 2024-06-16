@@ -48,7 +48,7 @@ const AddClass = () => {
         <input type="text" name="roomNo" value={formData.roomNo} onChange={handleChange} required />
         <label>Capacity:</label>
         <input type="number" name="capacity" value={formData.capacity} onChange={handleChange} required />
-        <button type="submit">Add Class</button>
+        <button type="submit" className='button-st'>Add Class</button>
       </form>
     </div>
   );

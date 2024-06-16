@@ -64,7 +64,7 @@ const ShowEvents = () => {
     <div className="events-container">
       <div className="events-header-container">
         <h1 className="events-header">Upcoming Events</h1>
-        <button style={addEventButtonStyle} onClick={handleAddEvent}>Add Event</button>
+        <button  className="button-st" onClick={handleAddEvent}>Add Event</button>
       </div>
       {error && <p>{error}</p>}
       {events.length === 0 ? (
@@ -80,7 +80,7 @@ const ShowEvents = () => {
                 <p><strong>End Date:</strong> {new Date(event.endDate).toLocaleString()}</p>
                 <p><strong>Location:</strong> {event.location}</p>
               </div>
-              <button className="cancel-button" onClick={() => handleCancelEvent(event._id)}>Cancel Event</button>
+              <button className="button-st" onClick={() => handleCancelEvent(event._id)}>Cancel Event</button>
             </li>
           ))}
         </ul>

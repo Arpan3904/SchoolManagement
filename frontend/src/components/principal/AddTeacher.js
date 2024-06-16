@@ -75,9 +75,9 @@ const AddTeacher = () => {
         <input type="text" value={contactNo} onChange={(e) => setContactNo(e.target.value)} required />
         <label>Email:</label>
         <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        <label>Photo:</label>
+        <label>Photo: (add below 50kb image)</label>
         <input type="file" accept="image/*" onChange={handlePhotoChange} />
-        <button type="submit">Add Teacher</button>
+        <button type="submit" className='button-st'>Add Teacher</button>
       </form>
     </div>
   );

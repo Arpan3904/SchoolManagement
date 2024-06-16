@@ -45,3 +45,37 @@ select, button {
     font-weight: bold;
     margin-top: 20px;
 }
+.add-timetable-container button {
+    background-color: #000000;
+    color: white;
+    
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 5px;
+    cursor: pointer;
+    
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-timetable-container button:hover {
+    background-color: #000000b5;
+  }
+
+
+  .button-st {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #040609;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-st:hover {
+    background-color: #000000ba;
+  }

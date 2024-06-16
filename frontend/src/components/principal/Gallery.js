@@ -37,8 +37,8 @@ const Gallery = () => {
       <div className="event-grid">
         {events.map(event => (
           <div key={event._id} className="event-card" onClick={() => handleViewImages(event._id)}>
-            <h2>{event.title}</h2>
-            <p>{event.description}</p>
+            <h2> {event.title}</h2>
+            <strong>{event.description}</strong>
             <div className="event-details">
               <p><strong>Start Date:</strong> {new Date(event.startDate).toLocaleString()}</p>
               <p><strong>End Date:</strong> {new Date(event.endDate).toLocaleString()}</p>

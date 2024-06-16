@@ -88,18 +88,8 @@ const AddMaterial = () => {
         </div>
         <button
           type="submit"
-          style={{
-            padding: '0.75rem',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '1rem',
-            transition: 'background-color 0.3s ease',
-          }}
-          onMouseOver={(e) => (e.target.style.backgroundColor = '#0056b3')}
-          onMouseOut={(e) => (e.target.style.backgroundColor = '#007bff')}
+          className='button-st'
+        
         >
           Add Material
         </button>

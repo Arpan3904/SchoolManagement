@@ -71,7 +71,7 @@ const Video = () => {
         ))}
       </div>
       <div className="add-button-container">
-        <button className="add-button" onClick={openAddVideoModal}>+</button>
+        <button className="button-st" onClick={openAddVideoModal}>+</button>
       </div>
       {showAddVideoModal && (
         <div className="modal-overlay">
@@ -92,8 +92,8 @@ const Video = () => {
               className="video-input"
             />
             <div className="modal-buttons">
-              <button className="add-video-button" onClick={addVideo}>Add Video</button>
-              <button className="cancel-button" onClick={closeAddVideoModal}>Cancel</button>
+              <button className="button-st" style={{margin:'5px'}} onClick={addVideo}>Add Video</button>
+              <button className="button-st" onClick={closeAddVideoModal}>Cancel</button>
             </div>
           </div>
         </div>

@@ -123,7 +123,7 @@ const AddStudent = () => {
                     </div>
                     {/* Photo Upload */}
                     <div className="horizontal-field">
-                        <label>Photo:</label>
+                        <label>Photo: (add below 50kb image)</label>
                         <input type="file" accept="image/*" onChange={handlePhotoChange} />
                     </div>
                 </div>

@@ -70,20 +70,20 @@ const NavigationBar = ({ userRole }) => {
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                <FontAwesomeIcon icon={faUserGraduate} size="2x" />
-                {isExpanded && 'Principal Dashboard'}
+                <FontAwesomeIcon icon={faUserGraduate} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Principal Dashboard'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/staff-management')}>
-                <FontAwesomeIcon icon={faUsers} size="2x" />
-                {isExpanded && 'Staff'}
+                <FontAwesomeIcon icon={faUsers} size="2x" style={{margin:'5px'}} />
+                {isExpanded && ' Staff'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/class-management')}>
-                <FontAwesomeIcon icon={faUserFriends} size="2x" />
-                {isExpanded && 'Students'}
+                <FontAwesomeIcon icon={faUserFriends} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Students'}
               </button>
             </li>
           </>
@@ -92,26 +92,26 @@ const NavigationBar = ({ userRole }) => {
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                <FontAwesomeIcon icon={faChalkboardTeacher} size="2x" />
-                {isExpanded && 'Teacher Dashboard'}
-              </button>
+                <FontAwesomeIcon icon={faChalkboardTeacher} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Teacher Dashboard'}
+              </button> 
             </li>
             <li>
               <button onClick={() => handleNavigation('/attendance')}>
-                <FontAwesomeIcon icon={faCalendarCheck} size="2x" />
-                {isExpanded && 'Attendance'}
+                <FontAwesomeIcon icon={faCalendarCheck} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Attendance'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/homework')}>
-                <FontAwesomeIcon icon={faTasks} size="2x" />
-                {isExpanded && 'Homework'}
+                <FontAwesomeIcon icon={faTasks} size="2x" style={{margin:'5px'}} />
+                {isExpanded && ' Homework'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/marks')}>
-                <FontAwesomeIcon icon={faChartLine} size="2x" />
-                {isExpanded && 'Marks'}
+                <FontAwesomeIcon icon={faChartLine} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Marks'}
               </button>
             </li>
           </>
@@ -120,20 +120,20 @@ const NavigationBar = ({ userRole }) => {
           <>
             <li>
               <button onClick={() => handleNavigation('/')}>
-                <FontAwesomeIcon icon={faGraduationCap} size="2x" />
-                {isExpanded && 'Student Dashboard'}
+                <FontAwesomeIcon icon={faGraduationCap} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Student Dashboard'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/marks')}>
-                <FontAwesomeIcon icon={faFileAlt} size="2x" />
-                {isExpanded && 'marks'}
+                <FontAwesomeIcon icon={faFileAlt} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' marks'}
               </button>
             </li>
             <li>
               <button onClick={() => handleNavigation('/attendance')}>
-                <FontAwesomeIcon icon={faClipboardCheck} size="2x" />
-                {isExpanded && 'Attendance'}
+                <FontAwesomeIcon icon={faClipboardCheck} size="2x" style={{margin:'5px'}}/>
+                {isExpanded && ' Attendance'}
               </button>
             </li>
           </>
@@ -141,7 +141,7 @@ const NavigationBar = ({ userRole }) => {
       </ul>
       <div className="logout-button">
         <button onClick={handleLogout}>
-          <FontAwesomeIcon icon={faSignOutAlt} size="2x" />
+          <FontAwesomeIcon icon={faSignOutAlt} size="2x" style={{margin:'5px'}} />
           {isExpanded && 'Logout'}
         </button>
       </div>

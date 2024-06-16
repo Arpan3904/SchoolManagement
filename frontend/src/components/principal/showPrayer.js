@@ -67,9 +67,9 @@ const Prayer = () => {
                 </td>
                 <td>
                   {editingDay === prayer.day ? (
-                    <button onClick={() => updatePrayer(prayer.day)} className={styles.button}>Save</button>
+                    <button onClick={() => updatePrayer(prayer.day)} className="button-st">Save</button>
                   ) : (
-                    <button onClick={() => { setEditingDay(prayer.day); setNewLink(prayer.link); }} className={styles.button}>Update</button>
+                    <button onClick={() => { setEditingDay(prayer.day); setNewLink(prayer.link); }} className="button-st">Update</button>
                   )}
                 </td>
               </tr>

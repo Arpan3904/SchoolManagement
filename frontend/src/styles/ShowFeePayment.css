@@ -65,3 +65,18 @@
 .fee-details-row {
     background-color: #f9f9f9;
 }
+
+.button-st {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #040609;
+    color: #fff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .button-st:hover {
+    background-color: #000000ba;
+  }

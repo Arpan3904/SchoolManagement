@@ -64,13 +64,11 @@ const SchoolDashboard = () => {
         <div className="dashboard-section">
           <h2>Administration Setup</h2>
           <div className="administration-setup">
-            {renderSectionCard('🏫', 'Class', '/class-management')}
+            
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
-            {renderSectionCard('💵', 'Fee', '/student-fee')}
-            {renderSectionCard('💵', 'Fee Status', '/studentFeeStatus')}
-            {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
+        
             
           </div>
         </div>
@@ -78,13 +76,16 @@ const SchoolDashboard = () => {
         <div className="dashboard-section">
           <h2>Students</h2>
           <div className="students-section">
-            {renderSectionCard('➕', 'Add Student', '/class-management')}
+            {renderSectionCard('🏫', 'Class', '/class-management')}
             {renderSectionCard('👨‍🎓', 'Student List', '/student-list')}
             {renderSectionCard('📋', 'Attendance', '/showattendance')}
+            {renderSectionCard('➕', 'Add Student', '/class-management')}
             {renderSectionCard('📝', 'Homework', '/homework')}
-            {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}
             {renderSectionCard('💯', 'Marks', '/marks')}
+            {renderSectionCard('💵', 'Fee', '/student-fee')}
+            {renderSectionCard('🎂', 'Birthday', '/birthday')}
+            
           </div>
         </div>
 
@@ -95,6 +96,8 @@ const SchoolDashboard = () => {
             {renderSectionCard('👨‍🏫', 'Teacher List', '/staff-management')}
             {renderSectionCard('📋', 'Attendance', '/teacher-attendance')}
             {renderSectionCard('🆔', 'Id Card', '/show-teacher-idcard')}
+            {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
+            {renderSectionCard('📑', 'Material', '/material')}
           </div>
         </div>
 
@@ -107,8 +110,8 @@ const SchoolDashboard = () => {
             {renderSectionCard('💬', 'Complain', '/complain')}
             {renderSectionCard('📅', 'Event', '/event')}
             {renderSectionCard('🙏', 'Prayer', '/prayer')}
-            {renderSectionCard('📑', 'Material', '/material')}
-            {renderSectionCard('🎂', 'Birthday', '/birthday')}
+            
+           
             {renderSectionCard('📼', 'Video', '/video')}
           </div>
         </div>

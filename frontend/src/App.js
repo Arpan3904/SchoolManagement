@@ -187,7 +187,7 @@ const AppContent = () => {
           <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
           <Route path="/prayer" element={<Prayer />} />
           <Route path="/birthday" element={<ShowStudentBirthday />} />
-          <Route path="/video" element={<ShowVideo />} />
+          <Route path="/video" element={<Video />} />
           <Route path="/material" element={<ShowMaterial />} />
           <Route path="/add_material" element={<AddMaterial />} />
           <Route path="/marks" element={<AddMarks />} />
@@ -221,7 +221,7 @@ const AppContent = () => {
           <Route path="/show-student-syllabus" element={<ShowStudentSyllabus />} />
           <Route path="/prayer" element={<Prayer />} />
           <Route path="/birthday" element={<ShowStudentBirthday />} />
-          <Route path="/video" element={<ShowVideo />} />
+          <Route path="/video" element={<Video />} />
           <Route path="/material" element={<ShowStudentMaterial />} />
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           <Route path="/marks" element={<AddMarks />} />

@@ -131,7 +131,7 @@ const ShowHomework = () => {
                 <tr key={student._id}>
                   <td>{student.firstName + " " + student.lastName}</td>
                   <td>
-                    <button className="button" onClick={() => handleStudentClick(student._id)}>View Homework</button>
+                    <button className="button-st" onClick={() => handleStudentClick(student._id)}>View Homework</button>
                   </td>
                 </tr>
               ))}
@@ -149,7 +149,7 @@ const ShowHomework = () => {
         ))}
       </div>
       <div>
-        <h3>Homework Details</h3>
+        
         {loading ? (
           <p>Loading...</p>
         ) : (
@@ -184,7 +184,7 @@ const ShowHomework = () => {
       <div>
         <button
           onClick={() => navigate('/add_homework')}
-          className="button"
+          className="button-st"
         >
           Add Homework
         </button>
