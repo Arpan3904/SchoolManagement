@@ -272,7 +272,7 @@ const Student = mongoose.model('Student', studentSchema);
 
 
 // Assuming you have already defined '/api/add-student' endpoint
-app.post('/api/add-student', async(req, res) => {
+app.post('/api/add-student', async (req, res) => {
     try {
         const { rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo } = req.body;
 
@@ -280,12 +280,48 @@ app.post('/api/add-student', async(req, res) => {
         const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo });
         await newStudent.save();
 
+        // Send credentials email to the student
+        await sendCredentialsEmail(newStudent);
+
         res.status(201).json(newStudent);
     } catch (error) {
         console.error('Error adding student:', error);
         res.status(500).json({ message: 'Failed to add student' });
     }
 });
+
+async function sendCredentialsEmail(student) {
+    try {
+        // Create a transporter using SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                user: 'arpanrupareliya238@gmail.com',
+                pass: 'tlzf jcgh xptg fqzl',
+            },
+        });
+
+        // Compose email
+        let mailOptions = {
+            from: '"Arpan Rupareliya" <arpanrupareliya238@gmail.com>',
+            to: student.email,
+            subject: 'Credentials',
+            text: `Hello ${student.firstName} ${student.lastName},\n\n` +
+                  `Credentials of your School:\n` +
+                  `Email ID: ${student.email}\n` +
+                  `Password: ${student.password}\n`,
+        };
+
+        // Send mail with defined transport object
+        let info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: %s', info.messageId);
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw new Error('Failed to send email');
+    }
+}
 
 
 app.get('/api/fetch-students', async(req, res) => {

@@ -100,7 +100,7 @@ const SchoolDashboard = () => {
         <div className="dashboard-section">
           <h2>Others</h2>
           <div className="others-section">
-           
+
             {renderSectionCard('🖼️', 'Gallery', '/gallery')}
             {renderSectionCard('🔔', 'Notice', '/notice')}
             {renderSectionCard('💬', 'Complain', '/complain')}
