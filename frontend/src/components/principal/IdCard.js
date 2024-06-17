@@ -11,10 +11,20 @@ const IDCard = () => {
   const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [barcodeData, setBarcodeData] = useState('');
+  const [schoolDetails, setSchoolDetails] = useState(null);
   const userRole = localStorage.getItem('userRole'); // Retrieve user role from localStorage
   const userEmail = localStorage.getItem('email'); // Retrieve user email from localStorage
 
   useEffect(() => {
+    const fetchSchoolDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/school-details');
+        setSchoolDetails(response.data);
+      } catch (error) {
+        console.error('Error fetching school details:', error);
+      }
+    };
+
     const fetchClasses = async () => {
       try {
         const response = await axios.get('http://localhost:5000/api/fetch-class');
@@ -35,6 +45,8 @@ const IDCard = () => {
         console.error('Error fetching student details:', error);
       }
     };
+
+    fetchSchoolDetails();
 
     if (userRole === 'student' && userEmail) {
       fetchStudentDetails(userEmail);
@@ -80,21 +92,42 @@ const IDCard = () => {
       return (
         <div className="id-card">
           <div className="front-side">
-            <div className="photo-section">
-              <img src={selectedStudent.photo || 'https://via.placeholder.com/150'} alt="Student Photo" />
+            <div className="header">
+              {schoolDetails && (
+                <>
+                  <img src={schoolDetails.schoolLogo} alt="School Logo" className="school-logo" />
+                  <h2 style={{marginRight:'120px',fontSize:'35px'}}>{schoolDetails.schoolName}</h2>
+                </>
+              )}
+               
             </div>
-            <div className="info-section">
-              <p><strong>Name:</strong> {selectedStudent.firstName} {selectedStudent.middleName} {selectedStudent.lastName}</p>
-              <p><strong>Gender:</strong> {selectedStudent.gender}</p>
-              <p><strong>Contact No:</strong> {selectedStudent.contactNo}</p>
-              <p><strong>Email:</strong> {selectedStudent.email}</p>
+            
+            <h3 className="id-card-title"><u>IDENTITY CARD</u></h3>
+            <div className="content">
+              <div className="photo-section">
+                <img src={selectedStudent.photo || 'https://via.placeholder.com/150'} alt="Student Photo" />
+              </div>
+             
+              <div className="info-section">
+                <p><strong>Name:</strong> {selectedStudent.firstName} {selectedStudent.middleName} {selectedStudent.lastName}</p>
+                <p><strong>DOB:</strong> {formatDate(selectedStudent.birthdate)}</p>
+                {schoolDetails && <p><strong>School Address:</strong> {schoolDetails.schoolAddress}</p>}
+                <p><strong>Phone Number:</strong> {selectedStudent.contactNo}</p>
+                <p><strong>Email:</strong> {selectedStudent.email}</p>
+              </div>
             </div>
           </div>
           <div className="back-side">
-            <p><strong>Birthdate:</strong> {formatDate(selectedStudent.birthdate)}</p>
-            <p><strong>Child UID:</strong> {selectedStudent.childUid}</p>
-            <p><strong>Principal:</strong> {selectedStudent.principal}</p>
-            <div className="barcode-scanner">
+            <div className="terms-conditions">
+              <h4>Terms and Conditions</h4>
+              <ul>
+                <li>This card is the property of the school.</li>
+                <li>Loss of the card must be reported immediately.</li>
+                <li>Misuse of the card will result in disciplinary action.</li>
+                <li>This card must be carried at all times within the school premises.</li>
+              </ul>
+            </div>
+            <div className="barcode-section">
               <canvas id="barcodeCanvas"></canvas>
             </div>
           </div>
@@ -161,7 +194,7 @@ const IDCard = () => {
       {generateIDCardContent()}
 
       {selectedStudent && (
-        <button onClick={downloadIDCard}>Download ID Card</button>
+        <button className="button-st" onClick={downloadIDCard}>Download ID Card</button>
       )}
     </div>
   );

@@ -48,15 +48,26 @@ router.get('/fetch-attendance', async (req, res) => {
 });
 
 // Fetch attendance by studentId
-router.get('/fetch-attendance-by-studentId', async (req, res) => {
+router.get('/api/fetch-attendance-by-teacherId', async(req, res) => {
     try {
+        const { teacherId } = req.query;
+        const attendance = await Attendance.find({ teacherId });
+        res.status(200).json(attendance);
+    } catch (error) {
+        console.error('Error fetching attendance:', error);
+        res.status(500).json({ message: 'Failed to fetch attendance' });
+    }
+});
+router.get('/fetch-attendance-by-studentId', async(req, res) => {
+    try {
+        console.log("hphp");
         const { studentId } = req.query;
         const attendance = await Attendance.find({ 'students.studentId': studentId });
         res.status(200).json(attendance);
     } catch (error) {
-        console.error('Error fetching attendance by studentId:', error);
+        console.error('Error fetching attendance:', error);
         res.status(500).json({ message: 'Failed to fetch attendance' });
     }
-});
+  });
 
 module.exports = router;

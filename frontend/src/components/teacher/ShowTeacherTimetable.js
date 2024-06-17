@@ -77,19 +77,23 @@ const ShowTimetable = () => {
               })}
             </tbody>
           </table>
-          {timetable.periods.length === 0 && (
+          {timetable.periods.length === 0 && selectedDate && (
             <div className="funny-message">
               <p>Yeah, you are free! 😄</p>
             </div>
           )}
         </div>
       ) : (
-        <>
-        <p>No timetable available for the selected date.</p>
-        <div className="funny-message">
+        selectedDate ? (
+          <>
+            <p>No timetable available for the selected date.</p>
+            <div className="funny-message">
               <p>Yeah, you are free! 😄</p>
             </div>
           </>
+        ) : (
+          <p>Please select a date to view the timetable.</p>
+        )
       )}
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/ShowClass.css'; // Import CSS file for ClassList styling
+
 const ClassList = () => {
   const navigate = useNavigate();
   const [classes, setClasses] = useState([]);
@@ -23,6 +24,7 @@ const ClassList = () => {
     const storedUserRole = localStorage.getItem('userRole');
     setUserRole(storedUserRole);
   }, []);
+
   const handleClassClick = (classId) => {
     navigate(`/class/${classId}/student-management`);
   };
@@ -50,13 +52,14 @@ const ClassList = () => {
       <h2>Classes</h2>
       <div className="class-list">
         {classes.map((classDetails, index) => (
-          
           <div key={index} className="class-card">
-            <input
-              type="checkbox"
-              checked={selectedClasses.includes(classDetails._id)}
-              onChange={() => handleCheckboxChange(classDetails._id)}
-            />
+            {userRole === 'principal' && (
+              <input
+                type="checkbox"
+                checked={selectedClasses.includes(classDetails._id)}
+                onChange={() => handleCheckboxChange(classDetails._id)}
+              />
+            )}
             <div onClick={() => handleClassClick(classDetails._id)}>
               <h3>{classDetails.className}</h3>
               <p><strong>Teacher:</strong> {classDetails.classTeacher}</p>
@@ -68,7 +71,6 @@ const ClassList = () => {
       </div>
       {/* Render the "Add Class" button only if userRole is not "teacher" */}
       {userRole !== 'teacher' && (
-        
         <div className="button-container">
           <button className="add-class-button" onClick={() => navigate('/add-class')}>
             Add Class
@@ -83,4 +85,5 @@ const ClassList = () => {
     </div>
   );
 };
+
 export default ClassList;

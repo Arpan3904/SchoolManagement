@@ -26,7 +26,7 @@ const StudentDashboard = () => {
           <div className="administration-setup">
             {renderSectionCard('📚', 'Subject', '/subject-management')}
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
-            {renderSectionCard('💵', 'Fee', '/student-fee')}
+          
             {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             
           </div>
@@ -35,12 +35,14 @@ const StudentDashboard = () => {
         <div className="dashboard-section">
           <h2>Student Activities</h2>
           <div className="students-section">
-            {renderSectionCard('📋', 'Attendance', '/attendance')}
+            {/* {renderSectionCard('📋', 'Attendance', '/attendance')} */}
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('💵', 'Fee', '/student-fee')}
             {renderSectionCard('🆔', 'ID Card', '/idcard')}
             {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
-            {renderSectionCard('💯', 'Marks', '/marks')}
+            {/* {renderSectionCard('💯', 'Marks', '/marks')} */}
+            {renderSectionCard('📑', 'Material', '/material')}
+            {renderSectionCard('🔔', 'Notice', '/notice')}
           </div>
         </div>
 
@@ -49,11 +51,11 @@ const StudentDashboard = () => {
           <div className="others-section">
            
             {renderSectionCard('🖼️', 'Gallery', '/gallery')}
-            {renderSectionCard('🔔', 'Notice', '/notice')}
+           
             {renderSectionCard('💬', 'Complain', '/complain')}
             {renderSectionCard('📅', 'Event', '/event')}
             {renderSectionCard('🙏', 'Prayer', '/prayer')}
-            {renderSectionCard('📑', 'Material', '/material')}
+           
             {renderSectionCard('🎂', 'Birthday', '/birthday')}
             {renderSectionCard('📼', 'Video', '/video')}
           </div>

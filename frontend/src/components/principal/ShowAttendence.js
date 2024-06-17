@@ -139,24 +139,24 @@ const TakeAttendance = () => {
                             </tr>
                         </thead>
                         <TransitionGroup component="tbody">
-                            {students.map(student => (
-                                <CSSTransition key={student._id} timeout={500} classNames="fade">
-                                    <tr>
-                                        <td>{student.firstName} {student.lastName}</td>
-                                        <td>
-                                            <label className="switch">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={attendance[student._id] || false}
-                                                    onChange={() => handleAttendanceChange(student._id)}
-                                                />
-                                                <span className="slider round"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
-                                </CSSTransition>
-                            ))}
-                        </TransitionGroup>
+                        {students.map(student => (
+                            <CSSTransition key={student._id} timeout={500} classNames="fade">
+                                <tr>
+                                    <td>{student.firstName} {student.lastName}</td>
+                                    <td>
+                                        <label className="switch">
+                                            <input
+                                                type="checkbox"
+                                                checked={attendance[student._id] || false}
+                                                onChange={() => handleAttendanceChange(student._id)}
+                                            />
+                                            <span className="slider"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </CSSTransition>
+                        ))}
+                    </TransitionGroup>
                     </table>
                 </div>
             </CSSTransition>
@@ -172,7 +172,7 @@ const TakeAttendance = () => {
                     </div>
                 </CSSTransition>
             )}
-            <button onClick={handleSubmit} className="submit-btn">Save Attendance</button>
+            <button onClick={handleSubmit} className="button-st">Save Attendance</button>
         </div>
     );
 };

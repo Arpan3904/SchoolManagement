@@ -24,12 +24,13 @@ const TeacherDashboard = () => {
         <div className="dashboard-section">
           <h2>Personal Management</h2>
           <div className="administration-setup">
-            {renderSectionCard('🏫', 'Class', '/class-management')}
-            {renderSectionCard('📚', 'Subject', '/subject-management')}
+            
+          
             {renderSectionCard('⏰', 'Timetable', '/timetable-management')}
-            {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
-            {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
-
+            
+            {renderSectionCard('📋', 'Attendance', 'show-teacher-attendance')}
+            
+            {renderSectionCard('🆔', 'Id Card', '/show-teacher-idcard')}
           </div>
         </div>
 
@@ -39,9 +40,16 @@ const TeacherDashboard = () => {
             {renderSectionCard('➕', 'Add Student', '/class-management')}
             {renderSectionCard('👨‍🎓', 'Student List', '/student-list')}
             {renderSectionCard('📋', 'Student Attendance', '/attendance')}
+            {renderSectionCard('🏫', 'Class', '/class-management')}
+            {renderSectionCard('📚', 'Subject', '/subject-management')}
+            {renderSectionCard('💯', 'Marks', '/marks')}
+            {renderSectionCard('📝', 'Exam Schedule', '/show-exam-schedule')}
+            {renderSectionCard('📜', 'Syllabus', '/show-syllabus')}
             {renderSectionCard('📝', 'Homework', '/homework')}
             {renderSectionCard('🆔', 'Student Id Card', '/idcard')}
-            {renderSectionCard('💯', 'Marks', '/marks')}
+            {renderSectionCard('📑', 'Material', '/material')}
+            {renderSectionCard('🎂', 'Birthday', '/birthday')}
+            
           </div>
         </div>
 
@@ -54,8 +62,8 @@ const TeacherDashboard = () => {
             {renderSectionCard('💬', 'Complain', '/complain')}
             {renderSectionCard('📅', 'Event', '/event')}
             {renderSectionCard('🙏', 'Prayer', '/prayer')}
-            {renderSectionCard('📑', 'Material', '/material')}
-            {renderSectionCard('🎂', 'Birthday', '/birthday')}
+            
+            
             {renderSectionCard('📼', 'Video', '/video')}
           </div>
         </div>

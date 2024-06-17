@@ -7,8 +7,11 @@ const Prayer = () => {
   const [editingDay, setEditingDay] = useState(null);
   const [newLink, setNewLink] = useState('');
   const [loading, setLoading] = useState(false);
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
+    const role = localStorage.getItem('userRole');
+    setUserRole(role);
     fetchPrayers();
   }, []);
 
@@ -46,7 +49,7 @@ const Prayer = () => {
             <tr>
               <th>Day</th>
               <th>Prayer Link</th>
-              <th>Action</th>
+              {userRole !== 'student' && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -65,13 +68,15 @@ const Prayer = () => {
                     <a href={prayer.link} target="_blank" rel="noopener noreferrer">{prayer.link}</a>
                   )}
                 </td>
-                <td>
-                  {editingDay === prayer.day ? (
-                    <button onClick={() => updatePrayer(prayer.day)} className="button-st">Save</button>
-                  ) : (
-                    <button onClick={() => { setEditingDay(prayer.day); setNewLink(prayer.link); }} className="button-st">Update</button>
-                  )}
-                </td>
+                {userRole !== 'student' && (
+                  <td>
+                    {editingDay === prayer.day ? (
+                      <button onClick={() => updatePrayer(prayer.day)} className="button-st">Save</button>
+                    ) : (
+                      <button onClick={() => { setEditingDay(prayer.day); setNewLink(prayer.link); }} className="button-st">Update</button>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>

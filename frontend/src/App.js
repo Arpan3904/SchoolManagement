@@ -8,6 +8,7 @@ import TeacherDashboard from './components/teacher/TeacherDashboard';
 import StudentDashboard from './components/student/StudentDashboard';
 import AssignmentList from './components/student/AssignmentList';
 import ShowTeacherAttendance from './components/teacher/ShowTeacherAttendance';
+import TeacherAtt from './components/principal/TeacherAtt';
 import NavigationBar from './components/NavigationBar';
 import AddTeacher from './components/principal/AddTeacher';
 import AddClass from './components/principal/AddClass';
@@ -50,10 +51,10 @@ import TeacherAttendance from './components/teacher/ShowTeacherAttendance';
 import Prayer from './components/principal/showPrayer';
 import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
 import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
-import TeacherIDCard from './components/teacher/TeacherIdCard';
+
 import ShowStudentMaterial from './components/student/ShowStudentMaterial';
 // import Prayer from './components/principal/showPrayer';
-// import TeacherAttendance from './components/teacher/ShowTeacherAttendance';
+
 import ShowTeacherIdCard from './components/teacher/TeacherIdCard';
 // import ShowStudentBirthday from './components/principal/ShowStudentBirthday';
 // import ShowStudentSyllabus from './components/student/ShowStudentSyllabus';
@@ -64,6 +65,7 @@ import ShowStudentFees from './components/student/ShowStudentFees';
 import ShowFeePayment from './components/principal/ShowFeesPayment';
 import Birthday from './components/principal/ShowStudentBirthday';
 import ShowSchoolDetails from './components/ShowSchoolDetails';
+
 
 const App = () => {
   const [userRole, setUserRole] = useState('');
@@ -150,7 +152,8 @@ const AppContent = () => {
             <Route path="/studentFeeStatus" element={<ShowFeePayment />} />
             <Route path="/birthday" element={<Birthday />} />
             <Route path="/show-school-details" element={<ShowSchoolDetails />} />
-
+            <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
+            <Route path="/teacher-attendance" element={<TeacherAtt />} />
 
           </>
         )}
@@ -181,7 +184,7 @@ const AppContent = () => {
           <Route path="/event" element={<ShowTeacherEvents />} />
           <Route path="/notice" element={<ShowNotices />} />
           <Route path="/show-teacher-attendance" element={<ShowTeacherAttendance />} />
-          <Route path="/show-teacher-idcard" element={<TeacherIDCard />} />
+          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
           <Route path="/homework" element={<ShowHomework />} />
           <Route path="/add_homework" element={<AddHomework />} />
           <Route path="/showImages/:eventId" element={<ShowGalleryImages />} />
@@ -194,7 +197,7 @@ const AppContent = () => {
           <Route path="/show-exam-schedule" element={<ShowExamSchedule />} />
           <Route path="/birthday" element={<Birthday />} />
           <Route path="/show-school-details" element={<ShowSchoolDetails />} />
-
+          <Route path="/show-teacher-idcard" element={<ShowTeacherIdCard />} />
 
           
           </>

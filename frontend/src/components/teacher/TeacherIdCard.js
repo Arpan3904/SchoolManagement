@@ -6,60 +6,118 @@ import moment from 'moment';
 import '../../styles/IDCard.css';
 
 const TeacherIDCard = () => {
-  const [teacher, setTeacher] = useState(null);
+  const [teachers, setTeachers] = useState([]);
+  const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [barcodeData, setBarcodeData] = useState('');
+  const [schoolDetails, setSchoolDetails] = useState(null);
+  const userRole = localStorage.getItem('userRole');
   const email = localStorage.getItem('email');
 
   useEffect(() => {
-    
-    axios.get('http://localhost:5000/api/fetch-teacher-by-email', {
-      params: { email }
-    })
-    .then(response => {
-      setTeacher(response.data);
+    const fetchSchoolDetails = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/school-details');
+        setSchoolDetails(response.data);
+      } catch (error) {
+        console.error('Error fetching school details:', error);
+      }
+    };
+
+    const fetchTeachers = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/fetch-teachers');
+        setTeachers(response.data);
+      } catch (error) {
+        console.error('Error fetching teachers:', error);
+      }
+    };
+
+    fetchSchoolDetails();
+    if (userRole === 'teacher') {
+      fetchTeacherDetails();
+    } else {
+      fetchTeachers();
+    }
+  }, [userRole, email]);
+
+  const fetchTeacherDetails = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/fetch-teacher-by-email', {
+        params: { email }
+      });
+      setSelectedTeacher(response.data);
       setBarcodeData(response.data.contactNo.toString());
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error fetching teacher:', error);
-    });
-  }, [email]);
+    }
+  };
+
+  const handleTeacherSelect = (event) => {
+    const selectedTeacherId = event.target.value;
+    const teacher = teachers.find(teacher => teacher._id === selectedTeacherId);
+    setSelectedTeacher(teacher);
+
+    if (teacher) {
+      setBarcodeData(teacher.contactNo.toString());
+    }
+  };
 
   const formatDate = (date) => {
     return moment(date).format('DD/MM/YYYY');
   };
 
   const generateIDCardContent = () => {
-    if (teacher) {
+    if (selectedTeacher) {
       return (
         <div className="id-card">
           <div className="front-side">
-            <div className="photo-section">
-              <img src={teacher.photo || 'https://via.placeholder.com/150'} alt="Teacher Photo" />
+            <div className="header">
+              {schoolDetails && (
+                <>
+                  <img src={schoolDetails.schoolLogo} alt="School Logo" className="school-logo" />
+                  <h2 style={{ marginRight: '120px', fontSize: '35px' }}>{schoolDetails.schoolName}</h2>
+                </>
+              )}
             </div>
-            <div className="info-section">
-              <p><strong>Name:</strong> {teacher.firstName} {teacher.lastName}</p>
-              <p><strong>Degree:</strong> {teacher.degree}</p>
-              <p><strong>Subject:</strong> {teacher.subject}</p>
-              <p><strong>Contact No:</strong> {teacher.contactNo}</p>
-              <p><strong>Email:</strong> {teacher.email}</p>
+            <hr />
+            <h3 className="id-card-title"><u>IDENTITY CARD</u></h3>
+            <div className="content">
+              <div className="photo-section">
+                <img src={selectedTeacher.photo || 'https://via.placeholder.com/150'} alt="Teacher Photo" />
+              </div>
+              <div className="info-section">
+                <p><strong>Name:</strong> {selectedTeacher.firstName} {selectedTeacher.lastName}</p>
+                <p><strong>Degree:</strong> {selectedTeacher.degree}</p>
+                <p><strong>Subject:</strong> {selectedTeacher.subject}</p>
+                {schoolDetails && <p><strong>School Address:</strong> {schoolDetails.schoolAddress}</p>}
+                <p><strong>Contact No:</strong> {selectedTeacher.contactNo}</p>
+                <p><strong>Email:</strong> {selectedTeacher.email}</p>
+              </div>
             </div>
           </div>
           <div className="back-side">
-            <p><strong>User Role:</strong> {teacher.userRole}</p>
-            <p><strong>Principal:</strong> {teacher.principal}</p>
-            <div className="barcode-scanner">
+            <div className="terms-conditions">
+              <h4>Terms and Conditions</h4>
+              <ul>
+                <li>This card is the property of the school.</li>
+                <li>Loss of the card must be reported immediately.</li>
+                <li>Misuse of the card will result in disciplinary action.</li>
+                <li>This card must be carried at all times within the school premises.</li>
+              </ul>
+            </div>
+            <div className="barcode-section">
               <canvas id="barcodeCanvas"></canvas>
             </div>
           </div>
         </div>
       );
     } else {
-      return <p>Loading teacher data...</p>;
+      return <p>Select a teacher to view ID card</p>;
     }
   };
 
   useEffect(() => {
-    if (barcodeData && teacher) {
+    if (barcodeData && selectedTeacher) {
       const canvas = document.getElementById('barcodeCanvas');
       bwipjs.toCanvas(canvas, {
         bcid: 'code128',
@@ -70,7 +128,7 @@ const TeacherIDCard = () => {
         textxalign: 'center'
       });
     }
-  }, [barcodeData, teacher]);
+  }, [barcodeData, selectedTeacher]);
 
   const downloadIDCard = () => {
     const idCardContent = document.querySelector('.id-card');
@@ -87,10 +145,24 @@ const TeacherIDCard = () => {
 
   return (
     <div className="id-card-container">
-      <h2>Teacher ID Card</h2>
+      {userRole !== 'teacher' && (
+        <>
+          <h2>Select Teacher:</h2>
+          <select onChange={handleTeacherSelect}>
+            <option value="">Select Teacher</option>
+            {teachers.map(teacher => (
+              <option key={teacher._id} value={teacher._id}>
+                {teacher.firstName} {teacher.lastName}
+              </option>
+            ))}
+          </select>
+        </>
+      )}
+
       {generateIDCardContent()}
-      {teacher && (
-        <button onClick={downloadIDCard}>Download ID Card</button>
+
+      {selectedTeacher && (
+        <button className="button-st" onClick={downloadIDCard}>Download ID Card</button>
       )}
     </div>
   );

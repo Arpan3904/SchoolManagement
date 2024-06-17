@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../../styles/ShowHomework.css'; 
+import '../../styles/ShowHomework.css';
 
 const ShowHomework = () => {
   const [date, setDate] = useState('');
   const [classes, setClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState('');
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [homeworkDetails, setHomeworkDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [subjects, setSubjects] = useState([]);
-  const [selectedSubject, setSelectedSubject] = useState('');
-  const [filteredHomeworkDetails, setFilteredHomeworkDetails] = useState([]);
   const [error, setError] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState(null); // State to keep track of selected subject
 
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchClasses();
   }, []);
+
+  useEffect(() => {
+    if (selectedClass && date) {
+      fetchHomeworkDetails();
+    }
+  }, [selectedClass, date]);
 
   const fetchClasses = async () => {
     try {
@@ -45,23 +49,10 @@ const ShowHomework = () => {
     }
   };
 
-  const fetchSubjects = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/subjects?class=${selectedClass}`);
-      setSubjects(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching subjects:', error);
-      setLoading(false);
-      setError('An error occurred while fetching subjects.');
-    }
-  };
-
   const fetchHomeworkDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/homeworkDetails?studentId=${selectedStudent}&date=${date}&class=${selectedClass}`);
+      const response = await axios.get(`http://localhost:5000/api/homeworkDetails?date=${date}&class=${selectedClass}`);
       setHomeworkDetails(response.data);
       setLoading(false);
     } catch (error) {
@@ -71,26 +62,42 @@ const ShowHomework = () => {
     }
   };
 
-  const handleStudentClick = async (studentId) => {
-    setSelectedStudent(studentId);
+  const handleStudentClick = (student) => {
+    setSelectedStudent(selectedStudent && selectedStudent._id === student._id ? null : student);
   };
 
-  useEffect(() => {
-    if (selectedStudent) {
-      fetchSubjects();
-      fetchHomeworkDetails();
-    }
-  }, [selectedStudent]); // Run when selectedStudent changes
-
-  const handleSubjectClick = (subjectId) => {
-    setSelectedSubject(subjectId);
-    const filteredHomework = homeworkDetails.filter(homework => homework.subjectId === subjectId);
-    setFilteredHomeworkDetails(filteredHomework);
+  const getSubjectsFromHomework = () => {
+    const subjects = [];
+    homeworkDetails.forEach(homework => {
+      if (!subjects.some(subject => subject._id === homework.subjectId)) {
+        subjects.push({
+          _id: homework.subjectId,
+          subjectName: homework.subjectName
+        });
+      }
+    });
+    return subjects;
   };
 
   const getSubjectCompletionStatus = (subjectId) => {
-    const homework = homeworkDetails.find(homework => homework.subjectId === subjectId);
-    return homework ? 'Completed' : 'Incomplete';
+    const homeworkForSubject = homeworkDetails.filter(homework => homework.subjectId === subjectId);
+    if (homeworkForSubject.length === 0) {
+      return 'No Homework Given';
+    }
+
+    const studentSubmission = homeworkForSubject.find(homework => 
+      homework.submissions.some(submission => submission.studentId._id === selectedStudent._id)
+    );
+    if (!studentSubmission) {
+      return 'Incomplete';
+    }
+
+    const submissionStatus = studentSubmission.submissions.find(submission => submission.studentId._id === selectedStudent._id).isPending ? 'Pending' : 'Completed';
+    return submissionStatus;
+  };
+
+  const handleClickSubject = (subjectId) => {
+    setSelectedSubject(selectedSubject === subjectId ? null : subjectId);
   };
 
   return (
@@ -105,7 +112,7 @@ const ShowHomework = () => {
         <label className="label">Class:</label>
         <select className="selectClass" value={selectedClass} onChange={(e) => {
           setSelectedClass(e.target.value);
-          fetchStudents(e.target.value); // Fetch students when class changes
+          fetchStudents(e.target.value);
         }}>
           <option value="">Select Class</option>
           {classes.map((classItem) => (
@@ -118,6 +125,8 @@ const ShowHomework = () => {
       <div>
         {loading ? (
           <p>Loading...</p>
+        ) : homeworkDetails.length === 0 ? (
+          <p>No Homework Given</p>
         ) : (
           <table className="table">
             <thead>
@@ -128,57 +137,56 @@ const ShowHomework = () => {
             </thead>
             <tbody>
               {students.map((student) => (
-                <tr key={student._id}>
-                  <td>{student.firstName + " " + student.lastName}</td>
-                  <td>
-                    <button className="button-st" onClick={() => handleStudentClick(student._id)}>View Homework</button>
-                  </td>
-                </tr>
+                <React.Fragment key={student._id}>
+                  <tr>
+                    <td>{student.firstName + " " + student.lastName}</td>
+                    <td>
+                      <button className="button-st" onClick={() => handleStudentClick(student)}>View Homework</button>
+                    </td>
+                  </tr>
+                  {selectedStudent && selectedStudent._id === student._id && (
+                    <tr>
+                      <td colSpan="2">
+                        <div>
+                          {getSubjectsFromHomework().map((subject) => (
+                            <div key={subject._id}>
+                              <button className="subjectButton" onClick={() => handleClickSubject(subject._id)}>
+                                {subject.subjectName} - {getSubjectCompletionStatus(subject._id)}
+                              </button>
+                              {selectedSubject === subject._id && getSubjectCompletionStatus(subject._id) === 'Completed' && (
+                                <div>
+                                  <table className="table">
+                                    <thead>
+                                      <tr>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Question Link</th>
+                                        <th>Submission Status</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      {homeworkDetails.filter(homework => homework.subjectId === subject._id && homework.submissions.some(submission => submission.studentId._id === selectedStudent._id)).map((assignment) => (
+                                        <tr key={assignment._id}>
+                                          <td>{assignment.title}</td>
+                                          <td>{assignment.description}</td>
+                                          <td><a href={assignment.questionLink} target="_blank" rel="noopener noreferrer">View</a></td>
+                                          <td>{assignment.submissions.find(submission => submission.studentId._id === selectedStudent._id).isPending ? 'Pending' : 'Completed'}</td>
+                                        </tr>
+                                      ))}
+                                    </tbody>
+                                  </table>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
               ))}
             </tbody>
           </table>
-        )}
-      </div>
-      <div>
-        {subjects.map((subject) => (
-          <div key={subject._id}>   
-            <button className="subjectButton" onClick={() => handleSubjectClick(subject._id)}>
-              {subject.subjectName} - {getSubjectCompletionStatus(subject._id)}
-            </button>
-          </div>
-        ))}
-      </div>
-      <div>
-        
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <div>
-            {filteredHomeworkDetails.length === 0 ? (
-              <p className="noData">No homework details available.</p>
-            ) : (
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Question Link</th>
-                    <th>Submission Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredHomeworkDetails.map((assignment) => (
-                    <tr key={assignment._id}>
-                      <td>{assignment.title}</td>
-                      <td>{assignment.description}</td>
-                      <td><a href={assignment.questionLink} target="_blank" rel="noopener noreferrer">View</a></td>
-                      <td>{assignment.submissions.length > 0 ? (assignment.submissions[0].isPending ? 'Pending' : 'Completed') : 'N/A'}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
         )}
       </div>
       <div>
@@ -186,7 +194,7 @@ const ShowHomework = () => {
           onClick={() => navigate('/add_homework')}
           className="button-st"
         >
-          Add Homework
+          Add Homework 
         </button>
       </div>
     </div>

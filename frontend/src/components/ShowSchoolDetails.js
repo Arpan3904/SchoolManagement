@@ -110,8 +110,8 @@ const ShowSchoolDetails = () => {
             />
           </div>
           <div className="button-group">
-            <button className="update-button" onClick={handleUpdate}>Update</button>
-            <button className="cancel-button" onClick={() => setIsEditing(false)}>Cancel</button>
+            <button className="button-st" onClick={handleUpdate}>Update</button>
+            <button className="button-st" style={{backgroundColor:"gray"}} onClick={() => setIsEditing(false)}>Cancel</button>
           </div>
         </div>
       ) : (
@@ -122,14 +122,14 @@ const ShowSchoolDetails = () => {
             </div>
           )}
           <div className="details-group">
-            <p><strong>School Name:</strong> {schoolDetails.schoolName}</p>
+            <span><p><strong>School Name:</strong> {schoolDetails.schoolName}</p></span>
             <p><strong>School Email:</strong> {schoolDetails.schoolEmail}</p>
             <p><strong>School Address:</strong> {schoolDetails.schoolAddress}</p>
             <p><strong>School Contact No:</strong> {schoolDetails.schoolContactNo}</p>
             {/* <p><strong>Principal Email:</strong> {schoolDetails.principalEmail}</p> */}
           </div>
           {userRole === 'principal' && (
-            <button className="edit-button" onClick={() => setIsEditing(true)}>Edit</button>
+            <button className="button-st" onClick={() => setIsEditing(true)}>Edit</button>
           )}        </div>
       )}
     </div>

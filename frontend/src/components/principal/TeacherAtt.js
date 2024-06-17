@@ -149,7 +149,7 @@ const TakeTeacherAttendance = () => {
                     </div>
                 </CSSTransition>
             )}
-            <button onClick={handleSubmit} className="submit-btn">Save Attendance</button>
+            <button onClick={handleSubmit} className="button-st">Save Attendance</button>
         </div>
     );
 };

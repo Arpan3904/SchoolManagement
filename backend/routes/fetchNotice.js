@@ -15,5 +15,16 @@ router.get('/fetchNotice', async(req, res) => {
     }
 });
 
+router.delete('/deleteNotice/:id', async(req, res) => {
+    try {
+        const noticeId = req.params.id;
+        await Notice.findByIdAndDelete(noticeId);
+        res.status(200).json({ success: true, message: 'Notice deleted successfully.' });
+    } catch (error) {
+        console.error('Error deleting notice:', error);
+        res.status(500).json({ success: false, message: 'Failed to delete notice.' });
+    }
+});
+
 
 module.exports = router;

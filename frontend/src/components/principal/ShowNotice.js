@@ -27,6 +27,16 @@ const ShowNotices = () => {
     navigate('/add_notice');
   };
 
+  const handleDeleteNotice = async (noticeId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/deleteNotice/${noticeId}`);
+      setNotices(notices.filter(notice => notice._id !== noticeId));
+    } catch (err) {
+      console.error('Error deleting notice:', err);
+      setError('An error occurred while deleting the notice.');
+    }
+  };
+
   return (
     <div className="notices-container">
       <h1>Notices</h1>
@@ -37,6 +47,11 @@ const ShowNotices = () => {
         <ul className="notice-list">
           {notices.map((notice) => (
             <li key={notice._id} className="notice-item">
+              {userRole === 'principal' && (
+                <span className="delete-icon" onClick={() => handleDeleteNotice(notice._id)}>
+                  &times;
+                </span>
+              )}
               <h2>{notice.title}</h2>
               <p>{notice.content}</p>
               <p><strong>Target Classes:</strong> {notice.targetClasses.join(', ')}</p>
@@ -49,7 +64,7 @@ const ShowNotices = () => {
       )}
       {/* Conditionally render Add Notice button based on user role */}
       {userRole !== 'teacher' && userRole !== 'student' && (
-        <button  className='button-st' onClick={handleAddNotice}>Add Notice</button>
+        <button className='button-st' onClick={handleAddNotice}>Add Notice</button>
       )}
     </div>
   );

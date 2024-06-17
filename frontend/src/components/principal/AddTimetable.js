@@ -6,7 +6,7 @@ import '../../styles/AddTimetable.css';
 import { useNavigate } from 'react-router-dom';
 
 const AddTimetable = () => {
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [periods, setPeriods] = useState([
     { srNo: 1, from: '', to: '', subject: '', teacher: '' }
@@ -18,9 +18,14 @@ const AddTimetable = () => {
 
   useEffect(() => {
     fetchClasses();
-    fetchSubjects();
     fetchTeachers();
   }, []);
+
+  useEffect(() => {
+    if (selectedClass) {
+      fetchSubjects(selectedClass);
+    }
+  }, [selectedClass]);
 
   const fetchClasses = async () => {
     try {
@@ -31,9 +36,11 @@ const AddTimetable = () => {
     }
   };
 
-  const fetchSubjects = async () => {
+  const fetchSubjects = async (selectedClass) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/show-subjects');
+      const response = await axios.get('http://localhost:5000/api/show-subjects', {
+        params: { className: selectedClass }
+      });
       setSubjects(response.data);
     } catch (error) {
       console.error('Error fetching subjects:', error);
@@ -53,6 +60,10 @@ const AddTimetable = () => {
     const updatedPeriods = [...periods];
     updatedPeriods[index][name] = value;
     setPeriods(updatedPeriods);
+
+    if (name === 'subject' && selectedClass) {
+      fetchSubjects(selectedClass); // Fetch subjects whenever subject changes
+    }
   };
 
   const handleAddPeriod = () => {
@@ -72,7 +83,7 @@ const AddTimetable = () => {
     try {
       const response = await axios.post('http://localhost:5000/api/timetable', data);
       console.log(response.data);
-      navigate('/timetable-management')
+      navigate('/timetable-management');
     } catch (error) {
       console.error('Error saving timetable:', error);
     }
@@ -85,7 +96,7 @@ const AddTimetable = () => {
         <label>Date:</label>
         <DatePicker
           selected={date}
-          onChange={date => setDate(date)}
+          onChange={(date) => setDate(date)}
           dateFormat="dd/MM/yyyy"
         />
         <div>

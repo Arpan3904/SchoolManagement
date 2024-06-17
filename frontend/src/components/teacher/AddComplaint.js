@@ -58,7 +58,7 @@ function AddComplaint() {
             onChange={(e) => setImage(e.target.files[0])}
           />
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit" className='button-st'>Submit</button>
       </form>
     </div>
   );

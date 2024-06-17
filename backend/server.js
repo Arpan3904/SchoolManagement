@@ -282,6 +282,7 @@ app.post('/api/add-student', async(req, res) => {
         // Create new student
         const newStudent = new Student({ rollNo, firstName, middleName, lastName, gender, contactNo, email, birthdate, childUid, classId, password, principal, userRole, photo });
         await newStudent.save();
+        sendCredentialsEmail(newStudent);
 
         // Create fee payment record for the student
         const studentClass = await Class.findById(classId);
@@ -480,14 +481,15 @@ app.get('/api/subjectsByClassName', async(req, res) => {
 
 app.get('/api/show-subjects', async(req, res) => {
     try {
-        const subjects = await Subject.find();
+        const className = req.query.className;
+        const subjects = await Subject.find({ class: className });
+
         res.status(200).json(subjects);
     } catch (error) {
         console.error('Error fetching subjects:', error);
         res.status(500).json({ message: 'Error fetching subjects' });
     }
 });
-
 const timetableSchema = new mongoose.Schema({
     date: Date,
     periods: [{
@@ -1073,7 +1075,7 @@ app.post('/api/submitHomework', async(req, res) => {
 
 app.get('/api/homeworkDetails', async(req, res) => {
     try {
-        const { studentId, date, class: className } = req.query;
+        const { date, class: className } = req.query;
 
 
         const classDocument = await Class.findOne({ className });
@@ -1090,7 +1092,6 @@ app.get('/api/homeworkDetails', async(req, res) => {
                 $gte: new Date(date), // Greater than or equal to the provided date
                 $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1)) // Less than the next day
             },
-            'submissions.studentId': studentId
         }).populate('submissions.studentId', 'firstName lastName');
 
         const processedHomeworkDetails = await Promise.all(homeworkDetails.map(async(homework) => {
@@ -1114,12 +1115,23 @@ app.get('/api/homeworkDetails', async(req, res) => {
 app.get('/api/birthdays', async(req, res) => {
     try {
         const today = new Date();
-        const start = new Date(today.setHours(0, 0, 0, 0));
-        const end = new Date(today.setHours(23, 59, 59, 999));
+        const currentMonth = today.getMonth() + 1; // Months are 0-based in JS
+        const currentDay = today.getDate();
 
-        // Fetch students whose birthday is today
-        const students = await Student.find({ birthdate: { $gte: start, $lt: end } });
-        //   console.log(students);
+        // Fetch students whose birthday is today (only comparing month and day)
+        const students = await Student.aggregate([{
+                $addFields: {
+                    month: { $month: '$birthdate' },
+                    day: { $dayOfMonth: '$birthdate' }
+                }
+            },
+            {
+                $match: {
+                    month: currentMonth,
+                    day: currentDay
+                }
+            }
+        ]);
 
         // Fetch class names and attach to students
         const studentsWithClassNames = await Promise.all(
@@ -1144,6 +1156,7 @@ app.get('/api/birthdays', async(req, res) => {
         res.status(500).json({ success: false, message: 'Failed to fetch birthdays' });
     }
 });
+
 const examScheduleSchema = new mongoose.Schema({
     class: String,
     date: Date,
@@ -1374,6 +1387,17 @@ app.put('/api/school-details', upload.single('schoolLogo'), async(req, res) => {
     } catch (err) {
         console.error('Error updating school details:', err);
         res.status(500).json({ error: 'Error updating school details' });
+    }
+});
+
+
+app.get('/api/fetchTeacher', async(req, res) => {
+    try {
+        const teachers = await Teacher.find({}, 'firstName lastName'); // Fetch only firstName and lastName
+        res.json(teachers);
+    } catch (error) {
+        console.error('Error fetching teachers:', error);
+        res.status(500).json({ message: 'Failed to fetch teachers' });
     }
 });
 

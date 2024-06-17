@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import '../../styles/AddNotice.css';
+import styles from '../../styles/AddNotice.module.css';
 
 const AddNotice = () => {
   const [title, setTitle] = useState('');
@@ -9,16 +9,29 @@ const AddNotice = () => {
   const [targetAudience, setTargetAudience] = useState('students');
   const [additionalInfo, setAdditionalInfo] = useState('');
   const [message, setMessage] = useState('');
+  const [classes, setClasses] = useState([]);
+  const [error, setError] = useState('');
 
-  const handleClassChange = (event) => {
-    const { options } = event.target;
-    const selectedClasses = [];
-    for (let i = 0, l = options.length; i < l; i++) {
-      if (options[i].selected) {
-        selectedClasses.push(options[i].value);
-      }
+  useEffect(() => {
+    fetchClasses();
+  }, []);
+
+  const fetchClasses = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/classes');
+      setClasses(response.data);
+    } catch (error) {
+      console.error('Error fetching classes:', error);
+      setError('An error occurred while fetching classes.');
     }
-    setTargetClasses(selectedClasses);
+  };
+
+  const handleClassChange = (className) => {
+    setTargetClasses((prevClasses) =>
+      prevClasses.includes(className)
+        ? prevClasses.filter((cls) => cls !== className)
+        : [...prevClasses, className]
+    );
   };
 
   const handleSubmit = async (event) => {
@@ -29,7 +42,7 @@ const AddNotice = () => {
         content,
         targetClasses,
         targetAudience,
-        additionalInfo
+        additionalInfo,
       });
       setMessage(response.data.message);
       clearForm();
@@ -48,11 +61,12 @@ const AddNotice = () => {
   };
 
   return (
-    <div className="container">
+    <div className={styles.containerNotice}>
       <h2>Add Notice</h2>
-      {message && <p>{message}</p>}
+      {message && <p className={styles.message}>{message}</p>}
+      {error && <p className={styles.error}>{error}</p>}
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles['form-group']}>
           <label>Title:</label>
           <input
             type="text"
@@ -61,7 +75,7 @@ const AddNotice = () => {
             required
           />
         </div>
-        <div>
+        <div className={styles['form-group']}>
           <label>Content:</label>
           <textarea
             value={content}
@@ -69,23 +83,23 @@ const AddNotice = () => {
             required
           />
         </div>
-        <div>
+        <div className={styles['form-group']}>
           <label>Target Classes:</label>
-          <select multiple value={targetClasses} onChange={handleClassChange} required>
-            <option value="class-1">class-1</option>
-            <option value="class-2">class-2</option>
-            <option value="class-3">class-3</option>
-            <option value="class-4">class-4</option>
-            <option value="class-5">class-5</option>
-            <option value="class-6">class-6</option>
-            <option value="class-7">class-7</option>
-            <option value="class-8">class-8</option>
-            <option value="class-9">class-9</option>
-            <option value="class-10">class-10</option>
-            {/* Add more class options as needed */}
-          </select>
+          <div className={styles['class-checkboxes']}>
+            {classes.map((classItem) => (
+              <label key={classItem._id} className={styles['checkbox-label']}>
+                <input
+                  type="checkbox"
+                  value={classItem.className}
+                  checked={targetClasses.includes(classItem.className)}
+                  onChange={() => handleClassChange(classItem.className)}
+                />
+                {classItem.className}
+              </label>
+            ))}
+          </div>
         </div>
-        <div>
+        <div className={styles['form-group']}>
           <label>Target Audience:</label>
           <select
             value={targetAudience}
@@ -97,14 +111,14 @@ const AddNotice = () => {
             <option value="both">Both</option>
           </select>
         </div>
-        <div>
+        <div className={styles['form-group']}>
           <label>Additional Info:</label>
           <textarea
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
           />
         </div>
-        <button type="submit" className='button-st'>Save Notice</button>
+        <button type="submit" className={styles['button-st']}>Save Notice</button>
       </form>
     </div>
   );
