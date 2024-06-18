@@ -16,7 +16,7 @@ const ShowTimetable = () => {
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/timetable/pt/${selectedClass}/${date}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/timetable/pt/${selectedClass}/${date}`);
         setTimetable(response.data);
       } catch (error) {
         console.error('Error fetching timetable:', error);
@@ -33,7 +33,7 @@ const ShowTimetable = () => {
     const fetchClasses = async () => {
       try {
         
-        const response = await axios.get('http://localhost:5000/api/fetch-class');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
         setClasses(response.data);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -49,10 +49,10 @@ const ShowTimetable = () => {
     const fetchStudentClassDetails = async (email) => {
       try {
         
-        const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+        const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${email}`);
         const student = studentResponse.data;
          
-        const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+        const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
         setStudentClass(classResponse.data.className);
         
         setSelectedClass(classResponse.data.className); // Set selected class for fetching timetable

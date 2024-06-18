@@ -14,7 +14,7 @@ const StudentList = () => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/fetch-students?classId=${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students?classId=${id}`);
         setStudents(response.data);
       } catch (error) {
         console.error('Error fetching students:', error);
@@ -46,7 +46,7 @@ const StudentList = () => {
 
   const handleDeleteSelectedStudents = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/delete-students`, {
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/delete-students`, {
         data: { studentIds: selectedStudents }
       });
 

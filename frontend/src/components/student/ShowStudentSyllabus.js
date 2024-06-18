@@ -21,15 +21,15 @@ const StudentPanel = () => {
                 }
 
                 // Fetch student details including classId
-                const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${studentEmail}`);
+                const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${studentEmail}`);
                 const student = studentResponse.data;
 
                 // Fetch class details based on classId
-                const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+                const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
                 setStudentClass(classResponse.data);
                 setClassName(classResponse.data.className);
                 // Fetch subjects based on selected class (student.classId)
-                const subjectsResponse = await axios.get(`http://localhost:5000/api/subjects?class=${classResponse.data.className}`);
+                const subjectsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjects?class=${classResponse.data.className}`);
                 setSubjects(subjectsResponse.data);
                 
             } catch (err) {
@@ -49,7 +49,7 @@ const StudentPanel = () => {
 
         try {
             setLoading(true);
-            const response = await axios.get(`http://localhost:5000/api/syllabus?className=${classnm}&subject=${selectedSubject}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/syllabus?className=${classnm}&subject=${selectedSubject}`);
             if (response.data && response.data.syllabus) {
                 setSyllabus(response.data.syllabus);
             } else {

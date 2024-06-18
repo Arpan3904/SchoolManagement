@@ -13,7 +13,7 @@ const ShowStudentBirthday = () => {
   const fetchStudentBirthdays = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/birthdays');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/birthdays`);
       setStudents(response.data);
       setLoading(false);
     } catch (error) {

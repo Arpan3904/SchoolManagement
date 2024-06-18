@@ -13,7 +13,7 @@ const ClassAndStudentList = () => {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/fetch-class');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
                 setClasses(response.data);
                 setLoading(false);
             } catch (err) {
@@ -27,7 +27,7 @@ const ClassAndStudentList = () => {
 
     const fetchStudents = async (classId) => {
         try {
-            const response = await axios.get('http://localhost:5000/api/fetch-students', {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students`, {
                 params: { classId }
             });
             setStudents(response.data);

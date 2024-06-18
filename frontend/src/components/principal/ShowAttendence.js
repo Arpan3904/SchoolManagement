@@ -15,7 +15,7 @@ const TakeAttendance = () => {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/fetch-class');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
                 setClasses(response.data);
             } catch (error) {
                 console.error('Error fetching classes:', error);
@@ -46,8 +46,8 @@ const TakeAttendance = () => {
     const fetchStudentsAndAttendance = async (classId, date) => {
         try {
             const [studentsResponse, attendanceResponse] = await Promise.all([
-                axios.get(`http://localhost:5000/api/fetch-students?classId=${classId}`),
-                axios.get(`http://localhost:5000/api/fetch-attendance?classId=${classId}&date=${date}`)
+                axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students?classId=${classId}`),
+                axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-attendance?classId=${classId}&date=${date}`)
             ]);
 
             setStudents(studentsResponse.data);
@@ -95,7 +95,7 @@ const TakeAttendance = () => {
                 studentId,
                 present: attendance[studentId]
             }));
-            await axios.post('http://localhost:5000/api/save-attendance', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/save-attendance`, {
                 classId: selectedClass,
                 date,
                 students: studentsAttendance

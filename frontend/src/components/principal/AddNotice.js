@@ -18,7 +18,7 @@ const AddNotice = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/classes');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/classes`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -37,7 +37,7 @@ const AddNotice = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/saveNotice', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/saveNotice`, {
         title,
         content,
         targetClasses,

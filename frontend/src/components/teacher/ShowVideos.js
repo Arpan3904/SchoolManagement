@@ -14,7 +14,7 @@ const ShowVideo = () => {
 
   const fetchVideos = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/videos');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/videos`);
       setVideos(response.data);
     } catch (err) {
       console.error('Error fetching videos:', err);
@@ -24,7 +24,7 @@ const ShowVideo = () => {
   const addVideo = async () => {
     try {
       const embedUrl = newVideoUrl.replace('watch?v=', 'embed/');
-      const response = await axios.post('http://localhost:5000/api/videos', { url: embedUrl, title: newVideoTitle });
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/videos`, { url: embedUrl, title: newVideoTitle });
       setVideos([...videos, response.data]);
       setNewVideoUrl('');
       setNewVideoTitle('');
@@ -36,7 +36,7 @@ const ShowVideo = () => {
 
   const removeVideo = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/videos/${id}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/videos/${id}`);
       setVideos(videos.filter(video => video._id !== id));
     } catch (err) {
       console.error('Error removing video:', err);

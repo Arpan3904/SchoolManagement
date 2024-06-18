@@ -11,7 +11,7 @@ const AddFeesComponent = () => {
 
   useEffect(() => {
     // Fetch classes from backend API
-    axios.get('http://localhost:5000/api/fetch-class')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`)
       .then(response => {
         setClasses(response.data);
       })

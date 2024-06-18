@@ -13,7 +13,7 @@ const ClassList = () => {
     // Fetch classes from MongoDB Atlas
     const fetchClasses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetch-class');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
         setClasses(response.data);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -39,7 +39,7 @@ const ClassList = () => {
 
   const handleDeleteClasses = async () => {
     try {
-      await axios.post('http://localhost:5000/api/delete-classes', { classIds: selectedClasses });
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/delete-classes`, { classIds: selectedClasses });
       setClasses(classes.filter(classDetails => !selectedClasses.includes(classDetails._id)));
       setSelectedClasses([]);
     } catch (error) {

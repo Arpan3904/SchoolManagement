@@ -32,7 +32,7 @@ const ShowSubjects = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-class');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
       setClasses(response.data);
     } catch (err) {
       console.error('Error fetching classes:', err);
@@ -42,9 +42,9 @@ const ShowSubjects = () => {
   const fetchStudentClassDetails = async (email) => {
     try {
       
-      const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+      const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${email}`);
       const student = studentResponse.data;
-      const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+      const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
       setStudentClass(classResponse.data);
       
     } catch (err) {
@@ -54,7 +54,7 @@ const ShowSubjects = () => {
 
   const fetchSubjects = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/show-subjects');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/show-subjects`);
       setSubjects(response.data);
     } catch (err) {
       console.error('Error fetching subjects:', err);

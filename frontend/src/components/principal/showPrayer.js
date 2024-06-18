@@ -18,7 +18,7 @@ const Prayer = () => {
   const fetchPrayers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/prayers');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/prayers`);
       setPrayers(response.data);
       setLoading(false);
     } catch (error) {
@@ -29,7 +29,7 @@ const Prayer = () => {
 
   const updatePrayer = async (day) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/prayers/${day}`, { link: newLink });
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/prayers/${day}`, { link: newLink });
       setPrayers(prayers.map(prayer => prayer.day === day ? response.data : prayer));
       setEditingDay(null);
       setNewLink('');

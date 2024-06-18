@@ -17,7 +17,7 @@ const ShowSchoolDetails = () => {
 
   const fetchSchoolDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/school-details');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/school-details`);
       setSchoolDetails(response.data);
       setFormData(response.data);
     } catch (err) {
@@ -47,7 +47,7 @@ const ShowSchoolDetails = () => {
 
   const handleUpdate = async () => {
     try {
-      const response = await axios.put('http://localhost:5000/api/school-details', formData);
+      const response = await axios.put(`${process.env.REACT_APP_API_URL}/api/school-details`, formData);
       setSchoolDetails(response.data);
       setIsEditing(false);
     } catch (err) {

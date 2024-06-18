@@ -11,7 +11,7 @@ const SchoolDashboard = () => {
 
   useEffect(() => {
     // Fetch total number of students
-    axios.get('http://localhost:5000/api/fetch-students')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students`)
       .then(response => {
         setTotalStudents(response.data.length);
       })
@@ -20,7 +20,7 @@ const SchoolDashboard = () => {
       });
 
     // Fetch total number of teachers
-    axios.get('http://localhost:5000/api/fetch-teachers')
+    axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teachers`)
       .then(response => {
         setTotalTeachers(response.data.length);
       })

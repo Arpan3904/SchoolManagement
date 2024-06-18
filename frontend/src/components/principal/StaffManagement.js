@@ -9,7 +9,7 @@ const StaffManagement = () => {
   useEffect(() => {
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetch-teachers');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teachers`);
         setTeachers(response.data);
       } catch (error) {
         console.error('Error fetching teachers:', error);
@@ -23,7 +23,7 @@ const StaffManagement = () => {
   const sendEmail = async (teacher) => {
     try {
       // Use your email sending logic here, for example, using an API endpoint
-      await axios.post('http://localhost:5000/api/send-email', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/send-email`, {
         email: teacher.email,
         subject: 'Login Credentials',
         body: `Your login credentials:\nEmail: ${teacher.email}\nPassword: ${teacher.password}`,
@@ -39,7 +39,7 @@ const StaffManagement = () => {
   const sendSMS = async (teacher) => {
     try {
       // Use your SMS sending logic here, for example, using an API endpoint
-      await axios.post('http://localhost:5000/api/send-sms', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/send-sms`, {
         phoneNumber: teacher.contactNo, // assuming teacher.contactNo is in Indian format
         message: `Hello ${teacher.firstName}, your login credentials are:\nEmail: ${teacher.email}\nPassword: ${teacher.password}`,
       });

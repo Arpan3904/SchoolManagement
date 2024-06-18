@@ -12,7 +12,7 @@ const TakeTeacherAttendance = () => {
     useEffect(() => {
         const fetchTeachers = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/fetch-teachers');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teachers`);
                 setTeachers(response.data);
                 // Fetch attendance for the initial date
                 await fetchTeacherAttendance(date);
@@ -37,7 +37,7 @@ const TakeTeacherAttendance = () => {
 
     const fetchTeacherAttendance = async (date) => {
         try {
-            const attendanceResponse = await axios.get(`http://localhost:5000/api/fetch-teacher-attendance?date=${date}`);
+            const attendanceResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teacher-attendance?date=${date}`);
 
             if (attendanceResponse.data.length) {
                 const fetchedAttendance = attendanceResponse.data.reduce((acc, record) => {
@@ -82,7 +82,7 @@ const TakeTeacherAttendance = () => {
                 teacherId,
                 present: attendance[teacherId]
             }));
-            await axios.post('http://localhost:5000/api/save-teacher-attendance', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/save-teacher-attendance`, {
                 date,
                 teachers: teachersAttendance
             });

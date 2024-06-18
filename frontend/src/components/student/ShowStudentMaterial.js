@@ -12,9 +12,9 @@ const ShowStudentMaterial = () => {
   useEffect(() => {
     const fetchStudentClassDetails = async (email) => {
       try {
-        const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+        const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${email}`);
         const student = studentResponse.data;
-        const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+        const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
         setStudentClass(classResponse.data);
       } catch (err) {
         console.error('Error fetching student or class data:', err);
@@ -34,7 +34,7 @@ const ShowStudentMaterial = () => {
     if (studentClass) {
       const fetchSubjects = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/subjects?class=${studentClass.className}`);
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjects?class=${studentClass.className}`);
           setSubjects(response.data);
         } catch (err) {
           console.error('Error fetching subjects:', err);
@@ -51,7 +51,7 @@ const ShowStudentMaterial = () => {
     setSelectedSubject(selectedSubject);
 
     try {
-      const response = await axios.get(`http://localhost:5000/api/materials?class=${studentClass.className}&subject=${selectedSubject}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/materials?class=${studentClass.className}&subject=${selectedSubject}`);
       setMaterials(response.data);
     } catch (err) {
       console.error('Error fetching materials:', err);

@@ -15,12 +15,12 @@ const ShowTimetable = () => {
         const teacherEmail = localStorage.getItem('email'); // Assuming you store teacher's email as 'email' in localStorage
         
         // Fetch teacher's first and last names
-        const teacherInfo = await axios.get(`http://localhost:5000/api/teacher/${teacherEmail}`);
+        const teacherInfo = await axios.get(`${process.env.REACT_APP_API_URL}/api/teacher/${teacherEmail}`);
         
         let teachername = `${teacherInfo.data.firstName} ${teacherInfo.data.lastName}`;
         setTeacherFullName(teachername);
 
-        const response = await axios.get(`http://localhost:5000/api/timetable/${teacherEmail}/${selectedDate}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/timetable/${teacherEmail}/${selectedDate}`);
         setTimetable(response.data);
       } catch (error) {
         console.error('Error fetching timetable:', error);

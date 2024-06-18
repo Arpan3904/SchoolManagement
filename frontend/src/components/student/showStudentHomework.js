@@ -17,7 +17,7 @@ const ShowStudentHomework = () => {
   const fetchStudentClass = async () => {
     try {
       const email = localStorage.getItem('email');
-      const response = await axios.get(`http://localhost:5000/api/fetchStudentClass?email=${email}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStudentClass?email=${email}`);
       setStudentClass(response.data.classId);
     } catch (error) {
       console.error('Error fetching student class:', error);
@@ -28,7 +28,7 @@ const ShowStudentHomework = () => {
     try {
       const email = localStorage.getItem('email');
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/fetchStudentHomework?date=${date}&classId=${studentClass}&email=${email}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStudentHomework?date=${date}&classId=${studentClass}&email=${email}`);
       const homeworkData = Array.isArray(response.data.homework) ? response.data.homework : [];
       setHomeworkList(homeworkData);
       setLoading(false);
@@ -41,7 +41,7 @@ const ShowStudentHomework = () => {
   const handleSubmissionUpload = async (homeworkId) => {
     try {
       const email = localStorage.getItem('email');
-      const response = await axios.post('http://localhost:5000/api/submitHomework', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/submitHomework`, {
         homeworkId,
         submissionLink,
         email

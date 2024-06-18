@@ -19,12 +19,12 @@ const AddSchedule = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:5000/api/fetch-class').then(response => setClasses(response.data));
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`).then(response => setClasses(response.data));
     }, []);
 
     useEffect(() => {
         if (selectedClass) {
-            axios.get(`http://localhost:5000/api/subjectss?class=${selectedClass}`).then(response => setSubjects(response.data));
+            axios.get(`${process.env.REACT_APP_API_URL}/api/subjectss?class=${selectedClass}`).then(response => setSubjects(response.data));
         }
     }, [selectedClass]);
 
@@ -43,7 +43,7 @@ const AddSchedule = () => {
         setErrorMessage('');
 
         const promises = scheduleRows.map(row =>
-            axios.post('http://localhost:5000/api/add-exam-schedule', {
+            axios.post(`${process.env.REACT_APP_API_URL}/api/add-exam-schedule`, {
                 class: selectedClass,
                 date: row.date,
                 from: row.from,

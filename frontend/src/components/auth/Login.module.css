@@ -1,119 +1,71 @@
-/* Login Component Specific Styles */
-
-
 /* General Styles */
-
-body,
-html {
-  
+body, html {
     font-family: 'Arial', sans-serif;
-}
-
-.mainContainer {
-    
-    margin-left: -170px; 
-    /* Center the container */
-
-    
-}
-
-
-/* Login Container */
-
-.loginContainer {
+  }
+  
+  .mainContainer {
+    /* Add necessary styles here */
+  }
+  
+  .loginContainer {
     background-color: #ffffff;
     height: 490px;
-}
-
-
-/* Title */
-
-.login-title {
-    text-align: center;
+  }
   
-}
-
-
-/* Inputs */
-
-.login-input {
+  .login-title {
+    text-align: center;
+  }
+  
+  .login-input {
     width: 100%;
-    
     margin-bottom: 10px;
-   
     border-radius: 5px;
-}
-
-
-/* Button */
-
-.login-button {
+  }
+  
+  .loginButton {
     width: 100%;
-    
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.login-button:hover {
+  }
+  
+  .loginButton:hover {
     background-color: #0056b3;
-}
-
-
-/* Link */
-
-.signup-link {
+  }
+  
+  .signupLink {
     display: block;
     text-align: center;
     margin-top: 10px;
     color: #007bff;
     text-decoration: none;
-}
-
-.signup-link:hover {
+  }
+  
+  .signupLink:hover {
     text-decoration: underline;
-}
-
-
-/* Image Container */
-
-.imageContainer {
+  }
+  
+  .imageContainer {
     justify-content: center;
     align-items: center;
-}
-
-
-/* SVG Image */
-
-.imageSvg {
+  }
+  
+  .imageSvg {
     max-width: 100%;
     height: auto;
-}
-
-
-/* Other Styles */
-
-.log {
-    color: rgb(104, 85, 224);
-    background-color: rgba(255, 255, 255, 1);
-    border: 1px solid rgba(104, 85, 224, 1);
-}
-
-button:hover {
-    color: white;
-    box-shadow: 0 0 20px rgba(12, 12, 14, 0.6);
-    background-color: rgba(104, 85, 224, 1);
-}
-
-.text-center a {
+  }
+  
+  .hiddenOnSmallScreens {
     display: block;
-    margin-top: 10px;
-}
-
-.white-text {
-    color: rgb(8, 8, 8);
-    text-align: center;
-    font-style: oblique;
-}
+  }
+  
+  @media (max-width: 600px) {
+    .hiddenOnSmallScreens {
+      display: none;
+    }
+    
+    
+  }
+  

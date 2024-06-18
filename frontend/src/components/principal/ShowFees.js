@@ -14,7 +14,7 @@ const ShowFeesComponent = () => {
   useEffect(() => {
     const fetchFees = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetch-fees');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-fees`);
         setFees(response.data);
         setLoading(false);
       } catch (error) {
@@ -25,9 +25,9 @@ const ShowFeesComponent = () => {
 
     const fetchStudentClassDetails = async (email) => {
       try {
-        const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+        const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${email}`);
         const student = studentResponse.data;
-        const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+        const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
         setStudentClass(classResponse.data.className);
       } catch (err) {
         console.error('Error fetching student or class data:', err);

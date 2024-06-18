@@ -17,7 +17,7 @@ const AddSubject = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-class');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -27,7 +27,7 @@ const AddSubject = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/add-subject', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/add-subject`, {
         class: selectedClass,
         subjectName,
         subjectCode

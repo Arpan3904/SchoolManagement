@@ -56,7 +56,7 @@ const AddStudent = () => {
 
         try {
             console.log('Submitting student data:', updatedStudentInfo);
-            await axios.post('http://localhost:5000/api/add-student', updatedStudentInfo);
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/add-student`, updatedStudentInfo);
             navigate(`/class/${id}/student-management`);
         } catch (error) {
             console.error('Error adding student:', error);

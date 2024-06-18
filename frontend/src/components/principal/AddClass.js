@@ -20,7 +20,7 @@ const AddClass = () => {
   const fetchTeachers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:5000/api/fetchTeacher');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchTeacher`);
       setTeachers(response.data);
       setLoading(false);
     } catch (error) {
@@ -41,7 +41,7 @@ const AddClass = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/add-class', formData);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/add-class`, formData);
       // Clear form fields after successful submission
       setFormData({
         className: '',
@@ -77,7 +77,7 @@ const AddClass = () => {
         <input type="text" name="roomNo" value={formData.roomNo} onChange={handleChange} required />
         <label>Capacity:</label>
         <input type="number" name="capacity" value={formData.capacity} onChange={handleChange} required />
-        <button type="submit" className='button-st'>Add Class</button>
+        <button type="submit">Add Class</button>
       </form>
     </div>
   );

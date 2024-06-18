@@ -11,7 +11,7 @@ const ShowEvents = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/showEvents');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/showEvents`);
         const upcomingEvents = response.data.filter(event => new Date(event.endDate) > new Date());
         setEvents(upcomingEvents);
       } catch (err) {
@@ -34,7 +34,7 @@ const ShowEvents = () => {
 
   const handleCancelEvent = async (eventId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/cancelEvent/${eventId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/cancelEvent/${eventId}`);
       setEvents(events.filter(event => event._id !== eventId));
     } catch (err) {
       console.error('Error canceling event:', err);

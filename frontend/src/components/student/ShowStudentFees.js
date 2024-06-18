@@ -10,11 +10,11 @@ const ShowFeesComponent = () => {
   const fetchStudentFees = async () => {
     try {
       // Fetch student details using email
-      const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${userEmail}`);
+      const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${userEmail}`);
       const student = studentResponse.data;
 
       // Fetch fee details using studentId
-      const feeResponse = await axios.get(`http://localhost:5000/api/fetch-student-fees?studentId=${student._id}`);
+      const feeResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-student-fees?studentId=${student._id}`);
       setFeeDetails(feeResponse.data);
     } catch (error) {
       console.error('Error fetching fee details:', error);
@@ -29,7 +29,7 @@ const ShowFeesComponent = () => {
 
   const handlePayFees = async (amount, studentId) => {
     try {
-      const orderResponse = await axios.post('http://localhost:5000/api/create-order', { amount, studentId });
+      const orderResponse = await axios.post(`${process.env.REACT_APP_API_URL}/api/create-order`, { amount, studentId });
       const { id: order_id, currency } = orderResponse.data;
 
       const options = {
@@ -43,7 +43,7 @@ const ShowFeesComponent = () => {
           alert('Payment successful');
           // Update payment status in the database
           try {
-            await axios.post('http://localhost:5000/api/update-payment-status', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/update-payment-status`, {
               studentId,
               orderId: response.razorpay_order_id,
               paymentId: response.razorpay_payment_id,

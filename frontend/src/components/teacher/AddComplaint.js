@@ -14,7 +14,7 @@ function AddComplaint() {
     formData.append('image', image);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/complaints', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/complaints`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'gmail': localStorage.getItem('email'), // Assuming gmail is stored in localStorage

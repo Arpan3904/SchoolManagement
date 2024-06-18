@@ -29,11 +29,24 @@
   background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 3px;
+
   cursor: pointer;
-  transition: background-color 0.3s ease;
+ 
 }
 
 .login-button:hover {
   background-color: #45a049;
 }
+
+
+@media (max-width: 600px) {
+  /* Change to vertical layout on smaller screens */
+  
+
+  body {
+    margin-left: 70px; /* Adjusted margin-left for collapsed state */
+  }
+
+  
+}
+

@@ -29,7 +29,7 @@ const AddTimetable = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-class');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -38,7 +38,7 @@ const AddTimetable = () => {
 
   const fetchSubjects = async (selectedClass) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/show-subjects', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/show-subjects`, {
         params: { className: selectedClass }
       });
       setSubjects(response.data);
@@ -49,7 +49,7 @@ const AddTimetable = () => {
 
   const fetchTeachers = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-teachers');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teachers`);
       setTeachers(response.data);
     } catch (error) {
       console.error('Error fetching teachers:', error);
@@ -81,7 +81,7 @@ const AddTimetable = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:5000/api/timetable', data);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/timetable`, data);
       console.log(response.data);
       navigate('/timetable-management');
     } catch (error) {

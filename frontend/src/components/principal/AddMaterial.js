@@ -14,7 +14,7 @@ const AddMaterial = () => {
 
     const fetchClasses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/classes');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/classes`);
         setClasses(response.data);
       } catch (err) {
         console.error('Error fetching classes:', err);
@@ -31,7 +31,7 @@ const AddMaterial = () => {
 
     try {
       // Fetch subjects based on the selected class
-      const response = await axios.get(`http://localhost:5000/api/subjects?class=${selectedClass}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjects?class=${selectedClass}`);
       setSubjects(response.data);
     } catch (err) {
       console.error('Error fetching subjects:', err);
@@ -44,7 +44,7 @@ const AddMaterial = () => {
 
     try {
       // Submit the form data (class, subject, material link) to the backend
-      await axios.post('http://localhost:5000/api/saveMaterials', {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/saveMaterials`, {
         className: selectedClass,
         subject: selectedSubject,
         materialLink,

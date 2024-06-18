@@ -20,7 +20,7 @@ const ShowGalleryImages = () => {
   const fetchImages = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/getImages?eventId=${eventId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/getImages?eventId=${eventId}`);
       setImages(response.data.images);
       setLoading(false);
     } catch (error) {
@@ -38,7 +38,7 @@ const ShowGalleryImages = () => {
       const formData = new FormData();
       formData.append('image', selectedImage);
 
-      await axios.post(`http://localhost:5000/api/addImage?eventId=${eventId}`, formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/addImage?eventId=${eventId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

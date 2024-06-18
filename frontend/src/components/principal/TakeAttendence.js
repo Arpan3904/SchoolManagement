@@ -7,7 +7,7 @@ const TakeAttendance = ({ classId }) => {
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/fetch-students?classId=${classId}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students?classId=${classId}`);
         setStudents(response.data);
       } catch (error) {
         console.error('Error fetching students:', error);

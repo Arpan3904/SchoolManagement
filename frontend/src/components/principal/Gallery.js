@@ -11,7 +11,7 @@ const Gallery = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/showEvents');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/showEvents`);
         const currentDate = new Date();
         const pastEvents = response.data.filter(event => new Date(event.endDate) < currentDate);
         setEvents(pastEvents);

@@ -12,7 +12,7 @@ const ShowNotices = () => {
   useEffect(() => {
     const fetchNotices = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetchNotice');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchNotice`);
         setNotices(response.data);
       } catch (err) {
         console.error('Error fetching notices:', err);
@@ -29,7 +29,7 @@ const ShowNotices = () => {
 
   const handleDeleteNotice = async (noticeId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/deleteNotice/${noticeId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/deleteNotice/${noticeId}`);
       setNotices(notices.filter(notice => notice._id !== noticeId));
     } catch (err) {
       console.error('Error deleting notice:', err);

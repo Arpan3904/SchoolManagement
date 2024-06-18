@@ -28,7 +28,7 @@ const ShowHomework = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/classes');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/classes`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -39,7 +39,7 @@ const ShowHomework = () => {
   const fetchStudents = async (className) => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/fetchStudents?class=${className}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStudents?class=${className}`);
       setStudents(response.data);
       setLoading(false);
     } catch (error) {
@@ -52,7 +52,7 @@ const ShowHomework = () => {
   const fetchHomeworkDetails = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/api/homeworkDetails?date=${date}&class=${selectedClass}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/homeworkDetails?date=${date}&class=${selectedClass}`);
       setHomeworkDetails(response.data);
       setLoading(false);
     } catch (error) {

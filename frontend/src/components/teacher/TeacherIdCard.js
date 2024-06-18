@@ -16,7 +16,7 @@ const TeacherIDCard = () => {
   useEffect(() => {
     const fetchSchoolDetails = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/school-details');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/school-details`);
         setSchoolDetails(response.data);
       } catch (error) {
         console.error('Error fetching school details:', error);
@@ -25,7 +25,7 @@ const TeacherIDCard = () => {
 
     const fetchTeachers = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetch-teachers');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teachers`);
         setTeachers(response.data);
       } catch (error) {
         console.error('Error fetching teachers:', error);
@@ -42,7 +42,7 @@ const TeacherIDCard = () => {
 
   const fetchTeacherDetails = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-teacher-by-email', {
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teacher-by-email`, {
         params: { email }
       });
       setSelectedTeacher(response.data);

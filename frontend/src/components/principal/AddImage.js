@@ -13,7 +13,7 @@ const AddImage = () => {
       const formData = new FormData();
       formData.append('image', image); // Ensure 'image' matches the field name expected by the server
   
-      await axios.post('http://localhost:5000/api/addImage', formData, {
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/addImage`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

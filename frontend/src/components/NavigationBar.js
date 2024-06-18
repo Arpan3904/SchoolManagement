@@ -35,7 +35,7 @@ const NavigationBar = ({ userRole }) => {
   useEffect(() => {
     const fetchSchoolDetails = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/school-details');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/school-details`);
         setSchoolDetails(response.data);
       } catch (err) {
         console.error('Error fetching school details:', err);

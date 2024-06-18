@@ -1,76 +1,84 @@
-/* Signup Component Specific Styles */
-
-.mainContainer {
+/* General Styles */
+body, html {
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .mainContainer {
     margin: 0 auto;
     background-color: #ffffff;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-.signupContainer {
+    padding: 10px;
+  }
+  
+  .signupContainer {
     background-color: #ffffff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-}
-
-.signupButton {
+    padding: 10px;
+  }
+  
+  .signupButton {
     width: 100%;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-.signupButton:hover {
+  }
+  
+  .signupButton:hover {
     background-color: #0056b3;
-}
-
-.loginLink {
+  }
+  
+  .loginLink {
     display: block;
     text-align: center;
     color: #007bff;
     text-decoration: none;
-}
-
-.loginLink:hover {
+  }
+  
+  .loginLink:hover {
     text-decoration: underline;
-}
-
-.imageContainer {
+  }
+  
+  .imageContainer {
     justify-content: center;
     align-items: center;
-}
-
-.imageSvg {
+  }
+  
+  .imageSvg {
     max-width: 100%;
     height: auto;
-}
-
-/* General Styles */
-
-body,
-html {
-    font-family: 'Arial', sans-serif;
-}
-
-.text-center a {
+  }
+  
+  .hiddenOnSmallScreens {
     display: block;
-    margin-top: 10px;
-}
+  }
+  
+  @media (max-width: 600px) {
+    .hiddenOnSmallScreens {
+      display: none;
+    }
 
-.text-danger {
+    .mainContainer{
+        margin-left: -40px;
+    }
+  }
+  
+  .text-center a {
+    display: block;
+    margin-top: 2px;
+  }
+  
+  .text-danger {
     color: #dc3545; /* Red color for error messages */
-}
-
-/* Adjustments for Form Layout */
-
-.row {
-    margin-bottom: 1rem; /* Space between rows */
-}
-
-.col-form-label {
+  }
+  
+  .row {
+    margin-bottom: 0.5rem; /* Space between rows */
+  }
+  
+  .col-form-label {
     font-weight: bold; /* Make labels bold */
     padding-top: 0.5rem; /* Add space above labels */
-}
+  }
+  

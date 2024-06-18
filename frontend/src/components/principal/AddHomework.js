@@ -29,7 +29,7 @@ const AddHomework = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/classes');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/classes`);
       setClasses(response.data);
     } catch (error) {
       console.error('Error fetching classes:', error);
@@ -39,7 +39,7 @@ const AddHomework = () => {
   const fetchSubjects = async (classId) => {
     try {
         console.log(classId);
-      const response = await axios.get(`http://localhost:5000/api/subjects?class=${classId}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjects?class=${classId}`);
       console.log(response.data);
       setSubjects(response.data); 
     } catch (error) {
@@ -65,7 +65,7 @@ const AddHomework = () => {
         questionLink, // Add the question link to the new homework object
       };
 
-      await axios.post('http://localhost:5000/api/addHomework', newHomework);
+      await axios.post(`${process.env.REACT_APP_API_URL}/api/addHomework`, newHomework);
 
       setLoading(false);
       alert('Homework added successfully');

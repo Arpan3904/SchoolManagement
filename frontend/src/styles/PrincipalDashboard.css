@@ -91,6 +91,6 @@ body {
   }
 
   .school-dashboard-container.collapsed {
-    margin-left: 70px; /* Ensure the container adjusts with margin-left */
+    margin-left: 0px; /* Ensure the container adjusts with margin-left */
   }
 }

@@ -19,7 +19,7 @@ const ShowPreviousExams = () => {
 
     useEffect(() => {
         // Fetch classes on component mount
-        axios.get('http://localhost:5000/api/fetch-class')
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`)
             .then(response => setClasses(response.data))
             .catch(error => console.error('Error fetching classes:', error));
     }, []);
@@ -29,7 +29,7 @@ const ShowPreviousExams = () => {
         setSelectedClass(className);
 
         // Fetch schedules for selected class
-        axios.get(`http://localhost:5000/api/fetch-schedule?class=${encodeURIComponent(className)}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-schedule?class=${encodeURIComponent(className)}`)
             .then(response => {
                 const currentDate = new Date();
                 const previousExams = response.data.filter(row => new Date(row.date) < currentDate);
@@ -46,12 +46,12 @@ const ShowPreviousExams = () => {
         setShowAddMarks(true);
 
         // Fetch class details by name
-        axios.get(`http://localhost:5000/api/fetch-class-by-name?className=${encodeURIComponent(exam.class)}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class-by-name?className=${encodeURIComponent(exam.class)}`)
             .then(response => {
                 const classId = response.data._id;
 
                 // Fetch students for the selected class
-                axios.get(`http://localhost:5000/api/fetch-students?classId=${encodeURIComponent(classId)}`)
+                axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students?classId=${encodeURIComponent(classId)}`)
                     .then(response => {
                         const studentsData = response.data.map(student => ({
                             ...student,
@@ -107,7 +107,7 @@ const ShowPreviousExams = () => {
         };
 
         // Save exam results
-        axios.post('http://localhost:5000/api/save-exam-results', payload)
+        axios.post(`${process.env.REACT_APP_API_URL}/api/save-exam-results`, payload)
             .then(response => {
                 alert('Exam results saved successfully');
                 setSelectedExam(null);
@@ -125,7 +125,7 @@ const ShowPreviousExams = () => {
         setSelectedExam(exam);
 
         // Fetch exam results for the selected exam
-        axios.get(`http://localhost:5000/api/fetch-exam-results?examScheduleId=${encodeURIComponent(exam._id)}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-exam-results?examScheduleId=${encodeURIComponent(exam._id)}`)
             .then(response => {
                 const existingResults = response.data;
                 let marksData = [];

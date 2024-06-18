@@ -25,12 +25,12 @@ const TeacherAttendance = () => {
     useEffect(() => {
         const fetchTeacherAndAttendance = async () => {
             try {
-                const teacherResponse = await axios.get('http://localhost:5000/api/fetch-teacher-by-email', {
+                const teacherResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-teacher-by-email`, {
                     params: { email }
                 });
                 setTeacher(teacherResponse.data);
                 
-                const attendanceResponse = await axios.get('http://localhost:5000/api/fetch-attendance-by-teacherId', {
+                const attendanceResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-attendance-by-teacherId`, {
                     params: { teacherId: teacherResponse.data._id }
                 });
                 const sortedAttendance = attendanceResponse.data.sort((a, b) => new Date(b.date) - new Date(a.date));

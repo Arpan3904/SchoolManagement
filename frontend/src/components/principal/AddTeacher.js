@@ -24,7 +24,7 @@ const AddTeacher = () => {
       
         const password = Math.floor(100000 + Math.random() * 900000);
        
-      const response = await axios.post('http://localhost:5000/api/add-teachers', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/add-teachers`, {
         firstName,
         lastName,
         degree,

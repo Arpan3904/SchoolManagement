@@ -18,7 +18,7 @@ const IDCard = () => {
   useEffect(() => {
     const fetchSchoolDetails = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/school-details');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/school-details`);
         setSchoolDetails(response.data);
       } catch (error) {
         console.error('Error fetching school details:', error);
@@ -27,7 +27,7 @@ const IDCard = () => {
 
     const fetchClasses = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/fetch-class');
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
         setClasses(response.data);
       } catch (error) {
         console.error('Error fetching classes:', error);
@@ -36,7 +36,7 @@ const IDCard = () => {
 
     const fetchStudentDetails = async (email) => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/fetch-student-by-email?email=${email}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-student-by-email?email=${email}`);
         const student = response.data;
         setSelectedStudent(student);
         setSelectedClass(student.classId);
@@ -57,7 +57,7 @@ const IDCard = () => {
 
   useEffect(() => {
     if (selectedClass && userRole !== 'student') {
-      axios.get(`http://localhost:5000/api/fetch-students?classId=${selectedClass}`)
+      axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-students?classId=${selectedClass}`)
         .then(response => {
           setStudents(response.data);
         })

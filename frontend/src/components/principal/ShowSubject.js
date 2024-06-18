@@ -31,7 +31,7 @@ const ShowSubjects = () => {
 
   const fetchClasses = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/fetch-class');
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`);
       setClasses(response.data);
     } catch (err) {
       console.error('Error fetching classes:', err);
@@ -40,7 +40,7 @@ const ShowSubjects = () => {
 
   const fetchSubjects = async (selectedClass) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/subjectss?class=${selectedClass}`);
+      const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjectss?class=${selectedClass}`);
       setSubjects(response.data);
     } catch (err) {
       console.error('Error fetching subjects:', err);
@@ -58,7 +58,7 @@ const ShowSubjects = () => {
 
   const handleDeleteSubject = async (subjectId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/delete-subject/${subjectId}`);
+      await axios.delete(`${process.env.REACT_APP_API_URL}/api/delete-subject/${subjectId}`);
       setSubjects(subjects.filter(subject => subject._id !== subjectId));
     } catch (error) {
       console.error('Error deleting subject:', error);

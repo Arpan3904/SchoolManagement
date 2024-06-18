@@ -26,7 +26,7 @@ const SignupForm = () => {
     e.preventDefault();
     try {
       setUserRole("principal");
-      const response = await axios.post('http://localhost:5000/api/signup', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/signup`, {
         firstName,
         lastName,
         email,
@@ -54,8 +54,13 @@ const SignupForm = () => {
     }
   };
 
+  const getMarginLeft = () => {
+    return window.innerWidth > 600 ? '-130px' : '-40px';
+  };
+
+
   return (
-    <MDBContainer style={{ marginLeft: '-170px' }} className={`my-3 p-3 ${styles.mainContainer}`}>
+    <MDBContainer style={{ marginLeft: getMarginLeft() }} className={`my-3 p-3 ${styles.mainContainer}`}>
       <MDBRow className="justify-content-center align-items-center">
         <MDBCol md="6" className={`p-4 ${styles.signupContainer}`}>
 

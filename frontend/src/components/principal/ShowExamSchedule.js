@@ -21,7 +21,7 @@ const ShowSchedule = () => {
         if (userRole === 'student') {
             fetchStudentClassDetails(userEmail);
         } else {
-            axios.get('http://localhost:5000/api/fetch-class').then(response => setClasses(response.data));
+            axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-class`).then(response => setClasses(response.data));
         }
     }, [userRole, userEmail]);
 
@@ -33,9 +33,9 @@ const ShowSchedule = () => {
 
     const fetchStudentClassDetails = async (email) => {
         try {
-            const studentResponse = await axios.get(`http://localhost:5000/api/fetchStbyEmail?email=${email}`);
+            const studentResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/fetchStbyEmail?email=${email}`);
             const student = studentResponse.data;
-            const classResponse = await axios.get(`http://localhost:5000/api/class/${student.classId}`);
+            const classResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/class/${student.classId}`);
             setStudentClass(classResponse.data.className);
             setSelectedClass(classResponse.data.className); // Automatically set selected class
         } catch (err) {
@@ -45,7 +45,7 @@ const ShowSchedule = () => {
     };
 
     const fetchSchedule = (className) => {
-        axios.get(`http://localhost:5000/api/fetch-schedule?class=${encodeURIComponent(className)}`)
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-schedule?class=${encodeURIComponent(className)}`)
             .then(response => {
                 const currentDateTime = new Date();
 
@@ -80,7 +80,7 @@ const ShowSchedule = () => {
                 setScheduleRows([]);
             });
 
-        axios.get('http://localhost:5000/api/fetch-exam-types')
+        axios.get(`${process.env.REACT_APP_API_URL}/api/fetch-exam-types`)
             .then(response => setExamTypes(response.data))
             .catch(error => console.error('Error fetching exam types:', error));
     };

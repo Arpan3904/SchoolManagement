@@ -11,7 +11,7 @@ const AddSyllabus = () => {
     useEffect(() => {
         const fetchClasses = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/classes');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/classes`);
                 setClasses(response.data);
             } catch (err) {
                 console.error('Error fetching classes:', err);
@@ -28,7 +28,7 @@ const AddSyllabus = () => {
         setSyllabus('');
 
         try {
-            const response = await axios.get(`http://localhost:5000/api/subjects?class=${selectedClass}`);
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/subjects?class=${selectedClass}`);
             setSubjects(response.data);
         } catch (err) {
             console.error('Error fetching subjects:', err);
@@ -46,7 +46,7 @@ const AddSyllabus = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/add-syllabus', {
+            await axios.post(`${process.env.REACT_APP_API_URL}/api/add-syllabus`, {
                 className: selectedClass,
                 subject: selectedSubject,
                 syllabus: syllabus
