@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Material = require('../models/Material'); // Adjust the path as necessary
+const Material = require('../models/material'); // Adjust the path as necessary
 
 // Route to save material data
 router.post('/saveMaterials', async(req, res) => {

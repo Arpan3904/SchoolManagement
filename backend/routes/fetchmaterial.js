@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Material = require('../models/Material');
+const Material = require('../models/material');
 
 router.get('/materials', async(req, res) => {
     const { class: className, subject: subjectName } = req.query;
