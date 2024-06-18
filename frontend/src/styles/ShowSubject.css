@@ -12,7 +12,7 @@
 }
 
 .subjects-container.white-theme .add-subject-button,
-.subjects-container.white-theme .delete-button {
+.subjects-container.white-theme .delete-buttons {
   background-color: #007bff;
   color: white;
 }
@@ -47,7 +47,7 @@
 }
 
 .subjects-container.black-theme .add-subject-button,
-.subjects-container.black-theme .delete-button {
+.subjects-container.black-theme .delete-buttons {
   background-color: #28a745;
   color: white;
 }
@@ -118,7 +118,7 @@ select:focus {
   margin-left: 45%;
 }
 
-.delete-button:hover .delete-icon {
+.delete-buttons:hover .delete-icon {
   color: #ff4757;
   margin-left: 45%;
 }

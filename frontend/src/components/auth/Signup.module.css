@@ -1,0 +1,76 @@
+/* Signup Component Specific Styles */
+
+.mainContainer {
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.signupContainer {
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.signupButton {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signupButton:hover {
+    background-color: #0056b3;
+}
+
+.loginLink {
+    display: block;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+}
+
+.imageContainer {
+    justify-content: center;
+    align-items: center;
+}
+
+.imageSvg {
+    max-width: 100%;
+    height: auto;
+}
+
+/* General Styles */
+
+body,
+html {
+    font-family: 'Arial', sans-serif;
+}
+
+.text-center a {
+    display: block;
+    margin-top: 10px;
+}
+
+.text-danger {
+    color: #dc3545; /* Red color for error messages */
+}
+
+/* Adjustments for Form Layout */
+
+.row {
+    margin-bottom: 1rem; /* Space between rows */
+}
+
+.col-form-label {
+    font-weight: bold; /* Make labels bold */
+    padding-top: 0.5rem; /* Add space above labels */
+}

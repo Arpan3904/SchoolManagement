@@ -104,8 +104,8 @@ const ShowSubjects = () => {
               <td>{subject.subjectCode}</td>
               {userRole !== 'student' && (
                 <td>
-                  <button className="delete-button" onClick={() => handleDeleteSubject(subject._id)}>
-                    <FaTrash className="delete-icon" />
+                  <button className="delete-buttons" onClick={() => handleDeleteSubject(subject._id)}>
+                    <FaTrash className="delete-icons" />
                   </button>
                 </td>
               )}
