@@ -23,7 +23,7 @@ const AddFeesComponent = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Make POST request to add fees
-    axios.post('http://localhost:5000/api/add-fees', { className: selectedClass, amount })
+    axios.post(`${process.env.REACT_APP_API_URL}/api/add-fees`, { className: selectedClass, amount })
       .then(response => {
         // Handle success
         console.log('Fees added successfully:', response.data);
